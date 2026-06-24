@@ -1,0 +1,41 @@
+<div class="modal-dialog modal-xl modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header bg-light">
+      <h5 class="modal-title text-primary">
+        <i class="bi bi-diagram-3-fill me-2"></i>Consulta Gráfica: {{ processName || processDefinitionId }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body p-0 position-relative" style="height: 60vh; background-color: #f8f9fa;">
+      
+      <!-- Loading spinner -->
+      <div *ngIf="loading" class="position-absolute top-50 start-50 translate-middle text-center z-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando diagrama...</span>
+        </div>
+        <div class="mt-2 text-muted small">Cargando flujo y recorrido...</div>
+      </div>
+
+      <!-- Error message -->
+      <div *ngIf="error" class="position-absolute top-50 start-50 translate-middle text-center z-3">
+        <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-2 d-block"></i>
+        <h5 class="text-danger">Error</h5>
+        <p class="text-muted">{{ error }}</p>
+      </div>
+
+      <!-- BPMN Canvas Container -->
+      <div #bpmnCanvas class="w-100 h-100" [class.opacity-0]="loading"></div>
+    </div>
+    <div class="modal-footer bg-light">
+      <div class="d-flex w-100 justify-content-between align-items-center">
+        <div class="small text-muted d-flex gap-3">
+          <span class="d-flex align-items-center"><span class="d-inline-block rounded bg-success bg-opacity-25 border border-success me-1" style="width:16px;height:16px;"></span> Completado</span>
+          <span class="d-flex align-items-center"><span class="d-inline-block rounded bg-warning bg-opacity-25 border border-warning me-1" style="width:16px;height:16px;"></span> Activo</span>
+        </div>
+        <div>
+          <button type="button" class="btn btn-secondary btn-sm rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

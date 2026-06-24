@@ -70,6 +70,13 @@ export class WizardFlujoComponent implements OnInit {
     return JSON.stringify(this.previewModel, null, 2);
   }
 
+  onSimulacionDataChange(data: any) {
+    if (data) {
+      // Guardar los datos en el previewModel para que sean enviados en simSubmit()
+      this.previewModel = { ...this.previewModel, ...data };
+    }
+  }
+
   simTotalFields(): number {
     let count = 0;
     if (!this.layout || !this.layout.tabs) return 0;
@@ -239,14 +246,25 @@ export class WizardFlujoComponent implements OnInit {
           if (vars) {
             // Flowable devuelve un mapa con las variables, se mezclan con previewModel
             // si la variable no es nula.
-            for (const key in vars) {
-              if (vars[key] !== null && vars[key] !== undefined) {
-                this.previewModel[key] = vars[key];
-                if (Array.isArray(vars[key])) {
-                  this.gridRowsMap[key] = [...vars[key]];
+              for (const key in vars) {
+                if (vars[key] !== null && vars[key] !== undefined) {
+                  this.previewModel[key] = vars[key];
+                  if (Array.isArray(vars[key])) {
+                    this.gridRowsMap[key] = [...vars[key]];
+                  } else if (typeof vars[key] === 'string' && (vars[key].startsWith('[') || vars[key].startsWith('{'))) {
+                    try {
+                      const parsed = JSON.parse(vars[key]);
+                      if (Array.isArray(parsed)) {
+                        this.gridRowsMap[key] = parsed;
+                        this.previewModel[key] = parsed;
+                        // Map arrays to their base names in case grids are named 'ingresos' or 'deudas'
+                        if (key === 'ingresos_array') this.gridRowsMap['ingresos'] = parsed;
+                        if (key === 'deudas_array') this.gridRowsMap['deudas'] = parsed;
+                      }
+                    } catch(e) {}
+                  }
                 }
               }
-            }
 
             // Auto-populate _analisis variables with original values if they don't exist yet or are empty
             for (const key in vars) {
@@ -267,10 +285,13 @@ export class WizardFlujoComponent implements OnInit {
                   } else if (typeof vars[key] === 'string' && (vars[key].startsWith('[') || vars[key].startsWith('{'))) {
                     try {
                       const parsed = JSON.parse(vars[key]);
-                      if (Array.isArray(parsed)) {
-                        this.gridRowsMap[analisisKey] = parsed;
-                        this.previewModel[analisisKey] = parsed; // optional, but keeps consistency
-                      }
+                        if (Array.isArray(parsed)) {
+                          this.gridRowsMap[analisisKey] = parsed;
+                          this.previewModel[analisisKey] = parsed; // optional, but keeps consistency
+                          
+                          if (analisisKey === 'ingresos_array_analisis') this.gridRowsMap['ingresos_analisis'] = parsed;
+                          if (analisisKey === 'deudas_array_analisis') this.gridRowsMap['deudas_analisis'] = parsed;
+                        }
                     } catch(e) {}
                   }
                 }

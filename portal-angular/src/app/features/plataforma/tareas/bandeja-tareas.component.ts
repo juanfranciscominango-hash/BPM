@@ -209,6 +209,14 @@ import { AuthService } from '../../../core/services/auth.service';
                          [placeholder]="field.defaultValue || ''"
                          class="form-control shadow-none">
                          
+                  <!-- TEXTAREA -->
+                  <textarea *ngIf="field.controlType === 'TEXTAREA'" 
+                            [formControlName]="field.name" 
+                            [readonly]="field.readOnly"
+                            [placeholder]="field.defaultValue || ''"
+                            rows="3"
+                            class="form-control shadow-none"></textarea>
+                         
                   <!-- NUMBER -->
                   <div *ngIf="field.controlType === 'NUMBER'" class="input-group">
                     <input type="number" 

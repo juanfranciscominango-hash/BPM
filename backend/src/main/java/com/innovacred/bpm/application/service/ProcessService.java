@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import org.springframework.jdbc.core.JdbcTemplate;
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -37,6 +40,7 @@ public class ProcessService {
     private final ProcessDefinitionRepository processDefinitionRepository;
     private final TableGeneratorService tableGeneratorService;
     private final MetaService metaService;
+    private final JdbcTemplate jdbcTemplate;
 
     @Transactional
     public ProcessDefinition deploy(Long id) {
@@ -91,6 +95,30 @@ public class ProcessService {
         // 2. Persistencia en tabla de negocio (si aplica)
         final var finalInstance = instance;
         procDefOpt.ifPresent(procDef -> {
+            try {
+                // Obtener descripción de la paramétrica Parametros generales
+                String sql = "SELECT p.descripcion FROM pr_paranmetros_generales p " +
+                             "JOIN pr_flujo f ON p.flujo = f.id " +
+                             "WHERE f.descripcion = ?";
+                List<String> descripciones = jdbcTemplate.queryForList(sql, String.class, procDef.getName());
+                
+                String caseName = null;
+                if (!descripciones.isEmpty() && descripciones.get(0) != null) {
+                    String prefix = descripciones.get(0);
+                    String dateSuffix = new SimpleDateFormat("ddMMyy HHmm").format(new Date());
+                    caseName = prefix + " " + dateSuffix;
+                } else {
+                    // Fallback
+                    String dateSuffix = new SimpleDateFormat("ddMMyy HHmm").format(new Date());
+                    caseName = "CASO " + dateSuffix;
+                }
+                
+                runtimeService.setProcessInstanceName(finalInstance.getId(), caseName);
+                log.info("Process instance name set to: {}", caseName);
+            } catch (Exception ex) {
+                log.warn("Could not set process instance name from parametrics: {}", ex.getMessage());
+            }
+
             if (procDef.getMetaEntityId() != null) {
                 var entity = metaService.listarEntidades().stream()
                         .filter(e -> e.getId().equals(procDef.getMetaEntityId()))

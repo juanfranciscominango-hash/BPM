@@ -1,0 +1,29 @@
+/* Custom highlight styles for BPMN nodes */
+
+::ng-deep .highlight-completed .djs-visual > :nth-child(1) {
+  fill: #e8f5e9 !important; /* light green background */
+  stroke: #4caf50 !important; /* green border */
+  stroke-width: 2px !important;
+}
+
+::ng-deep .highlight-active .djs-visual > :nth-child(1) {
+  fill: #fff3e0 !important; /* light orange/yellow background */
+  stroke: #ff9800 !important; /* orange border */
+  stroke-width: 3px !important;
+  animation: pulse-orange 2s infinite;
+}
+
+@keyframes pulse-orange {
+  0% {
+    stroke-width: 2px;
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-width: 4px;
+    stroke-opacity: 0.5;
+  }
+  100% {
+    stroke-width: 2px;
+    stroke-opacity: 1;
+  }
+}

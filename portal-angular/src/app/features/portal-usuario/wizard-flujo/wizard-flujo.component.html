@@ -1,14 +1,11 @@
-<div class="container-fluid py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 fw-bold text-dark mb-0"><i class="bi bi-diagram-3-fill text-primary me-2"></i>Asistente de Solicitud</h2>
-  </div>
+<div class="container-fluid py-2">
+
   
-  <div class="card border-0 shadow-sm rounded-4 mb-4" *ngIf="currentTask">
-    <div class="card-body p-4 bg-light rounded-4">
+  <div class="card border-0 shadow-sm rounded-4 mb-3" *ngIf="currentTask">
+    <div class="card-body p-3 bg-light rounded-4">
       <div class="row align-items-center">
         <div class="col-md-8">
-          <h5 class="fw-bold text-primary mb-1">{{ currentTask.name }}</h5>
-          <p class="text-muted small mb-0">Instancia: {{ currentTask.processInstanceId }} | Asignado a: {{ currentTask.assignee || 'Ti' }}</p>
+          <h5 class="fw-bold text-primary mb-0">{{ currentTask.name }}</h5>
         </div>
         <div class="col-md-4 text-end">
           <span class="badge bg-primary text-white py-2 px-3 shadow-sm rounded-pill">
@@ -61,8 +58,10 @@
 
             <!-- CONTENEDOR PRINCIPAL CON BORDE -->
             <div class="bg-white p-2">
-              <div *ngIf="layout.tabs.length > 0 && layout.tabs[previewTabIdx]">
-                <ng-container *ngFor="let section of layout.tabs[previewTabIdx].sections; let si = index">                  <div *ngIf="previewVisible(section)" class="mb-4 rounded-3" 
+              <ng-container *ngIf="layout.tabs.length > 0">
+                <ng-container *ngFor="let tab of layout.tabs; let tabIdx = index">
+                  <div [class.d-none]="previewTabIdx !== tabIdx">
+                    <ng-container *ngFor="let section of tab.sections; let si = index">                  <div *ngIf="previewVisible(section)" class="mb-4 rounded-3" 
                        [ngClass]="(!section.containerType || section.containerType === 'GROUP') ? 'border border-light-subtle overflow-hidden shadow-sm bg-white' : ''">
 
                   <!-- CABECERA DE SECCION (ACORDEON) -->
@@ -105,6 +104,13 @@
                                        [(ngModel)]="previewModel[field.name]"
                                        class="form-control form-control-sm rounded-1"
                                        [style.border-left]="field.required ? '3px solid #dc3545' : ''">
+
+                                <!-- TEXTAREA -->
+                                <textarea *ngIf="field.controlType === 'TEXTAREA'"
+                                          [(ngModel)]="previewModel[field.name]"
+                                          class="form-control form-control-sm rounded-1"
+                                          rows="3"
+                                          [style.border-left]="field.required ? '3px solid #dc3545' : ''"></textarea>
 
                                 <!-- NUMBER -->
                                 <input *ngIf="field.controlType === 'NUMBER'"
@@ -190,7 +196,7 @@
                           </div>
                           <!-- SIMULADOR (Custom Component) -->
                           <div *ngIf="field.controlType === 'SIMULADOR'" class="w-100">
-                            <innova-simulacion [initialData]="taskVariables"></innova-simulacion>
+                            <innova-simulacion [initialData]="taskVariables" (simulacionDataChange)="onSimulacionDataChange($event)"></innova-simulacion>
                           </div>
                           
                           <!-- RESUMEN_CASO (Custom Component) -->
@@ -287,8 +293,10 @@
                     </div>
                   </div>
                   </div>
+                    </ng-container>
+                  </div>
                 </ng-container>
-              </div>
+              </ng-container>
 
               <!-- SIN DISEÑO -->
               <div *ngIf="layout.tabs.length === 0" class="text-center py-5 text-muted">

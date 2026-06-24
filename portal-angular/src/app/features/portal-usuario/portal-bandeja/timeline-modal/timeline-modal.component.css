@@ -1,0 +1,65 @@
+.timeline-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* The central vertical line */
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: #e9ecef; /* light grey line */
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  min-height: 70px;
+}
+
+/* Left and right sections take up equal space */
+.timeline-left,
+.timeline-right {
+  width: 50%;
+  position: relative;
+}
+
+/* Center icon takes a fixed small space over the line */
+.timeline-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.timeline-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border: 2px solid #e9ecef;
+  font-size: 1.2rem;
+}
+
+.timeline-card {
+  background: #f8f9fa; /* very light grey matching the image */
+  border-radius: 8px;
+  padding: 12px 20px;
+  margin: 0 40px; /* space away from the center line */
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.avatar {
+  background-color: #e9ecef;
+  color: #6c757d;
+  font-size: 0.9rem;
+}

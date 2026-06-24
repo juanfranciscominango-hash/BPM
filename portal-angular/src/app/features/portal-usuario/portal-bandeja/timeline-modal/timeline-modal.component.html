@@ -1,0 +1,100 @@
+<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content border-0 shadow">
+    <div class="modal-header bg-white border-bottom-0 pb-0">
+      <h5 class="modal-title text-secondary fw-bold fs-4">
+        Línea de tiempo
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body bg-white pt-2 pb-5" style="min-height: 60vh;">
+      
+      <!-- Loading spinner -->
+      <div *ngIf="loading" class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+
+      <!-- Error message -->
+      <div *ngIf="error" class="text-center mt-5">
+        <h5 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Error</h5>
+        <p class="text-muted">{{ error }}</p>
+      </div>
+
+      <!-- Timeline Container -->
+      <div class="timeline-container mt-4" *ngIf="!loading && !error && timelineItems.length > 0">
+        
+        <div class="timeline-item" *ngFor="let item of timelineItems; let i = index">
+          
+          <!-- LEFT SIDE: Data for Even index, Date for Odd index -->
+          <!-- LEFT SIDE: Data for Even index, Date for Odd index -->
+          <div class="timeline-left">
+            <ng-container *ngIf="i % 2 === 0">
+              <!-- Content -->
+              <div class="timeline-card shadow-sm d-flex flex-column justify-content-center">
+                <div class="d-flex align-items-center mb-1">
+                  <div class="avatar me-3 text-dark fw-bold bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    {{ getInitials(item.assignee || 'Sistema') }}
+                  </div>
+                  <div class="text-dark fw-bold fs-6 text-truncate" [title]="item.name">
+                    {{ item.name }}
+                  </div>
+                </div>
+                <div class="text-muted small ms-5 ps-1">
+                  <i class="bi bi-person me-1"></i> {{ item.assignee || 'Sin Asignar' }}
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="i % 2 !== 0">
+              <!-- Date -->
+              <div class="timeline-date text-end text-muted small pe-4 d-flex flex-column justify-content-center h-100">
+                <div class="fw-bold text-dark">{{ item.startTime | date:'MMM dd yyyy' }}</div>
+                <div style="font-size: 0.8rem;">{{ item.startTime | date:'HH:mm:ss' }}</div>
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- CENTER ICON -->
+          <div class="timeline-center">
+            <div class="timeline-icon bg-light text-secondary rounded-circle border d-flex align-items-center justify-content-center shadow-sm">
+              <i class="bi" [ngClass]="item.state === 'COMPLETED' ? 'bi-check2-circle text-success' : 'bi-clock-history text-warning'"></i>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE: Date for Even index, Data for Odd index -->
+          <div class="timeline-right">
+            <ng-container *ngIf="i % 2 === 0">
+              <!-- Date -->
+              <div class="timeline-date text-start text-muted small ps-4 d-flex flex-column justify-content-center h-100">
+                <div class="fw-bold text-dark">{{ item.startTime | date:'MMM dd yyyy' }}</div>
+                <div style="font-size: 0.8rem;">{{ item.startTime | date:'HH:mm:ss' }}</div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="i % 2 !== 0">
+              <!-- Content -->
+              <div class="timeline-card shadow-sm d-flex flex-column justify-content-center">
+                <div class="d-flex align-items-center mb-1">
+                  <div class="avatar me-3 text-dark fw-bold bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    {{ getInitials(item.assignee || 'Sistema') }}
+                  </div>
+                  <div class="text-dark fw-bold fs-6 text-truncate" [title]="item.name">
+                    {{ item.name }}
+                  </div>
+                </div>
+                <div class="text-muted small ms-5 ps-1">
+                  <i class="bi bi-person me-1"></i> {{ item.assignee || 'Sin Asignar' }}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="!loading && !error && timelineItems.length === 0" class="text-center mt-5 text-muted">
+        No hay datos históricos para esta instancia.
+      </div>
+    </div>
+  </div>
+</div>

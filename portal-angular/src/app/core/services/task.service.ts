@@ -10,6 +10,9 @@ export interface UserTask {
   processInstanceId: string;
   processDefinitionId: string;
   taskDefinitionKey: string;
+  processName?: string;
+  identificacion?: string;
+  nombreCompleto?: string;
 }
 
 @Injectable({

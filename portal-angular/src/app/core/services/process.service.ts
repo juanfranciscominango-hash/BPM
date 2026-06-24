@@ -16,6 +16,28 @@ export interface ProcessDefinition {
   lastUpdated?: string;
 }
 
+export interface TimelineItem {
+  id: string;
+  name: string;
+  assignee: string;
+  startTime: string;
+  endTime: string;
+  state: string; // 'ACTIVE' | 'COMPLETED'
+}
+
+export interface TrackingItem {
+  id: string;
+  name: string;
+  assignee: string;
+  startTime: string;
+  endTime: string;
+  claimTime: string;
+  state: string;
+  respuesta: string;
+  observaciones: string;
+  situacion: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -45,5 +67,25 @@ export class ProcessService {
 
   startInstance(key: string, variables: any = {}): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${key}/start`, variables);
+  }
+
+  deleteInstance(instanceId: string, reason: string = 'Cancelled by user'): Observable<void> {
+    return this.http.delete<void>(`/api/v1/instances/${instanceId}?reason=${encodeURIComponent(reason)}`);
+  }
+
+  getActiveActivities(instanceId: string): Observable<string[]> {
+    return this.http.get<string[]>(`/api/v1/instances/${instanceId}/active-activities`);
+  }
+
+  getHistoryActivities(instanceId: string): Observable<string[]> {
+    return this.http.get<string[]>(`/api/v1/instances/${instanceId}/history-activities`);
+  }
+
+  getTimeline(instanceId: string): Observable<TimelineItem[]> {
+    return this.http.get<TimelineItem[]>(`/api/v1/instances/${instanceId}/timeline`);
+  }
+
+  getTracking(instanceId: string): Observable<TrackingItem[]> {
+    return this.http.get<TrackingItem[]>(`/api/v1/instances/${instanceId}/tracking`);
   }
 }

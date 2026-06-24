@@ -1,0 +1,96 @@
+<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content border-0 shadow">
+    <div class="modal-header bg-light border-bottom">
+      <h5 class="modal-title text-secondary fw-bold fs-5">
+        <i class="bi bi-diagram-2 me-2"></i> Tracking de Actividades
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body bg-white p-0" style="min-height: 60vh;">
+      
+      <!-- Loading spinner -->
+      <div *ngIf="loading" class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+
+      <!-- Error message -->
+      <div *ngIf="error" class="text-center mt-5">
+        <h5 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Error</h5>
+        <p class="text-muted">{{ error }}</p>
+      </div>
+
+      <!-- Tracking DataGrid -->
+      <div class="table-responsive" *ngIf="!loading && !error && trackingItems.length > 0">
+        <table class="table table-hover align-middle mb-0 tracking-table">
+          <thead class="table-light text-muted small">
+            <tr>
+              <th scope="col" style="width: 40px;"></th>
+              <th scope="col" style="width: 40px;"></th>
+              <th scope="col">Actividad</th>
+              <th scope="col">Usuario</th>
+              <th scope="col">Fecha fin</th>
+              <th scope="col">Respuesta</th>
+              <th scope="col">Observaciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of trackingItems">
+              
+              <!-- Main Row -->
+              <tr class="cursor-pointer" (click)="toggleRow(item.id)" [ngClass]="{'bg-light': expandedRow === item.id}">
+                <td class="text-center text-muted">
+                  <i class="bi fs-6" [ngClass]="expandedRow === item.id ? 'bi-caret-down-fill' : 'bi-caret-right-fill'"></i>
+                </td>
+                <td class="text-center">
+                  <i class="bi fs-5" [ngClass]="item.state === 'COMPLETED' ? 'bi-check-circle-fill text-secondary' : 'bi-circle text-secondary'"></i>
+                </td>
+                <td class="text-dark small fw-medium">{{ item.name }}</td>
+                <td class="text-secondary small">{{ item.assignee || 'Sin Asignar' }}</td>
+                <td class="text-secondary small">{{ (item.endTime | date:'dd/MM/yyyy HH:mm:ss') || '-' }}</td>
+                <td class="text-secondary small">{{ item.respuesta || '-' }}</td>
+                <td class="text-secondary small text-truncate" style="max-width: 200px;" [title]="item.observaciones || ''">{{ item.observaciones || '-' }}</td>
+              </tr>
+
+              <!-- Expanded Row (Datos actividad) -->
+              <tr *ngIf="expandedRow === item.id" class="expanded-row bg-light">
+                <td colspan="7" class="p-0 border-bottom-0">
+                  <div class="px-5 py-4 border-start border-3 border-primary bg-white shadow-sm mx-3 my-2 rounded">
+                    <h6 class="text-primary fw-bold mb-3 border-bottom pb-2" style="font-size: 0.85rem;">Datos actividad</h6>
+                    
+                    <div class="row gx-5 gy-3">
+                      <div class="col-md-3">
+                        <div class="text-muted fw-bold mb-1" style="font-size: 0.75rem;">Fecha inicio</div>
+                        <div class="text-dark small">{{ (item.startTime | date:'dd/MM/yyyy HH:mm:ss') || '-' }}</div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="text-muted fw-bold mb-1" style="font-size: 0.75rem;">Fecha asignación</div>
+                        <div class="text-dark small">{{ (item.claimTime | date:'dd/MM/yyyy HH:mm:ss') || '-' }}</div>
+                      </div>
+                      <div class="col-md-6"></div> <!-- Espaciador -->
+                      
+                      <div class="col-md-3">
+                        <div class="text-muted fw-bold mb-1" style="font-size: 0.75rem;">Estado</div>
+                        <div class="text-dark small">{{ item.state }}</div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="text-muted fw-bold mb-1" style="font-size: 0.75rem;">Situación</div>
+                        <div class="text-dark small">{{ item.situacion }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="!loading && !error && trackingItems.length === 0" class="text-center mt-5 text-muted">
+        No hay datos de tracking para esta instancia.
+      </div>
+    </div>
+  </div>
+</div>

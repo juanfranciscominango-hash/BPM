@@ -122,6 +122,13 @@
                                        class="form-control form-control-sm rounded-1"
                                        [style.border-left]="field.required ? '3px solid #dc3545' : ''">
 
+                                <!-- TEXTAREA -->
+                                <textarea *ngIf="field.controlType === 'TEXTAREA'"
+                                          [(ngModel)]="previewModel[field.name]"
+                                          class="form-control form-control-sm rounded-1"
+                                          rows="3"
+                                          [style.border-left]="field.required ? '3px solid #dc3545' : ''"></textarea>
+
                                 <!-- NUMBER -->
                                 <input *ngIf="field.controlType === 'NUMBER'"
                                        type="number"

@@ -277,6 +277,12 @@ import { catchError, of } from 'rxjs';
                     </button>
                   </div>
                   <div class="col-6">
+                    <button class="btn btn-outline-secondary btn-control w-100 py-2 d-flex flex-column align-items-center" (click)="addGenericControl('TEXTAREA')">
+                      <i class="bi bi-textarea-t fs-5 mb-1 text-primary"></i>
+                      <span class="lbl-ctrl">Texto Extenso</span>
+                    </button>
+                  </div>
+                  <div class="col-6">
                     <button class="btn btn-outline-secondary btn-control w-100 py-2 d-flex flex-column align-items-center" (click)="addGenericControl('NUMBER')">
                       <i class="bi bi-hash fs-5 mb-1 text-info"></i>
                       <span class="lbl-ctrl">Número</span>
@@ -518,7 +524,7 @@ import { catchError, of } from 'rxjs';
 
         <!-- PANEL CENTRAL: LIENZO DE DISEÃ‘O / PREVISUALIZACION -->
         <div [ngClass]="(activeField || activeSection) ? 'col-xxl-7 col-xl-6 col-lg-7' : 'col-xxl-10 col-xl-9 col-lg-10'">
-          <div class="card border-0 shadow-sm min-vh-75 card-premium overflow-hidden">
+          <div class="card border-0 shadow-sm card-premium overflow-hidden">
             <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
               <span class="fw-bold text-indigo d-flex align-items-center gap-2">
                 <i class="bi bi-display"></i>Lienzo de Diseño Interactivo
@@ -538,7 +544,7 @@ import { catchError, of } from 'rxjs';
                   <a class="nav-link d-flex align-items-center gap-2 cursor-pointer py-2 px-3"
 
                     [class.active]="activeTabIdx === tIdx" 
-                    (click)="activeTabIdx = tIdx" href="javascript:void(0)">
+                    (click)="selectTab(tab, tIdx, $event)" href="javascript:void(0)">
                     <input type="text" class="border-0 bg-transparent fw-bold shadow-none text-indigo font-small-tab" 
                       [(ngModel)]="tab.title" (input)="0" style="width: 110px;">
                     <i class="bi bi-x-circle text-danger cursor-pointer tab-close-btn" (click)="removeTab(tIdx); $event.stopPropagation();"></i>
@@ -648,6 +654,11 @@ import { catchError, of } from 'rxjs';
                                 <!-- TEXTBOX -->
                                 <div *ngIf="field.controlType === 'TEXTBOX'" class="input-group input-group-sm">
                                   <input type="text" class="form-control form-control-sm bg-light text-muted" [placeholder]="field.defaultValue || 'abc...'" disabled>
+                                </div>
+
+                                <!-- TEXTAREA -->
+                                <div *ngIf="field.controlType === 'TEXTAREA'" class="input-group input-group-sm">
+                                  <textarea class="form-control form-control-sm bg-light text-muted" placeholder="Texto extenso..." disabled rows="2"></textarea>
                                 </div>
 
                                 <!-- NUMBER -->
@@ -805,17 +816,17 @@ import { catchError, of } from 'rxjs';
         <div class="col-xxl-3 col-xl-3 col-lg-3">
           
           <!-- ESTADO VACIO -->
-          <div *ngIf="!activeField && !activeSection" class="card border-0 shadow-sm card-premium h-100 d-flex flex-column align-items-center justify-content-center text-muted p-4">
+          <div *ngIf="!activeField && !activeSection && !activeTabObj" class="card border-0 shadow-sm card-premium h-100 d-flex flex-column align-items-center justify-content-center text-muted p-4">
             <i class="bi bi-hand-index-thumb fs-1 mb-3 text-primary" style="opacity: 0.5;"></i>
             <h6 class="fw-bold">Selecciona un Elemento</h6>
-            <p class="small text-center mb-0">Haz clic sobre un campo o secci&oacute;n en el lienzo para ver y editar sus propiedades.</p>
+            <p class="small text-center mb-0">Haz clic sobre un campo, secci&oacute;n o pesta&ntilde;a en el lienzo para ver y editar sus propiedades.</p>
           </div>
 
           <!-- PROPIEDADES CAMPO -->
           <div class="card border-0 shadow-sm card-premium h-100" *ngIf="activeField && draftField">
           <div class="card-header bg-white text-dark shadow-xs py-3 border-0">
-            <h5 class="offcanvas-title fw-bold d-flex align-items-center gap-2 mb-0" style="font-size: 1rem;"><i class="bi bi-sliders"></i>Propiedades</h5>
-            <button type="button" class="btn-close" (click)="activeField = null" aria-label="Close"></button>
+            <h5 class="offcanvas-title fw-bold d-flex align-items-center gap-2 mb-0" style="font-size: 1rem;"><i class="bi bi-sliders"></i>Propiedades Campo</h5>
+            <button type="button" class="btn-close" (click)="cancelarPropiedades()" aria-label="Close"></button>
           </div>
           <div class="card-body p-0 d-flex flex-column" style="background-color: #f8fafc;">
             <div class="card-body p-2 flex-grow-1 overflow-auto">
@@ -845,6 +856,7 @@ import { catchError, of } from 'rxjs';
                         <label class="form-label small fw-bold mb-1">Tipo de Control</label>
                         <select class="form-select form-select-sm shadow-none custom-select" [(ngModel)]="draftField.controlType">
                           <option value="TEXTBOX">Caja de Texto</option>
+                          <option value="TEXTAREA">Texto Extenso</option>
                           <option value="NUMBER">Número</option>
                           <option value="MONEY">Dinero</option>
                           <option value="COMBO">Lista Desplegable (Combo)</option>
@@ -1183,7 +1195,7 @@ import { catchError, of } from 'rxjs';
           <!-- PROPIEDADES SECCION -->
           <div class="card border-0 shadow-sm card-premium h-100 d-flex flex-column" *ngIf="activeSection && draftSection">
             <div class="card-header bg-white text-dark shadow-xs py-3 border-0">
-              <h5 class="offcanvas-title fw-bold d-flex align-items-center gap-2 mb-0" style="font-size: 1rem;"><i class="bi bi-layout-split"></i>Sección</h5>
+              <h5 class="offcanvas-title fw-bold d-flex align-items-center gap-2 mb-0" style="font-size: 1rem;"><i class="bi bi-layout-split"></i>Propiedades Sección</h5>
               <button type="button" class="btn-close" (click)="cancelarPropiedades()" aria-label="Close"></button>
             </div>
             <div class="card-body p-0 d-flex flex-column" style="background-color: #f8fafc;">
@@ -1220,6 +1232,78 @@ import { catchError, of } from 'rxjs';
                           <label class="form-label small fw-bold mb-1">Mostrar solo si (Opcional)</label>
                           <input type="text" class="form-control form-control-sm shadow-none custom-input font-monospace text-primary" placeholder="ej: requiere_codeudor === true" [(ngModel)]="draftSection.visibleIf">
                           <div class="form-text text-muted" style="font-size: 0.65rem;">Expresión lógica en JavaScript basada en las variables del modelo. Si se deja vacío, siempre se mostrará.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PIE DE PROPIEDADES -->
+              <div class="card-footer bg-white border-top border-primary-subtle py-3 px-4 d-flex gap-2">
+                <button class="btn btn-outline-secondary w-50 fw-bold shadow-sm" (click)="cancelarPropiedades()">
+                  <i class="bi bi-x-circle me-1"></i>Cancelar
+                </button>
+                <button class="btn btn-primary-premium w-50 fw-bold shadow-sm" (click)="guardarPropiedades()">
+                  <i class="bi bi-save me-1"></i>Guardar
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- PROPIEDADES PESTAÑA -->
+          <div class="card border-0 shadow-sm card-premium h-100 d-flex flex-column" *ngIf="activeTabObj && draftTab">
+            <div class="card-header bg-white text-dark shadow-xs py-3 border-0">
+              <h5 class="offcanvas-title fw-bold d-flex align-items-center gap-2 mb-0" style="font-size: 1rem;"><i class="bi bi-folder-fill"></i>Propiedades Pestaña</h5>
+              <button type="button" class="btn-close" (click)="cancelarPropiedades()" aria-label="Close"></button>
+            </div>
+            <div class="card-body p-0 d-flex flex-column" style="background-color: #f8fafc;">
+              <div class="card-body p-2 flex-grow-1 overflow-auto">
+                <div class="accordion" id="propiedadesTabAccordion">
+                  
+                  <!-- GENERAL -->
+                  <div class="accordion-item border-0 mb-2 shadow-xs bg-transparent">
+                    <h2 class="accordion-header" id="headingTabGeneral">
+                      <button class="accordion-button rounded-3 py-2 px-3 fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTabGeneral" aria-expanded="true" aria-controls="collapseTabGeneral">
+                        <i class="bi bi-info-circle text-primary me-2"></i>General
+                      </button>
+                    </h2>
+                    <div id="collapseTabGeneral" class="accordion-collapse collapse show" aria-labelledby="headingTabGeneral" data-bs-parent="#propiedadesTabAccordion">
+                      <div class="accordion-body bg-white border border-top-0 rounded-bottom-3 p-3">
+                        <div class="mb-3">
+                          <label class="form-label small fw-bold mb-1">Título de la Pestaña</label>
+                          <input type="text" class="form-control form-control-sm shadow-none custom-input" [(ngModel)]="draftTab.title">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- REGLAS DE VISUALIZACIÓN / EDICIÓN -->
+                  <div class="accordion-item border-0 shadow-xs bg-transparent">
+                    <h2 class="accordion-header" id="headingTabReglas">
+                      <button class="accordion-button collapsed rounded-3 py-2 px-3 fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTabReglas" aria-expanded="false" aria-controls="collapseTabReglas">
+                        <i class="bi bi-sliders text-warning me-2"></i>Reglas de Estado
+                      </button>
+                    </h2>
+                    <div id="collapseTabReglas" class="accordion-collapse collapse" aria-labelledby="headingTabReglas" data-bs-parent="#propiedadesTabAccordion">
+                      <div class="accordion-body bg-white border border-top-0 rounded-bottom-3 p-3">
+                        <div class="mb-3">
+                          <label class="form-label small fw-bold mb-1">Visibilidad de la Pestaña</label>
+                          <select class="form-select form-select-sm shadow-none custom-input mb-1" [(ngModel)]="draftTab.visibility">
+                            <option [ngValue]="undefined">Visible (Por Defecto)</option>
+                            <option value="hidden">Oculto</option>
+                            <option value="expression">Por Expresión...</option>
+                          </select>
+                          <input *ngIf="draftTab.visibility === 'expression'" type="text" class="form-control form-control-sm font-monospace text-primary custom-input" [(ngModel)]="draftTab.visibilityCondition" placeholder="Ej: estado === 'APROBADO'">
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label small fw-bold mb-1">Modo Edición</label>
+                          <select class="form-select form-select-sm shadow-none custom-input mb-1" [(ngModel)]="draftTab.editability">
+                            <option [ngValue]="undefined">Editable (Por Defecto)</option>
+                            <option value="readonly">Solo Lectura</option>
+                            <option value="expression">Por Expresión...</option>
+                          </select>
+                          <input *ngIf="draftTab.editability === 'expression'" type="text" class="form-control form-control-sm font-monospace text-success custom-input" [(ngModel)]="draftTab.editabilityCondition" placeholder="Ej: rol === 'ADMIN'">
                         </div>
                       </div>
                     </div>
@@ -1340,6 +1424,16 @@ import { catchError, of } from 'rxjs';
                                    class="form-control shadow-none"
                                    [class.border-danger]="field.required && !previewModel[field.name]"
                                    style="border-radius:10px;">
+
+                            <!-- TEXTAREA -->
+                            <textarea *ngIf="field.controlType === 'TEXTAREA'"
+                                      [(ngModel)]="previewModel[field.name]"
+                                      [disabled]="isFieldDisabled(field)"
+                                      [placeholder]="field.defaultValue || 'Ingresa ' + field.label"
+                                      class="form-control shadow-none"
+                                      rows="3"
+                                      [class.border-danger]="field.required && !previewModel[field.name]"
+                                      style="border-radius:10px;"></textarea>
 
                             <!-- NUMBER -->
                             <div *ngIf="field.controlType === 'NUMBER'" class="input-group">
@@ -2056,6 +2150,8 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
   draftField: any = null;
   activeSection: any = null;
   draftSection: any = null;
+  activeTabObj: any = null;
+  draftTab: any = null;
 
   // --- PREVIEW / SIMULATION VARIABLES ---
   mostrarPreview = false;
@@ -2555,7 +2651,9 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
         }
       });
     });
-    this.parametricService.getTables().pipe(catchError(() => of([]))).subscribe(data => this.parametricTables = data);
+    this.parametricService.getTables().pipe(catchError(() => of([]))).subscribe(data => {
+      this.parametricTables = data;
+    });
   }
 
   ngOnDestroy() {
@@ -2798,6 +2896,8 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
     this.layout.tabs.splice(idx, 1);
     this.activeTabIdx = 0;
     this.activeField = null;
+    this.activeTabObj = null;
+    this.draftTab = null;
   }
 
   addSection() {
@@ -2808,6 +2908,8 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
   removeSection(idx: number) {
     this.layout.tabs[this.activeTabIdx].sections.splice(idx, 1);
     this.activeField = null;
+    this.activeSection = null;
+    this.draftSection = null;
   }
 
   cancelarPropiedades() {
@@ -2815,6 +2917,8 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
     this.draftField = null;
     this.activeSection = null;
     this.draftSection = null;
+    this.activeTabObj = null;
+    this.draftTab = null;
   }
 
   addFieldToLayout(attr: MetaAttribute) {
@@ -3065,6 +3169,8 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
   selectField(field: any) {
     this.activeSection = null;
     this.draftSection = null;
+    this.activeTabObj = null;
+    this.draftTab = null;
     this.activeField = field;
     this.draftField = JSON.parse(JSON.stringify(field));
   }
@@ -3073,10 +3179,22 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
     if (event) event.stopPropagation();
     this.activeField = null;
     this.draftField = null;
+    this.activeTabObj = null;
+    this.draftTab = null;
     this.activeSection = section;
     this.draftSection = JSON.parse(JSON.stringify(section));
   }
 
+  selectTab(tab: any, tIdx: number, event: Event) {
+    if (event) event.stopPropagation();
+    this.activeTabIdx = tIdx;
+    this.activeField = null;
+    this.draftField = null;
+    this.activeSection = null;
+    this.draftSection = null;
+    this.activeTabObj = tab;
+    this.draftTab = JSON.parse(JSON.stringify(tab));
+  }
 
   guardarPropiedades() {
     try {

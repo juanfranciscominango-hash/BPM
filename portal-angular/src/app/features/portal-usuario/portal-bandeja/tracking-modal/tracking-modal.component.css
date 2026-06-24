@@ -1,0 +1,23 @@
+.tracking-table th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.tracking-table td {
+  padding: 12px 8px;
+}
+
+.expanded-row td {
+  padding: 0 !important;
+  background-color: #f8f9fa;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  background-color: #f1f3f5 !important;
+}

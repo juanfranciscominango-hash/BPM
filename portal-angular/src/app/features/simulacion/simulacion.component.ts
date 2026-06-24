@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -40,6 +40,8 @@ export class SimulacionComponent implements OnInit {
     return this._initialData;
   }
   
+  @Output() simulacionDataChange = new EventEmitter<any>();
+  
   private http = inject(HttpClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -80,6 +82,7 @@ export class SimulacionComponent implements OnInit {
         if (res && res.interviniente_int_nombres_completos) {
           const updates: any = { nombres: res.interviniente_int_nombres_completos.trim() };
           if (estadoCivilMapped) updates.estadoCivil = estadoCivilMapped;
+          if (res.direccion_domicilio) updates.direccion = res.direccion_domicilio.trim();
           console.log("=== PATCHING ROOT ===", updates);
           this.simulacionForm.patchValue(updates);
           if (estadoCivilMapped) {
@@ -89,6 +92,7 @@ export class SimulacionComponent implements OnInit {
         } else if (res && res.nombres_completos) {
           const updates: any = { nombres: res.nombres_completos.trim() };
           if (estadoCivilMapped) updates.estadoCivil = estadoCivilMapped;
+          if (res.direccion_domicilio) updates.direccion = res.direccion_domicilio.trim();
           console.log("=== PATCHING ROOT 2 ===", updates);
           this.simulacionForm.patchValue(updates);
           if (estadoCivilMapped) {
@@ -179,6 +183,7 @@ export class SimulacionComponent implements OnInit {
       // 01 Información del Solicitante
       identificacion: ['', Validators.required],
       nombres: [{ value: '', disabled: true }],
+      direccion: [{ value: '', disabled: true }],
       estadoCivil: ['', Validators.required],
       requiereCodeudor: [false],
 
@@ -245,6 +250,9 @@ export class SimulacionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.simulacionForm.valueChanges.subscribe(() => {
+      this.emitirDataActualizada();
+    });
     this.cargarTipos();
     if (this.initialData) {
       this.cargarDatosIniciales();
@@ -540,24 +548,16 @@ export class SimulacionComponent implements OnInit {
           promedioIngresosCodeudor: this.resultadosCalculados.promedioIngresosCodeudor,
           totalDeudas, dti: 0, din: 0, cin: 0, califica: false, calculado: true
         };
+        this.emitirDataActualizada();
       }
     });
+    // Llamar sincrónicamente por si falla la red, ya se emite con lo local
+    this.emitirDataActualizada();
   }
 
-  iniciarSolicitud() {
-    if (!this.resultadosCalculados.califica) return;
-    this.loading = true;
-    
-    // Obtenemos el valor raw para incluir campos deshabilitados (como nombres)
+  buildProcessVariables() {
     const formData = this.simulacionForm.getRawValue();
 
-    // El ID del proceso principal desplegado en el backend es Flujo_Credito_Completo. 
-    // formData.tipo tiene el valor "HIPOTECARIO", por lo que lo enviamos como variable del proceso.
-    const processKey = 'Flujo_Credito_Completo';
-    
-    // Le agregamos un campo explícito tipoCredito a las variables para tenerlo a mano
-    // Extraemos "ingresos" de formData para mantenerlo como arreglo con otro nombre si es necesario
-    // y evitar que rompa el FormArray al cargarse de nuevo.
     const { ingresos, deudas, ...restFormData } = formData;
 
     const tipoSeleccionado = this.tiposCredito.find(t => t.codigo == formData.tipo || t.id == formData.tipo);
@@ -571,11 +571,9 @@ export class SimulacionComponent implements OnInit {
 
     const processVariables = {
         ...restFormData,
-        // Mantener la estructura del simulador para que se recargue bien
         ingresos_array: ingresos,
         deudas_array: deudas,
         
-        // Mapeos para el backend y las otras pantallas del wizard
         tipoCredito: tipoMapped,
         tipo_credito: tipoMapped,
         producto_credito: productoId,
@@ -583,18 +581,16 @@ export class SimulacionComponent implements OnInit {
         plazo_meses: formData.plazo,
         tasa_interes: formData.tasa,
         cuota_estimada: Number(this.resultadosCalculados.cuotaMensual || 0).toFixed(2),
-        ingresos: this.resultadosCalculados.totalIngresos, // Número, usado por Condiciones de Crédito
+        ingresos: this.resultadosCalculados.totalIngresos,
         ingreso_bruto: this.resultadosCalculados.totalIngresos,
         interviniente_int_identificacion: formData.identificacion,
         interviniente_int_nombres_completos: formData.nombres,
         interviniente_int_estado_civil: formData.estadoCivil,
 
-        // Variables Adicionales para Revisión de Requisitos
         producto_desc: this.selectedProducto ? (this.selectedProducto.descripcion || this.selectedProducto.nombre || '') : '',
-        fecha_caso: new Date().toISOString().split('T')[0], // Fecha actual básica
+        fecha_caso: new Date().toISOString().split('T')[0],
         fecha_solicitud: new Date().toLocaleString(),
 
-        // Variables para los limites en Condiciones de Crédito
         monto_minimo: this.selectedProducto ? this.selectedProducto.pro_cre_monto_minimo : null,
         monto_maximo: this.selectedProducto ? this.selectedProducto.pro_cre_monto_maximo : null,
         plazo_minimo: this.selectedProducto ? this.selectedProducto.pro_cre_plazo_minimo : null,
@@ -602,10 +598,22 @@ export class SimulacionComponent implements OnInit {
         plazo_solicitado_1: formData.plazo,
         plazo_solicitado_2: formData.plazo
     };
+    return processVariables;
+  }
+
+  emitirDataActualizada() {
+      this.simulacionDataChange.emit(this.buildProcessVariables());
+  }
+
+  iniciarSolicitud() {
+    if (!this.resultadosCalculados.califica) return;
+    this.loading = true;
+    
+    const processVariables = this.buildProcessVariables();
 
     console.log('DEBUG - Variables enviadas a BPM:', processVariables);
 
-    this.processService.startInstance(processKey, processVariables).subscribe({
+    this.processService.startInstance('Flujo_Credito_Completo', processVariables).subscribe({
       next: () => {
         // Al iniciar la instancia correctamente, buscamos la tarea generada para enviarlo allá
         this.taskService.getTasks().subscribe({
