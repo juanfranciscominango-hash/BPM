@@ -1,0 +1,149 @@
+<div class="container-fluid p-4 premium-container min-vh-100">
+  <!-- TOP BANNER -->
+  <div class="d-flex justify-content-between align-items-center mb-4 p-4 rounded-4 shadow-lg text-white header-gradient">
+    <div>
+      <h2 class="h3 mb-1 fw-bold d-flex align-items-center gap-2">
+        <i class="bi bi-list-nested"></i>Diseñador de Menú
+      </h2>
+      <p class="mb-0 text-white-50 small">
+        Organiza, estructura y configura el menú lateral de la plataforma.
+      </p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-glass shadow-sm py-2 px-3" (click)="nuevoMenuPrincipal()">
+        <i class="bi bi-plus-lg me-1"></i>Nuevo Menú Principal
+      </button>
+      <button class="btn btn-glass shadow-sm py-2 px-3" (click)="nuevoSubmenu()">
+        <i class="bi bi-node-plus me-1"></i>Nuevo Submenú
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="notification" class="alert alert-{{ notification.type === 'error' ? 'danger' : 'success' }} shadow-sm rounded-3">
+    <i class="bi {{ notification.type === 'error' ? 'bi-exclamation-circle' : 'bi-check-circle' }} me-2"></i>
+    {{ notification.msg }}
+  </div>
+
+  <div class="row g-4">
+    <!-- ÁRBOL DEL MENÚ -->
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4">
+          <h5 class="fw-bold mb-0 text-dark">Estructura del Menú</h5>
+        </div>
+        <div class="card-body p-4">
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Cargando menú...</p>
+          </div>
+
+          <ng-template #recursiveMenu let-list let-parent="parent">
+            <ul class="list-unstyled mb-0 ms-3 tree-ul">
+              <li *ngFor="let m of list" class="my-1">
+                <div class="tree-item d-flex align-items-center p-2 rounded-3 transition-all"
+                     [class.active-node]="selectedNode?.id === m.id && m.id != null"
+                     (click)="selectNode(m, parent, $event)">
+                  <i class="bi bi-grip-vertical text-muted me-1 cursor-move" style="opacity:0.5;"></i>
+                  <i [class]="m.icon || 'bi bi-app'" class="me-2 fs-5 text-primary"></i>
+                  <span class="flex-grow-1 fw-medium" [class.text-muted]="!m.active">{{ m.title }}</span>
+                  <span *ngIf="!m.active" class="badge bg-secondary ms-2" style="font-size:0.6rem;">Oculto</span>
+                </div>
+                <!-- Hijos -->
+                <ng-container *ngIf="m.children && m.children.length > 0">
+                  <ng-container *ngTemplateOutlet="recursiveMenu; context: { $implicit: m.children, parent: m }"></ng-container>
+                </ng-container>
+              </li>
+            </ul>
+          </ng-template>
+
+          <div *ngIf="!loading && menus.length > 0" class="menu-tree">
+            <ng-container *ngTemplateOutlet="recursiveMenu; context: { $implicit: menus, parent: null }"></ng-container>
+          </div>
+          
+          <div *ngIf="!loading && menus.length === 0" class="text-center py-4 text-muted">
+            <i class="bi bi-list-nested fs-1 opacity-25"></i>
+            <p class="mt-2">No hay menús configurados.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORMULARIO DE DETALLES -->
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm rounded-4 h-100" *ngIf="selectedNode">
+        <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
+          <h5 class="fw-bold mb-0 text-dark">Propiedades del Menú</h5>
+          <div class="btn-group" *ngIf="selectedNode.id">
+            <button class="btn btn-outline-secondary btn-sm" (click)="mover('up')" title="Subir">
+              <i class="bi bi-arrow-up"></i>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" (click)="mover('down')" title="Bajar">
+              <i class="bi bi-arrow-down"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="mb-3">
+            <label class="form-label text-muted small fw-semibold">ID del Padre</label>
+            <input type="text" class="form-control form-control-sm bg-light" [value]="selectedParentNode?.title || 'Menú Principal (Raíz)'" readonly>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label fw-medium">Título del Menú</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedNode.title" placeholder="Ej: Reportes">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-medium">Ícono (Clase CSS)</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i [class]="selectedNode.icon || 'bi bi-app'"></i></span>
+                <input type="text" class="form-control" [(ngModel)]="selectedNode.icon" placeholder="bi bi-file-text">
+              </div>
+            </div>
+            
+            <div class="col-md-12">
+              <label class="form-label fw-medium">Ruta Angular (Route)</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedNode.route" placeholder="Ej: /plataforma/reportes">
+              <div class="form-text">Déjalo en blanco si es solo un contenedor de submenús.</div>
+            </div>
+
+            <div class="col-md-8">
+              <label class="form-label fw-medium">Permiso Requerido (Opcional)</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedNode.permissionCode" placeholder="Ej: ACCESO_REPORTES">
+              <div class="form-text">Si está en blanco, el menú será visible para todos los roles.</div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-medium">Ordenamiento</label>
+              <input type="number" class="form-control" [(ngModel)]="selectedNode.sortOrder">
+            </div>
+          </div>
+
+          <hr class="my-4 text-muted">
+
+          <div class="form-check form-switch mb-4">
+            <input class="form-check-input" type="checkbox" role="switch" id="activeSwitch" [(ngModel)]="selectedNode.active">
+            <label class="form-check-label fw-medium" for="activeSwitch">Activo (Visible en la barra)</label>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-end mt-2">
+            <button *ngIf="selectedNode.id" class="btn btn-outline-danger px-4 rounded-3 fw-medium" (click)="eliminar()">
+              <i class="bi bi-trash me-2"></i>Eliminar
+            </button>
+            <button class="btn btn-primary px-4 rounded-3 fw-medium shadow-sm" (click)="guardar()">
+              <i class="bi bi-save me-2"></i>Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm rounded-4 h-100 bg-light d-flex align-items-center justify-content-center text-muted" *ngIf="!selectedNode">
+        <div class="text-center p-5">
+          <i class="bi bi-list-nested fs-1 mb-3 d-block opacity-50"></i>
+          <h5>Selecciona un elemento</h5>
+          <p class="mb-0">Haz clic en un menú de la izquierda para ver sus detalles o crear uno nuevo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

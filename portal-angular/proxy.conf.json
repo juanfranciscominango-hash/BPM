@@ -1,0 +1,20 @@
+{
+  "/api/v1": {
+    "target": "http://localhost:9091",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/InnovaConsultingSeguridadCentralApi": {
+    "target": "https://172.20.41.169:8043",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/InnovaConsultingAccesoServiciosApi": {
+    "target": "https://172.20.41.169:8043",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

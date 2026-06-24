@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.premium-container {
+  background-color: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.header-gradient {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: white;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+}
+
+.tree-ul {
+  border-left: 1px dashed #e2e8f0;
+}
+
+.tree-item {
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #f1f5f9;
+  }
+}
+
+.active-node {
+  background-color: #e0e7ff !important;
+  border-left: 3px solid #4f46e5;
+}
+
+.cursor-move {
+  cursor: grab;
+}

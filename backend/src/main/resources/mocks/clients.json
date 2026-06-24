@@ -1,0 +1,844 @@
+[
+  {
+    "DocumentNumber": "1700000001",
+    "interviniente_int_nombres_completos": "ANDRES EDUARDO LOPEZ SORIANO",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+1@innovasoftconsulting.com",
+    "telefono": "0990000001",
+    "interviniente_int_estado_civil": "VIUDO",
+    "fecha_nacimiento": "15 DE ENERO DE 1995",
+    "primer_apellido": "LOPEZ",
+    "segundo_apellido": "SORIANO",
+    "primer_nombre": "ANDRES",
+    "segundo_nombre": "EDUARDO",
+    "edad": "31,25",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 45 Y TRANSVERSAL",
+    "genero": "METRO",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "VIUDO",
+    "subsegmento": "MILITAR PASIVO",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "ingresosMensuales": 1000,
+    "valorMaximoPrestamo": 15000,
+    "valorMaximoEndeudamiento": 400,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 1500,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 300,
+        "cupoTotal": 2000
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor uno"
+  },
+  {
+    "DocumentNumber": "1700000002",
+    "interviniente_int_nombres_completos": "PEDRO RAMON GONZALEZ DIAZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+2@innovasoftconsulting.com",
+    "telefono": "0990000002",
+    "interviniente_int_estado_civil": "DIVORCIADO",
+    "fecha_nacimiento": "15 DE ENERO DE 2000",
+    "primer_apellido": "GONZALEZ",
+    "segundo_apellido": "DIAZ",
+    "primer_nombre": "PEDRO",
+    "segundo_nombre": "RAMON",
+    "edad": "26,47",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 50 Y TRANSVERSAL",
+    "genero": "F",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "DIVORCIADO",
+    "subsegmento": "CIVIL",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "PRIMARIOS/BÁSICOS",
+    "lista_observados": false,
+    "ingresosMensuales": 1200,
+    "valorMaximoPrestamo": 16000,
+    "valorMaximoEndeudamiento": 450,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 1600,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 350,
+        "cupoTotal": 2100
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor dos"
+  },
+  {
+    "DocumentNumber": "1700000003",
+    "interviniente_int_nombres_completos": "JUAN ANTONIO SANCHEZ RUIZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+3@innovasoftconsulting.com",
+    "telefono": "0990000003",
+    "interviniente_int_estado_civil": "CASADO",
+    "fecha_nacimiento": "15 DE ENERO DE 1991",
+    "primer_apellido": "SANCHEZ",
+    "segundo_apellido": "RUIZ",
+    "primer_nombre": "JUAN",
+    "segundo_nombre": "ANTONIO",
+    "edad": "35,94",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 38 Y TRANSVERSAL",
+    "genero": "M",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "CASADO",
+    "subsegmento": "MILITAR PASIVO",
+    "tiene_conyuge_solicitante": true,
+    "nivel_estudios": "PRIMARIOS/BÁSICOS",
+    "lista_observados": false,
+    "ingresosMensuales": 1400,
+    "valorMaximoPrestamo": 17000,
+    "valorMaximoEndeudamiento": 500,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 1700,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 400,
+        "cupoTotal": 2200
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor tres"
+  },
+  {
+    "DocumentNumber": "1700000004",
+    "interviniente_int_nombres_completos": "CARLOS IGNACIO PEREZ HERNANDEZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+4@innovasoftconsulting.com",
+    "telefono": "0990000004",
+    "interviniente_int_estado_civil": "DIVORCIADO",
+    "fecha_nacimiento": "15 DE ENERO DE 2000",
+    "primer_apellido": "PEREZ",
+    "segundo_apellido": "HERNANDEZ",
+    "primer_nombre": "CARLOS",
+    "segundo_nombre": "IGNACIO",
+    "edad": "26,88",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 12 Y TRANSVERSAL",
+    "genero": "M",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "DIVORCIADO",
+    "subsegmento": "CIVIL",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "ingresosMensuales": 1600,
+    "valorMaximoPrestamo": 18000,
+    "valorMaximoEndeudamiento": 550,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 1800,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 450,
+        "cupoTotal": 2300
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor cuatro"
+  },
+  {
+    "DocumentNumber": "1700000005",
+    "interviniente_int_nombres_completos": "JOSE IGNACIO ROMERO SUAREZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+5@innovasoftconsulting.com",
+    "telefono": "0990000005",
+    "interviniente_int_estado_civil": "CASADO",
+    "fecha_nacimiento": "15 DE ENERO DE 1996",
+    "primer_apellido": "ROMERO",
+    "segundo_apellido": "SUAREZ",
+    "primer_nombre": "JOSE",
+    "segundo_nombre": "IGNACIO",
+    "edad": "30,75",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 77 Y TRANSVERSAL",
+    "genero": "F",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "CASADO",
+    "subsegmento": "CIVIL",
+    "tiene_conyuge_solicitante": true,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "ingresosMensuales": 1800,
+    "valorMaximoPrestamo": 19000,
+    "valorMaximoEndeudamiento": 600,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 1900,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 500,
+        "cupoTotal": 2400
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor cinco"
+  },
+  {
+    "DocumentNumber": "1700000006",
+    "interviniente_int_nombres_completos": "CARLOS IGNACIO RODRIGUEZ MOLINA",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+6@innovasoftconsulting.com",
+    "telefono": "0990000006",
+    "interviniente_int_estado_civil": "SOLTERO",
+    "fecha_nacimiento": "15 DE ENERO DE 1972",
+    "primer_apellido": "RODRIGUEZ",
+    "segundo_apellido": "MOLINA",
+    "primer_nombre": "CARLOS",
+    "segundo_nombre": "IGNACIO",
+    "edad": "54,64",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 60 Y TRANSVERSAL",
+    "genero": "M",
+    "nacionalidad": "COLOMBIA",
+    "estado_civil_solicitante": "SOLTERO",
+    "subsegmento": "PENSIONISTA",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "SECUNDARIOS",
+    "lista_observados": false,
+    "ingresosMensuales": 2000,
+    "valorMaximoPrestamo": 20000,
+    "valorMaximoEndeudamiento": 650,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2000,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 550,
+        "cupoTotal": 2500
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor uno"
+  },
+  {
+    "DocumentNumber": "1700000007",
+    "interviniente_int_nombres_completos": "PEDRO EDUARDO ROMERO SUAREZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+7@innovasoftconsulting.com",
+    "telefono": "0990000007",
+    "interviniente_int_estado_civil": "SOLTERO",
+    "fecha_nacimiento": "15 DE ENERO DE 1993",
+    "primer_apellido": "ROMERO",
+    "segundo_apellido": "SUAREZ",
+    "primer_nombre": "PEDRO",
+    "segundo_nombre": "EDUARDO",
+    "edad": "33,67",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 59 Y TRANSVERSAL",
+    "genero": "METRO",
+    "nacionalidad": "COLOMBIA",
+    "estado_civil_solicitante": "SOLTERO",
+    "subsegmento": "MILITAR ACTIVO",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "SUPERIOR",
+    "lista_observados": false,
+    "ingresosMensuales": 2200,
+    "valorMaximoPrestamo": 21000,
+    "valorMaximoEndeudamiento": 700,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2100,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 600,
+        "cupoTotal": 2600
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor dos"
+  },
+  {
+    "DocumentNumber": "1700000008",
+    "interviniente_int_nombres_completos": "CARLOS JAVIER SANCHEZ SUAREZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+8@innovasoftconsulting.com",
+    "telefono": "0990000008",
+    "interviniente_int_estado_civil": "VIUDO",
+    "fecha_nacimiento": "15 DE ENERO DE 1967",
+    "primer_apellido": "SANCHEZ",
+    "segundo_apellido": "SUAREZ",
+    "primer_nombre": "CARLOS",
+    "segundo_nombre": "JAVIER",
+    "edad": "59,6",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 39 Y TRANSVERSAL",
+    "genero": "F",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "VIUDO",
+    "subsegmento": "MILITAR PASIVO",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "ingresosMensuales": 2400,
+    "valorMaximoPrestamo": 22000,
+    "valorMaximoEndeudamiento": 750,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2200,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 650,
+        "cupoTotal": 2700
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor tres"
+  },
+  {
+    "DocumentNumber": "1700000009",
+    "interviniente_int_nombres_completos": "ANDRES ROBERTO PEREZ RUIZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+9@innovasoftconsulting.com",
+    "telefono": "0990000009",
+    "interviniente_int_estado_civil": "VIUDO",
+    "fecha_nacimiento": "15 DE ENERO DE 1997",
+    "primer_apellido": "PEREZ",
+    "segundo_apellido": "RUIZ",
+    "primer_nombre": "ANDRES",
+    "segundo_nombre": "ROBERTO",
+    "edad": "29,24",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 33 Y TRANSVERSAL",
+    "genero": "F",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "VIUDO",
+    "subsegmento": "MILITAR ACTIVO",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "SUPERIOR",
+    "lista_observados": false,
+    "ingresosMensuales": 2600,
+    "valorMaximoPrestamo": 23000,
+    "valorMaximoEndeudamiento": 800,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2300,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 700,
+        "cupoTotal": 2800
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor cuatro"
+  },
+  {
+    "DocumentNumber": "1700000010",
+    "interviniente_int_nombres_completos": "ANDRES FERNANDO RODRIGUEZ FLORES",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+10@innovasoftconsulting.com",
+    "telefono": "0990000010",
+    "interviniente_int_estado_civil": "SOLTERO",
+    "fecha_nacimiento": "15 DE ENERO DE 1992",
+    "primer_apellido": "RODRIGUEZ",
+    "segundo_apellido": "FLORES",
+    "primer_nombre": "ANDRES",
+    "segundo_nombre": "FERNANDO",
+    "edad": "34,7",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 33 Y TRANSVERSAL",
+    "genero": "F",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "SOLTERO",
+    "subsegmento": "MILITAR PASIVO",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "ingresosMensuales": 2800,
+    "valorMaximoPrestamo": 24000,
+    "valorMaximoEndeudamiento": 850,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2400,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 750,
+        "cupoTotal": 2900
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor cinco"
+  },
+  {
+    "DocumentNumber": "1700000011",
+    "interviniente_int_nombres_completos": "MIGUEL ANTONIO PEREZ DIAZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+11@innovasoftconsulting.com",
+    "telefono": "0990000011",
+    "interviniente_int_estado_civil": "VIUDO",
+    "fecha_nacimiento": "15 DE ENERO DE 1996",
+    "primer_apellido": "PEREZ",
+    "segundo_apellido": "DIAZ",
+    "primer_nombre": "MIGUEL",
+    "segundo_nombre": "ANTONIO",
+    "edad": "30,26",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 52 Y TRANSVERSAL",
+    "genero": "M",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "VIUDO",
+    "subsegmento": "PENSIONISTA",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "SECUNDARIOS",
+    "lista_observados": false,
+    "ingresosMensuales": 3000,
+    "valorMaximoPrestamo": 25000,
+    "valorMaximoEndeudamiento": 900,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2500,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 800,
+        "cupoTotal": 3000
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor uno"
+  },
+  {
+    "DocumentNumber": "1700000012",
+    "interviniente_int_nombres_completos": "PEDRO EDUARDO MARTINEZ ORTIZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+12@innovasoftconsulting.com",
+    "telefono": "0990000012",
+    "interviniente_int_estado_civil": "DIVORCIADO",
+    "fecha_nacimiento": "15 DE ENERO DE 1963",
+    "primer_apellido": "MARTINEZ",
+    "segundo_apellido": "ORTIZ",
+    "primer_nombre": "PEDRO",
+    "segundo_nombre": "EDUARDO",
+    "edad": "63,77",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 72 Y TRANSVERSAL",
+    "genero": "METRO",
+    "nacionalidad": "COLOMBIA",
+    "estado_civil_solicitante": "DIVORCIADO",
+    "subsegmento": "MILITAR PASIVO",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "SUPERIOR",
+    "lista_observados": false,
+    "ingresosMensuales": 3200,
+    "valorMaximoPrestamo": 26000,
+    "valorMaximoEndeudamiento": 950,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2600,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 850,
+        "cupoTotal": 3100
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor dos"
+  },
+  {
+    "DocumentNumber": "1700000013",
+    "interviniente_int_nombres_completos": "FREDDY MANUEL PEREZ DIAZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+13@innovasoftconsulting.com",
+    "telefono": "0990000013",
+    "interviniente_int_estado_civil": "VIUDO",
+    "fecha_nacimiento": "15 DE ENERO DE 1991",
+    "primer_apellido": "PEREZ",
+    "segundo_apellido": "DIAZ",
+    "primer_nombre": "FREDDY",
+    "segundo_nombre": "MANUEL",
+    "edad": "35,53",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 56 Y TRANSVERSAL",
+    "genero": "METRO",
+    "nacionalidad": "COLOMBIA",
+    "estado_civil_solicitante": "VIUDO",
+    "subsegmento": "MILITAR PASIVO",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "ingresosMensuales": 3400,
+    "valorMaximoPrestamo": 27000,
+    "valorMaximoEndeudamiento": 1000,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2700,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 900,
+        "cupoTotal": 3200
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor tres"
+  },
+  {
+    "DocumentNumber": "1700000014",
+    "interviniente_int_nombres_completos": "CARLOS ALBERTO PEREZ ORTIZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+14@innovasoftconsulting.com",
+    "telefono": "0990000014",
+    "interviniente_int_estado_civil": "CASADO",
+    "fecha_nacimiento": "15 DE ENERO DE 1978",
+    "primer_apellido": "PEREZ",
+    "segundo_apellido": "ORTIZ",
+    "primer_nombre": "CARLOS",
+    "segundo_nombre": "ALBERTO",
+    "edad": "48,80",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 65 Y TRANSVERSAL",
+    "genero": "METRO",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "CASADO",
+    "subsegmento": "MILITAR PASIVO",
+    "tiene_conyuge_solicitante": true,
+    "nivel_estudios": "PRIMARIOS/BÁSICOS",
+    "lista_observados": false,
+    "ingresosMensuales": 3600,
+    "valorMaximoPrestamo": 28000,
+    "valorMaximoEndeudamiento": 1050,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2800,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 950,
+        "cupoTotal": 3300
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor cuatro"
+  },
+  {
+    "DocumentNumber": "1700000015",
+    "interviniente_int_nombres_completos": "JORGE FERNANDO ROMERO ORTIZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+15@innovasoftconsulting.com",
+    "telefono": "0990000015",
+    "interviniente_int_estado_civil": "CASADO",
+    "fecha_nacimiento": "15 DE ENERO DE 1980",
+    "primer_apellido": "ROMERO",
+    "segundo_apellido": "ORTIZ",
+    "primer_nombre": "JORGE",
+    "segundo_nombre": "FERNANDO",
+    "edad": "46,7",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 10 Y TRANSVERSAL",
+    "genero": "METRO",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "CASADO",
+    "subsegmento": "PENSIONISTA",
+    "tiene_conyuge_solicitante": true,
+    "nivel_estudios": "SUPERIOR",
+    "lista_observados": false,
+    "ingresosMensuales": 3800,
+    "valorMaximoPrestamo": 29000,
+    "valorMaximoEndeudamiento": 1100,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 2900,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 1000,
+        "cupoTotal": 3400
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor cinco"
+  },
+  {
+    "DocumentNumber": "1700000016",
+    "interviniente_int_nombres_completos": "LUIS JAVIER PEREZ FLORES",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+16@innovasoftconsulting.com",
+    "telefono": "0990000016",
+    "interviniente_int_estado_civil": "VIUDO",
+    "fecha_nacimiento": "15 DE ENERO DE 1985",
+    "primer_apellido": "PEREZ",
+    "segundo_apellido": "FLORES",
+    "primer_nombre": "LUIS",
+    "segundo_nombre": "JAVIER",
+    "edad": "41,66",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 37 Y TRANSVERSAL",
+    "genero": "M",
+    "nacionalidad": "COLOMBIA",
+    "estado_civil_solicitante": "VIUDO",
+    "subsegmento": "PENSIONISTA",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "SUPERIOR",
+    "lista_observados": true,
+    "ingresosMensuales": 4000,
+    "valorMaximoPrestamo": 30000,
+    "valorMaximoEndeudamiento": 1150,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 3000,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 1050,
+        "cupoTotal": 3500
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor uno"
+  },
+  {
+    "DocumentNumber": "1700000017",
+    "interviniente_int_nombres_completos": "PEDRO EDUARDO MARTINEZ MOLINA",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+17@innovasoftconsulting.com",
+    "telefono": "0990000017",
+    "interviniente_int_estado_civil": "VIUDO",
+    "fecha_nacimiento": "15 DE ENERO DE 1962",
+    "primer_apellido": "MARTINEZ",
+    "segundo_apellido": "MOLINA",
+    "primer_nombre": "PEDRO",
+    "segundo_nombre": "EDUARDO",
+    "edad": "64,90",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 60 Y TRANSVERSAL",
+    "genero": "M",
+    "nacionalidad": "COLOMBIA",
+    "estado_civil_solicitante": "VIUDO",
+    "subsegmento": "PENSIONISTA",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "PRIMARIOS/BÁSICOS",
+    "lista_observados": false,
+    "ingresosMensuales": 4200,
+    "valorMaximoPrestamo": 31000,
+    "valorMaximoEndeudamiento": 1200,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 3100,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 1100,
+        "cupoTotal": 3600
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor dos"
+  },
+  {
+    "DocumentNumber": "1700000018",
+    "interviniente_int_nombres_completos": "PEDRO JAVIER SANCHEZ RUIZ",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+18@innovasoftconsulting.com",
+    "telefono": "0990000018",
+    "interviniente_int_estado_civil": "CASADO",
+    "fecha_nacimiento": "15 DE ENERO DE 1993",
+    "primer_apellido": "SANCHEZ",
+    "segundo_apellido": "RUIZ",
+    "primer_nombre": "PEDRO",
+    "segundo_nombre": "JAVIER",
+    "edad": "33,32",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 22 Y TRANSVERSAL",
+    "genero": "F",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "CASADO",
+    "subsegmento": "MILITAR ACTIVO",
+    "tiene_conyuge_solicitante": true,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "ingresosMensuales": 4400,
+    "valorMaximoPrestamo": 32000,
+    "valorMaximoEndeudamiento": 1250,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 3200,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 1150,
+        "cupoTotal": 3700
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor tres"
+  },
+  {
+    "DocumentNumber": "1700000019",
+    "nombres_completos": "Cliente Simulado 19 Apellido",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+19@innovasoftconsulting.com",
+    "telefono": "0990000019",
+    "interviniente_int_estado_civil": "DIVORCIADO",
+    "fecha_nacimiento": "15 DE ENERO DE 1991",
+    "primer_apellido": "CATUTO",
+    "segundo_apellido": "GARCIA",
+    "primer_nombre": "PEDRO",
+    "segundo_nombre": "RAMON",
+    "edad": "35,61",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 94 Y TRANSVERSAL",
+    "genero": "F",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "DIVORCIADO",
+    "subsegmento": "PENSIONISTA",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "interviniente_int_nombres_completos": "PEDRO RAMON CATUTO GARCIA",
+    "ingresosMensuales": 4600,
+    "valorMaximoPrestamo": 33000,
+    "valorMaximoEndeudamiento": 1300,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 3300,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 1200,
+        "cupoTotal": 3800
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor cuatro"
+  },
+  {
+    "DocumentNumber": "1700000020",
+    "nombres_completos": "Cliente Simulado 20 Apellido",
+    "tipo_identificacion": "C",
+    "correo": "pruebas+20@innovasoftconsulting.com",
+    "telefono": "0990000020",
+    "interviniente_int_estado_civil": "SOLTERO",
+    "fecha_nacimiento": "15 DE ENERO DE 1980",
+    "primer_apellido": "MARTINEZ",
+    "segundo_apellido": "RUIZ",
+    "primer_nombre": "FREDDY",
+    "segundo_nombre": "EDUARDO",
+    "edad": "46,6",
+    "direccion_domicilio": "AVENIDA PRINCIPAL CALLE 23 Y TRANSVERSAL",
+    "genero": "M",
+    "nacionalidad": "ECUADOR",
+    "estado_civil_solicitante": "SOLTERO",
+    "subsegmento": "MILITAR ACTIVO",
+    "tiene_conyuge_solicitante": false,
+    "nivel_estudios": "POSTGRADO",
+    "lista_observados": false,
+    "interviniente_int_nombres_completos": "FREDDY EDUARDO MARTINEZ RUIZ",
+    "ingresosMensuales": 4800,
+    "valorMaximoPrestamo": 34000,
+    "valorMaximoEndeudamiento": 1350,
+    "deudasOtrasEntidades": [
+      {
+        "entidad": "Banco Pichincha",
+        "saldo": 3400,
+        "producto": "Préstamo Consumo"
+      }
+    ],
+    "tarjetasCredito": [
+      {
+        "entidad": "Diners Club",
+        "saldoActual": 1250,
+        "cupoTotal": 3900
+      }
+    ],
+    "fechaInicioCampana": "2024-01-01",
+    "fechaFinCampana": "2024-12-31",
+    "asesorAsignado": "Asesor cinco"
+  }
+]

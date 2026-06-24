@@ -1,0 +1,254 @@
+<div class="dashboard-hibrido-container">
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/dashboard" title="Inicio" aria-label="Ir a página de inicio">
+        <i class="bi bi-house-door"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Dashboard Híbrido</li>
+  </ol>
+</nav>
+
+<div class="page-header">
+  <h1 class="page-title">Dashboard Híbrido</h1>
+  <p class="page-subtitle">Vista combinada de métricas y datos en tiempo real</p>
+</div>
+
+<!-- Filtros y controles -->
+<div class="filters-section mb-4">
+  <div class="row">
+    <div class="col-md-3">
+      <select class="form-select" aria-label="Seleccionar período de tiempo">
+        <option>Últimas 24 horas</option>
+        <option>Última semana</option>
+        <option>Último mes</option>
+        <option>Último año</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" aria-label="Seleccionar tipo de métricas">
+        <option>Todas las métricas</option>
+        <option>Usuarios activos</option>
+        <option>Transacciones</option>
+        <option>Rendimiento</option>
+      </select>
+    </div>
+    <div class="col-md-6 text-end">
+      <button class="btn btn-primary me-2">
+        <i class="bi bi-arrow-clockwise me-2"></i>
+        Actualizar
+      </button>
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-download me-2"></i>
+        Exportar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Métricas principales -->
+<div class="row mb-4">
+  <div class="col-lg-3 col-md-6 mb-4">
+    <div class="metric-card">
+      <div class="metric-header">
+        <div class="metric-icon bg-primary">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="metric-trend text-success">
+          <i class="bi bi-arrow-up"></i>
+          +5.2%
+        </div>
+      </div>
+      <div class="metric-value">2,847</div>
+      <div class="metric-label">Usuarios Activos</div>
+      <div class="metric-time">En tiempo real</div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-md-6 mb-4">
+    <div class="metric-card">
+      <div class="metric-header">
+        <div class="metric-icon bg-success">
+          <i class="bi bi-currency-dollar"></i>
+        </div>
+        <div class="metric-trend text-success">
+          <i class="bi bi-arrow-up"></i>
+          +12.8%
+        </div>
+      </div>
+      <div class="metric-value">$45,231</div>
+      <div class="metric-label">Ingresos Hoy</div>
+      <div class="metric-time">Actualizado hace 2 min</div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-md-6 mb-4">
+    <div class="metric-card">
+      <div class="metric-header">
+        <div class="metric-icon bg-info">
+          <i class="bi bi-graph-up"></i>
+        </div>
+        <div class="metric-trend text-warning">
+          <i class="bi bi-dash"></i>
+          -2.1%
+        </div>
+      </div>
+      <div class="metric-value">94.2%</div>
+      <div class="metric-label">Disponibilidad</div>
+      <div class="metric-time">Última hora</div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-md-6 mb-4">
+    <div class="metric-card">
+      <div class="metric-header">
+        <div class="metric-icon bg-warning">
+          <i class="bi bi-clock"></i>
+        </div>
+        <div class="metric-trend text-success">
+          <i class="bi bi-arrow-down"></i>
+          -8.5%
+        </div>
+      </div>
+      <div class="metric-value">1.2s</div>
+      <div class="metric-label">Tiempo Respuesta</div>
+      <div class="metric-time">Promedio</div>
+    </div>
+  </div>
+</div>
+
+<!-- Gráficos híbridos -->
+<div class="row mb-4">
+  <div class="col-lg-8 mb-4">
+    <div class="chart-card">
+      <div class="chart-header">
+        <h5 class="chart-title">Actividad en Tiempo Real</h5>
+        <div class="chart-controls">
+          <button class="btn btn-sm btn-outline-secondary" aria-label="Configurar gráfico">
+            <i class="bi bi-gear"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chart-body">
+        <div class="chart-placeholder">
+          <i class="bi bi-activity fs-1 text-muted"></i>
+          <p class="text-muted">Gráfico de actividad híbrida</p>
+          <small class="text-muted">Datos en tiempo real</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-4">
+    <div class="realtime-card">
+      <div class="realtime-header">
+        <h5 class="realtime-title">Eventos Recientes</h5>
+      </div>
+      <div class="realtime-body">
+        <div class="realtime-item active">
+          <div class="realtime-indicator bg-success"></div>
+          <div class="realtime-content">
+            <div class="realtime-text">Nuevo usuario registrado</div>
+            <div class="realtime-time">Ahora</div>
+          </div>
+        </div>
+
+        <div class="realtime-item">
+          <div class="realtime-indicator bg-primary"></div>
+          <div class="realtime-content">
+            <div class="realtime-text">Transacción completada</div>
+            <div class="realtime-time">Hace 30 seg</div>
+          </div>
+        </div>
+
+        <div class="realtime-item">
+          <div class="realtime-indicator bg-warning"></div>
+          <div class="realtime-content">
+            <div class="realtime-text">Alerta de rendimiento</div>
+            <div class="realtime-time">Hace 2 min</div>
+          </div>
+        </div>
+
+        <div class="realtime-item">
+          <div class="realtime-indicator bg-info"></div>
+          <div class="realtime-content">
+            <div class="realtime-text">Backup completado</div>
+            <div class="realtime-time">Hace 5 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabla de datos híbrida -->
+<div class="data-table-card">
+  <div class="table-header">
+    <h5 class="table-title">Datos Consolidados</h5>
+    <div class="table-actions">
+      <input type="text" class="form-control form-control-sm d-inline-block w-auto" placeholder="Buscar...">
+      <button class="btn btn-sm btn-outline-primary ms-2" aria-label="Filtrar datos">
+        <i class="bi bi-funnel"></i>
+      </button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tipo</th>
+          <th>Usuario</th>
+          <th>Valor</th>
+          <th>Estado</th>
+          <th>Fecha/Hora</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#12345</td>
+          <td><span class="badge bg-primary">Transacción</span></td>
+          <td>usuario@bgr.com</td>
+          <td>$250.00</td>
+          <td><span class="badge bg-success">Completada</span></td>
+          <td>2025-01-24 14:30</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary" aria-label="Ver detalles de transacción">
+              <i class="bi bi-eye"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>#12346</td>
+          <td><span class="badge bg-info">Login</span></td>
+          <td>admin@bgr.com</td>
+          <td>-</td>
+          <td><span class="badge bg-success">Exitoso</span></td>
+          <td>2025-01-24 14:25</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary" aria-label="Ver detalles de login">
+              <i class="bi bi-eye"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>#12347</td>
+          <td><span class="badge bg-warning">Alerta</span></td>
+          <td>sistema@bgr.com</td>
+          <td>-</td>
+          <td><span class="badge bg-warning">Pendiente</span></td>
+          <td>2025-01-24 14:20</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary" aria-label="Ver detalles de alerta">
+              <i class="bi bi-eye"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>

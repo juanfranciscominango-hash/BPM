@@ -1,0 +1,137 @@
+<div class="container-fluid p-4">
+  <!-- Bienvenida -->
+  <div class="mb-4">
+    <h1 class="h3 fw-bold text-dark mb-1">¡Hola, {{ currentUser?.fullName || 'Usuario' }}!</h1>
+    <p class="text-muted">Este es el estado actual de tus procesos de negocio.</p>
+  </div>
+
+  <!-- Tarjetas de Métricas -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm bg-primary text-white h-100 p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="rounded-circle bg-white bg-opacity-25 p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-play-circle-fill"></i>
+          </div>
+          <span class="badge bg-white bg-opacity-25">+12%</span>
+        </div>
+        <h6 class="text-white-50 small mb-1">Instancias Activas</h6>
+        <h2 class="fw-bold mb-0">{{ stats.activeInstances }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm h-100 p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="rounded-circle bg-success bg-opacity-10 text-success p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+          <span class="badge bg-light text-muted">Histórico</span>
+        </div>
+        <h6 class="text-muted small mb-1">Completadas</h6>
+        <h2 class="fw-bold mb-0 text-dark">{{ stats.completedInstances }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm h-100 p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="rounded-circle bg-warning bg-opacity-10 text-warning p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-inbox-fill"></i>
+          </div>
+          <span class="badge bg-danger bg-opacity-10 text-danger">Urgente</span>
+        </div>
+        <h6 class="text-muted small mb-1">Tareas Pendientes</h6>
+        <h2 class="fw-bold mb-0 text-dark">{{ stats.pendingTasks }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm h-100 p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="rounded-circle bg-info bg-opacity-10 text-info p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-lightning-charge-fill"></i>
+          </div>
+          <span class="badge bg-light text-muted">KPI</span>
+        </div>
+        <h6 class="text-muted small mb-1">Eficiencia Global</h6>
+        <h2 class="fw-bold mb-0 text-dark">{{ stats.efficiency }}%</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secciones de Acceso Rápido -->
+  <div class="row g-4">
+    <div class="col-md-8">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+          <h6 class="mb-0 fw-bold">Módulos Principales</h6>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <a routerLink="/plataforma/tareas" class="btn btn-light w-100 p-4 text-start border-0 shadow-hover">
+                <i class="bi bi-inbox text-primary fs-3 d-block mb-2"></i>
+                <span class="fw-bold d-block">Bandeja Tareas</span>
+                <small class="text-muted">Gestiona tus pendientes</small>
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a routerLink="/plataforma/reglas" class="btn btn-light w-100 p-4 text-start border-0 shadow-hover">
+                <i class="bi bi-diagram-3 text-success fs-3 d-block mb-2"></i>
+                <span class="fw-bold d-block">Reglas Negocio</span>
+                <small class="text-muted">Configura lógica DMN</small>
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a routerLink="/plataforma/monitoreo" class="btn btn-light w-100 p-4 text-start border-0 shadow-hover">
+                <i class="bi bi-activity text-info fs-3 d-block mb-2"></i>
+                <span class="fw-bold d-block">Monitoreo</span>
+                <small class="text-muted">Rastreo en tiempo real</small>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+          <h6 class="mb-0 fw-bold">Actividad Reciente</h6>
+        </div>
+        <div class="card-body p-0">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item border-0 py-3">
+              <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 text-primary rounded p-2 me-3">
+                  <i class="bi bi-plus-lg"></i>
+                </div>
+                <div>
+                  <div class="small fw-bold">Nuevo Proceso Iniciado</div>
+                  <div class="smaller text-muted">Solicitud de Crédito #4492</div>
+                </div>
+                <small class="ms-auto text-muted">2m</small>
+              </div>
+            </li>
+            <li class="list-group-item border-0 py-3">
+              <div class="d-flex align-items-center">
+                <div class="bg-success bg-opacity-10 text-success rounded p-2 me-3">
+                  <i class="bi bi-check-lg"></i>
+                </div>
+                <div>
+                  <div class="small fw-bold">Tarea Completada</div>
+                  <div class="smaller text-muted">Aprobación Técnica - Juan P.</div>
+                </div>
+                <small class="ms-auto text-muted">15m</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer bg-white text-center border-0 py-3">
+          <a href="#" class="small text-decoration-none">Ver todo el historial</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

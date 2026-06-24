@@ -1,0 +1,261 @@
+.metricas-container {
+  .kpi-card {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid #e9ecef;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .kpi-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+
+        &.bg-primary { background-color: #0d6efd; }
+        &.bg-success { background-color: #198754; }
+        &.bg-info { background-color: #0dcaf0; }
+        &.bg-warning { background-color: #ffc107; color: #212529; }
+      }
+
+      .kpi-trend {
+        font-size: 0.85rem;
+        font-weight: 600;
+
+        &.positive {
+          color: #198754;
+        }
+
+        &.negative {
+          color: #dc3545;
+        }
+      }
+    }
+
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+
+    .kpi-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .kpi-subtitle {
+      font-size: 0.75rem;
+      color: #adb5bd;
+      margin-bottom: 1rem;
+    }
+
+    .kpi-progress {
+      .progress-bar {
+        height: 4px;
+        background-color: #0d6efd;
+        border-radius: 2px;
+
+        &.bg-success { background-color: #198754; }
+        &.bg-info { background-color: #0dcaf0; }
+        &.bg-warning { background-color: #ffc107; }
+      }
+    }
+  }
+
+  .card {
+    border: 1px solid #e9ecef;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+
+    .card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .card-title {
+        color: #2c3e50;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .card-controls {
+        .form-select {
+          border: 1px solid #dee2e6;
+          border-radius: 0.375rem;
+          font-size: 0.85rem;
+          padding: 0.25rem 0.5rem;
+        }
+      }
+    }
+
+    .card-body {
+      .chart-placeholder {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #adb5bd;
+
+        i {
+          display: block;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          margin-bottom: 0.5rem;
+          font-size: 1.1rem;
+        }
+
+        small {
+          color: #6c757d;
+        }
+      }
+
+      .region-item {
+        margin-bottom: 1.5rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .region-name {
+          font-weight: 500;
+          color: #495057;
+          margin-bottom: 0.5rem;
+        }
+
+        .region-value {
+          font-weight: 600;
+          color: #2c3e50;
+          margin-bottom: 0.5rem;
+        }
+
+        .progress {
+          height: 8px;
+          background-color: #e9ecef;
+          border-radius: 4px;
+
+          .progress-bar {
+            border-radius: 4px;
+
+            &.bg-primary { background-color: #0d6efd; }
+            &.bg-success { background-color: #198754; }
+            &.bg-info { background-color: #0dcaf0; }
+            &.bg-warning { background-color: #ffc107; }
+          }
+        }
+      }
+    }
+  }
+
+  .table {
+    margin: 0;
+
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #495057;
+      border-bottom: 2px solid #dee2e6;
+      padding: 1rem 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    td {
+      padding: 1rem 0.75rem;
+      vertical-align: middle;
+      border-bottom: 1px solid #f8f9fa;
+      font-size: 0.9rem;
+
+      .badge {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.5rem;
+      }
+    }
+
+    tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+  }
+
+  .alert {
+    border-radius: 0.5rem;
+    border: none;
+
+    &.alert-warning {
+      background-color: #fff3cd;
+      color: #664d03;
+      border-left: 4px solid #ffc107;
+    }
+
+    &.alert-info {
+      background-color: #cff4fc;
+      color: #055160;
+      border-left: 4px solid #0dcaf0;
+    }
+  }
+}
+
+// Progress bar widths (replacing inline styles)
+.kpi-card:nth-child(1) .kpi-progress .progress-bar { width: 85%; }
+.kpi-card:nth-child(2) .kpi-progress .progress-bar { width: 92%; }
+.kpi-card:nth-child(3) .kpi-progress .progress-bar { width: 94%; }
+.kpi-card:nth-child(4) .kpi-progress .progress-bar { width: 78%; }
+
+// Region progress bars
+.region-item:nth-child(1) .progress-bar { width: 45.2%; }
+.region-item:nth-child(2) .progress-bar { width: 28.7%; }
+.region-item:nth-child(3) .progress-bar { width: 18.9%; }
+.region-item:nth-child(4) .progress-bar { width: 7.2%; }
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .metricas-container {
+    .kpi-card {
+      margin-bottom: 1.5rem;
+
+      .kpi-value {
+        font-size: 1.5rem;
+      }
+    }
+
+    .card {
+      .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+
+        .card-controls {
+          align-self: flex-end;
+        }
+      }
+    }
+
+    .table-responsive {
+      font-size: 0.8rem;
+
+      th, td {
+        padding: 0.5rem 0.25rem;
+      }
+    }
+  }
+}

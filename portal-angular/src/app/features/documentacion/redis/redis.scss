@@ -1,0 +1,236 @@
+.documentacion-container {
+  .page-header {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+
+    .page-title {
+      color: #495057;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      color: #6c757d;
+      font-size: 1.1rem;
+    }
+  }
+
+  .card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #dee2e6;
+      font-weight: 600;
+
+      h5 {
+        color: #495057;
+      }
+    }
+  }
+
+  .metric-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+  }
+
+  .bg-light {
+    background-color: #f8f9fa !important;
+
+    pre {
+      background-color: transparent;
+      border: none;
+      margin: 0;
+      padding: 0;
+
+      code {
+        color: #495057;
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .alert {
+    border: none;
+    border-radius: 0.5rem;
+
+    &.alert-info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+    }
+
+    &.alert-danger {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    &.alert-warning {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+  }
+
+  .accordion {
+    .accordion-button {
+      font-weight: 500;
+
+      &:not(.collapsed) {
+        background-color: #e9ecef;
+        color: #495057;
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    .accordion-body {
+      background-color: #f8f9fa;
+    }
+  }
+
+  .breadcrumb {
+    background-color: transparent;
+    padding: 0;
+
+    .breadcrumb-item {
+      a {
+        color: #6c757d;
+        text-decoration: none;
+
+        &:hover {
+          color: #495057;
+        }
+      }
+
+      &.active {
+        color: #495057;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .steps-list {
+    padding-left: 1.5rem;
+
+    li {
+      margin-bottom: 0.5rem;
+
+      strong {
+        color: #495057;
+      }
+    }
+  }
+
+  .doc-card {
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      margin: 0 auto 1rem auto;
+    }
+
+    .card-features {
+      margin-bottom: 1rem;
+
+      .badge {
+        font-size: 0.75rem;
+        margin-right: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+    }
+
+    .btn {
+      font-weight: 500;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &.angular-card {
+      .card-icon {
+        background: linear-gradient(135deg, #dd0031 0%, #c3002f 100%);
+      }
+
+      .btn-outline-danger:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+      }
+    }
+
+    &.entra-id-card {
+      .card-icon {
+        background: linear-gradient(135deg, #0078d4 0%, #005ba1 100%);
+      }
+
+      .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+      }
+    }
+
+    &.apis-card {
+      .card-icon {
+        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+      }
+
+      .btn-outline-success:hover {
+        background-color: #198754;
+        border-color: #198754;
+      }
+    }
+  }
+
+  .stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+  }
+}

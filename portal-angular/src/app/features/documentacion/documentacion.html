@@ -1,0 +1,202 @@
+<div class="documentacion-container">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/dashboard" title="Inicio" aria-label="Ir a página de inicio">
+          <i class="bi bi-house-door"></i>
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Documentación</li>
+    </ol>
+  </nav>
+
+  <div class="page-header mb-5">
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="docs-logo me-3">
+        <i class="bi bi-book fs-1 text-primary"></i>
+      </div>
+      <div class="text-center">
+        <h1 class="page-title mb-1">Centro de Documentación</h1>
+        <p class="page-subtitle mb-0">Guías completas para desarrolladores y usuarios del sistema</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Documentación Disponible -->
+  <div class="row g-4">
+    <!-- Angular -->
+    <div class="col-lg-4 col-md-6">
+      <div class="card h-100 doc-card angular-card">
+        <div class="card-body d-flex flex-column">
+          <div class="card-icon mb-3">
+            <i class="bi bi-code-slash fs-2 text-danger"></i>
+          </div>
+          <h5 class="card-title">Angular</h5>
+          <p class="card-text flex-grow-1">
+            Guía completa para trabajar con Angular en este proyecto. Incluye configuración,
+            mejores prácticas, problemas comunes y soluciones.
+          </p>
+          <div class="card-features mb-3">
+            <span class="badge bg-danger-subtle text-danger me-1">Angular 20</span>
+            <span class="badge bg-danger-subtle text-danger me-1">Standalone</span>
+            <span class="badge bg-danger-subtle text-danger">TypeScript</span>
+          </div>
+          <a routerLink="/documentacion/angular" class="btn btn-outline-danger w-100">
+            <i class="bi bi-arrow-right me-2"></i>Ver Documentación Angular
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entra ID -->
+    <div class="col-lg-4 col-md-6">
+      <div class="card h-100 doc-card entra-id-card">
+        <div class="card-body d-flex flex-column">
+          <div class="card-icon mb-3">
+            <i class="bi bi-microsoft fs-2 text-primary"></i>
+          </div>
+          <h5 class="card-title">Entra ID</h5>
+          <p class="card-text flex-grow-1">
+            Integración completa con Microsoft Entra ID (Azure AD). Configuración,
+            autenticación, roles y solución de problemas.
+          </p>
+          <div class="card-features mb-3">
+            <span class="badge bg-primary-subtle text-primary me-1">MSAL v4</span>
+            <span class="badge bg-primary-subtle text-primary me-1">OAuth 2.0</span>
+            <span class="badge bg-primary-subtle text-primary">Roles</span>
+          </div>
+          <a routerLink="/documentacion/entra-id" class="btn btn-outline-primary w-100">
+            <i class="bi bi-arrow-right me-2"></i>Ver Documentación Entra ID
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- APIs -->
+    <div class="col-lg-4 col-md-6">
+      <div class="card h-100 doc-card apis-card">
+        <div class="card-body d-flex flex-column">
+          <div class="card-icon mb-3">
+            <i class="bi bi-cloud-arrow-up fs-2 text-success"></i>
+          </div>
+          <h5 class="card-title">APIs</h5>
+          <p class="card-text flex-grow-1">
+            Arquitectura de APIs, servicios HTTP, interceptores y mejores prácticas
+            para consumir servicios web de forma segura.
+          </p>
+          <div class="card-features mb-3">
+            <span class="badge bg-success-subtle text-success me-1">REST</span>
+            <span class="badge bg-success-subtle text-success me-1">RxJS</span>
+            <span class="badge bg-success-subtle text-success">HttpClient</span>
+          </div>
+          <a routerLink="/documentacion/apis" class="btn btn-outline-success w-100">
+            <i class="bi bi-arrow-right me-2"></i>Ver Documentación APIs
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Redis -->
+    <div class="col-lg-4 col-md-6">
+      <div class="card h-100 doc-card redis-card">
+        <div class="card-body d-flex flex-column">
+          <div class="card-icon mb-3">
+            <i class="bi bi-database fs-2 text-warning"></i>
+          </div>
+          <h5 class="card-title">Redis</h5>
+          <p class="card-text flex-grow-1">
+            Sistema de cache distribuido Redis. Configuración, estrategias de cache,
+            monitoreo y optimización de rendimiento.
+          </p>
+          <div class="card-features mb-3">
+            <span class="badge bg-warning-subtle text-warning me-1">Cache</span>
+            <span class="badge bg-warning-subtle text-warning me-1">In-Memory</span>
+            <span class="badge bg-warning-subtle text-warning">Distribuido</span>
+          </div>
+          <a routerLink="/documentacion/redis" class="btn btn-outline-warning w-100">
+            <i class="bi bi-arrow-right me-2"></i>Ver Documentación Redis
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- WCF -->
+    <div class="col-lg-4 col-md-6">
+      <div class="card h-100 doc-card wcf-card">
+        <div class="card-body d-flex flex-column">
+          <div class="card-icon mb-3">
+            <i class="bi bi-gear fs-2 text-secondary"></i>
+          </div>
+          <h5 class="card-title">WCF</h5>
+          <p class="card-text flex-grow-1">
+            Integración con servicios Windows Communication Foundation. Arquitectura
+            SOAP, bindings, contratos y manejo de errores.
+          </p>
+          <div class="card-features mb-3">
+            <span class="badge bg-secondary-subtle text-secondary me-1">SOAP</span>
+            <span class="badge bg-secondary-subtle text-secondary me-1">WCF</span>
+            <span class="badge bg-secondary-subtle text-secondary">Legacy</span>
+          </div>
+          <a routerLink="/documentacion/wcf" class="btn btn-outline-secondary w-100">
+            <i class="bi bi-arrow-right me-2"></i>Ver Documentación WCF
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Información Adicional -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h5 class="card-title mb-2">¿Necesitas Ayuda?</h5>
+              <p class="card-text mb-0">
+                Si no encuentras la información que necesitas o tienes preguntas específicas
+                sobre el proyecto, puedes consultar los documentos técnicos adicionales
+                disponibles en la carpeta <code>Docs/</code> del repositorio.
+              </p>
+            </div>
+            <div class="col-md-4 text-center">
+              <div class="help-icon">
+                <i class="bi bi-question-circle fs-1 text-info"></i>
+              </div>
+              <p class="text-muted mt-2">Documentación Técnica Completa</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas Rápidas -->
+  <div class="row mt-4">
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="stat-card text-center">
+        <div class="stat-number">20</div>
+        <div class="stat-label">Angular</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="stat-card text-center">
+        <div class="stat-number">4.x</div>
+        <div class="stat-label">MSAL</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="stat-card text-center">
+        <div class="stat-number">5.x</div>
+        <div class="stat-label">Bootstrap</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="stat-card text-center">
+        <div class="stat-number">5.x</div>
+        <div class="stat-label">TypeScript</div>
+      </div>
+    </div>
+  </div>
+</div>

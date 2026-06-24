@@ -1,0 +1,94 @@
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-header bg-white border-bottom-0 py-3 d-flex align-items-center cursor-pointer" data-bs-toggle="collapse" data-bs-target="#collapseInfoGen">
+    <i class="bi bi-chevron-up text-muted me-2" style="font-size: 0.8rem;"></i>
+    <h6 class="mb-0 fw-bold text-dark">Información General</h6>
+  </div>
+  
+  <div id="collapseInfoGen" class="collapse show">
+    <div class="card-body p-4 bg-white border-top">
+      <div class="row g-4">
+        
+        <!-- Columna 1 -->
+        <div class="col-md-3">
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Fecha Caso:</p>
+            <p class="mb-0 info-value">{{ data?.fecha_caso || '' }}</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Asesor:</p>
+            <p class="mb-0 info-value">{{ data?.asesor || data?.asesor_asignado || '' }}</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Destino Comercial:</p>
+            <p class="mb-0 info-value">{{ data?.destino_comercial || '' }}</p>
+          </div>
+          <div class="mb-0">
+            <p class="text-muted info-label mb-1 fw-bold">Solicitante:</p>
+            <p class="mb-0 info-value">{{ data?.interviniente_int_nombres_completos || data?.nombres_completos || '' }}</p>
+          </div>
+        </div>
+
+        <!-- Columna 2 -->
+        <div class="col-md-3">
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Número Caso:</p>
+            <p class="mb-0 info-value">{{ data?.numero_caso || data?.processInstanceId || '' }}</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Fecha Solicitud:</p>
+            <p class="mb-0 info-value">{{ data?.fecha_solicitud || '' }}</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Identificación:</p>
+            <p class="mb-0 info-value">{{ data?.interviniente_int_identificacion || data?.DocumentNumber || '' }}</p>
+          </div>
+          <div class="mb-0">
+            <p class="text-muted info-label mb-1 fw-bold">Monto Aprobado:</p>
+            <p class="mb-0 info-value">{{ formatMoney(data?.monto_aprobado) }}</p>
+          </div>
+        </div>
+
+        <!-- Columna 3 -->
+        <div class="col-md-3">
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Ciudad:</p>
+            <p class="mb-0 info-value">{{ data?.ciudad || '' }}</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Subsegmento:</p>
+            <p class="mb-0 info-value">{{ data?.subsegmento || '' }}</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Monto Solicitado:</p>
+            <p class="mb-0 info-value">{{ formatMoney(data?.monto_solicitado || data?.monto) }}</p>
+          </div>
+          <div class="mb-0">
+            <p class="text-muted info-label mb-1 fw-bold">Plazo Aprobado:</p>
+            <p class="mb-0 info-value">{{ data?.plazo_aprobado || '' }}</p>
+          </div>
+        </div>
+
+        <!-- Columna 4 -->
+        <div class="col-md-3">
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Agencia:</p>
+            <p class="mb-0 info-value">{{ data?.agencia || '' }}</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Producto:</p>
+            <p class="mb-0 info-value">{{ data?.producto_desc || data?.producto || '' }}</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-muted info-label mb-1 fw-bold">Plazo Solicitado:</p>
+            <p class="mb-0 info-value">{{ data?.plazo_solicitado || data?.plazo || '' }}</p>
+          </div>
+          <div class="mb-0">
+            <p class="text-muted info-label mb-1 fw-bold">Cuota de Entrada:</p>
+            <p class="mb-0 info-value">{{ formatMoney(data?.cuota_entrada) }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

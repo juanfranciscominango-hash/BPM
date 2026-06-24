@@ -1,0 +1,55 @@
+.formula-item {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.1s;
+}
+.formula-item:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+}
+.formula-item.variable {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+}
+.formula-item.operator {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  font-family: monospace;
+  font-size: 1.1rem;
+}
+.formula-item.number {
+  background-color: #fef9c3;
+  color: #ca8a04;
+  border: 1px solid #fde047;
+}
+.drop-zone {
+  min-height: 150px;
+  background-color: #f8fafc;
+  border: 2px dashed #cbd5e1 !important;
+  transition: all 0.2s;
+}
+.drop-zone.drag-over {
+  background-color: #f0fdf4;
+  border-color: #22c55e !important;
+}
+.formula-item.in-canvas {
+  cursor: default;
+  display: flex;
+  align-items: center;
+}
+.formula-item.in-canvas .remove-btn {
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  opacity: 0.5;
+}
+.formula-item.in-canvas .remove-btn:hover {
+  opacity: 1;
+  color: red;
+}

@@ -1,0 +1,354 @@
+// Importar variables globales
+@use '../../../libs/design-tokens/scss/tokens.scss' as *;
+
+.dashboard-hibrido-container {
+  padding: $spacer-xl;
+
+  .page-header {
+    margin-bottom: $spacer-xl;
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: $spacer-sm;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+  }
+
+  .filters-section {
+    background: var(--bg-surface);
+    padding: $spacer-xl;
+    border-radius: $border-radius-lg;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
+
+    .form-select {
+      border: 1px solid var(--border-color);
+      border-radius: $border-radius;
+      padding: $spacer-sm $spacer-md;
+      font-size: 0.9rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+
+      &:focus {
+        border-color: var(--color-innova-blue);
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        background: var(--bg-primary);
+      }
+    }
+  }
+
+  .metric-card {
+    background: var(--bg-surface);
+    border-radius: $border-radius-lg;
+    padding: $spacer-xl;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px var(--shadow-color);
+    }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: $spacer-md;
+
+      .metric-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $white;
+        font-size: 1.2rem;
+
+        &.bg-primary { background: var(--color-innova-blue); }
+        &.bg-success { background: var(--color-success); }
+        &.bg-info { background: var(--color-info); }
+        &.bg-warning { background: var(--color-warning); }
+      }
+
+      .metric-trend {
+        font-size: 0.85rem;
+        font-weight: 600;
+
+        &.text-success { color: var(--color-success); }
+        &.text-warning { color: var(--color-warning); }
+      }
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: $spacer-sm;
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-time {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+  }
+
+  .chart-card {
+    background: var(--bg-surface);
+    border-radius: $border-radius-lg;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
+
+    .chart-header {
+      padding: $spacer-xl $spacer-xl 0 $spacer-xl;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .chart-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .chart-controls {
+        .btn {
+          border: 1px solid var(--border-color);
+          padding: $spacer-sm;
+          border-radius: $border-radius;
+          background: var(--bg-primary);
+          color: var(--text-primary);
+
+          &:hover {
+            background: var(--bg-secondary);
+          }
+        }
+      }
+    }
+
+    .chart-body {
+      padding: $spacer-xl;
+
+      .chart-placeholder {
+        text-align: center;
+        padding: 3rem $spacer-md;
+        color: var(--text-secondary);
+
+        i {
+          display: block;
+          margin-bottom: $spacer-md;
+        }
+
+        p {
+          margin-bottom: $spacer-sm;
+          font-size: 1.1rem;
+        }
+
+        small {
+          color: var(--text-secondary);
+        }
+      }
+    }
+  }
+
+  .realtime-card {
+    background: var(--bg-surface);
+    border-radius: $border-radius-lg;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    height: 100%;
+
+    .realtime-header {
+      padding: $spacer-xl $spacer-xl 0 $spacer-xl;
+
+      .realtime-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+      }
+    }
+
+    .realtime-body {
+      padding: $spacer-xl;
+
+      .realtime-item {
+        display: flex;
+        align-items: center;
+        padding: $spacer-sm 0;
+        border-bottom: 1px solid var(--border-color);
+        border-radius: $border-radius;
+        transition: background 0.3s ease;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &:hover {
+          background: var(--bg-secondary);
+        }
+
+        &.active {
+          background: var(--bg-secondary);
+          border-radius: $border-radius;
+          padding: $spacer-sm;
+          margin: -0.25rem 0;
+        }
+
+        .realtime-indicator {
+          width: 0.75rem;
+          height: 0.75rem;
+          border-radius: 50%;
+          margin-right: $spacer-md;
+          flex-shrink: 0;
+        }
+
+        .realtime-content {
+          flex: 1;
+
+          .realtime-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+          }
+
+          .realtime-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+          }
+        }
+      }
+    }
+  }
+
+  .data-table-card {
+    background: var(--bg-surface);
+    border-radius: $border-radius-lg;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
+
+    .table-header {
+      padding: $spacer-xl;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+
+      .table-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .table-actions {
+        display: flex;
+        align-items: center;
+        gap: $spacer-sm;
+
+        .form-control {
+          width: 200px;
+          border: 1px solid var(--border-color);
+          border-radius: $border-radius;
+          padding: $spacer-sm $spacer-md;
+          background: var(--bg-primary);
+          color: var(--text-primary);
+        }
+
+        .btn {
+          border: 1px solid var(--border-color);
+          padding: $spacer-sm;
+          border-radius: $border-radius;
+          background: var(--bg-primary);
+          color: var(--text-primary);
+
+          &:hover {
+            background: var(--bg-secondary);
+          }
+        }
+      }
+    }
+
+    .table {
+      margin: 0;
+
+      th {
+        background: var(--bg-secondary);
+        font-weight: 600;
+        color: var(--text-primary);
+        border-bottom: 2px solid var(--border-color);
+        padding: $spacer-md $spacer-sm;
+      }
+
+      td {
+        padding: $spacer-md $spacer-sm;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-primary);
+
+        .badge {
+          font-size: 0.75rem;
+          padding: 0.25rem $spacer-sm;
+        }
+
+        .btn {
+          padding: 0.25rem $spacer-sm;
+          font-size: 0.8rem;
+        }
+      }
+
+      tbody tr:hover {
+        background: var(--bg-secondary);
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .dashboard-hibrido-container {
+    padding: $spacer-lg;
+
+    .page-header {
+      .page-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    .filters-section {
+      .row > div {
+        margin-bottom: $spacer-md;
+      }
+    }
+
+    .table-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $spacer-md;
+
+      .table-actions {
+        justify-content: center;
+
+        .form-control {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

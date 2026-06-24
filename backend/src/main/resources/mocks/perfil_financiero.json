@@ -1,0 +1,35 @@
+{
+  "default": {
+    "id_cliente": "CL-ECU-123456",
+    "nombre": "María López",
+    "cedula": "1712345678",
+    "ingresos_mensuales": 1500,
+    "deudas_otras_entidades": [
+      {
+        "entidad": "Banco Guayaquil",
+        "saldo": 2500,
+        "producto": "Préstamo personal"
+      },
+      {
+        "entidad": "Produbanco",
+        "saldo": 1800,
+        "producto": "Crédito automotriz"
+      }
+    ],
+    "tarjetas_credito": [
+      {
+        "entidad": "Banco Internacional",
+        "saldo_actual": 600,
+        "cupo_total": 2000
+      },
+      {
+        "entidad": "Banco Pichincha",
+        "saldo_actual": 1200,
+        "cupo_total": 3000
+      }
+    ],
+    "valor_maximo_prestamo": 8000,
+    "valor_maximo_endeudamiento": 12000,
+    "cuota_estimada_mensual": 350
+  }
+}

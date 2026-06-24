@@ -1,0 +1,289 @@
+<div class="metricas-container">
+<div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="mb-1">Métricas del Sistema</h2>
+          <p class="text-muted mb-0">Monitoreo en tiempo real de KPIs y indicadores</p>
+        </div>
+        <div>
+          <button class="btn btn-outline-secondary me-2" aria-label="Configurar métricas">
+            <i class="bi bi-gear me-2"></i>
+            Configurar
+          </button>
+          <button class="btn btn-primary" aria-label="Actualizar métricas">
+            <i class="bi bi-arrow-clockwise me-2"></i>
+            Actualizar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs principales -->
+  <div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <div class="kpi-icon bg-primary">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="kpi-trend positive">
+            <i class="bi bi-arrow-up"></i>
+            +12.5%
+          </div>
+        </div>
+        <div class="kpi-value">2,847</div>
+        <div class="kpi-label">Usuarios Activos</div>
+        <div class="kpi-subtitle">Sesiones activas en las últimas 24h</div>
+        <div class="kpi-progress">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <div class="kpi-icon bg-success">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <div class="kpi-trend positive">
+            <i class="bi bi-arrow-up"></i>
+            +8.2%
+          </div>
+        </div>
+        <div class="kpi-value">$45,231</div>
+        <div class="kpi-label">Ingresos Diarios</div>
+        <div class="kpi-subtitle">Promedio de los últimos 30 días</div>
+        <div class="kpi-progress">
+          <div class="progress-bar bg-success"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <div class="kpi-icon bg-info">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <div class="kpi-trend negative">
+            <i class="bi bi-arrow-down"></i>
+            -2.1%
+          </div>
+        </div>
+        <div class="kpi-value">94.2%</div>
+        <div class="kpi-label">Disponibilidad</div>
+        <div class="kpi-subtitle">Uptime del sistema</div>
+        <div class="kpi-progress">
+          <div class="progress-bar bg-info"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <div class="kpi-icon bg-warning">
+            <i class="bi bi-clock"></i>
+          </div>
+          <div class="kpi-trend positive">
+            <i class="bi bi-arrow-down"></i>
+            -15.3%
+          </div>
+        </div>
+        <div class="kpi-value">1.2s</div>
+        <div class="kpi-label">Tiempo de Respuesta</div>
+        <div class="kpi-subtitle">Promedio de respuesta API</div>
+        <div class="kpi-progress">
+          <div class="progress-bar bg-warning"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráficos de métricas -->
+  <div class="row mb-4">
+    <div class="col-lg-8 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Tendencia de Usuarios</h5>
+          <div class="card-controls">
+            <select class="form-select form-select-sm" aria-label="Seleccionar período">
+              <option>7 días</option>
+              <option>30 días</option>
+              <option>90 días</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-placeholder">
+            <i class="bi bi-bar-chart-line fs-1 text-muted"></i>
+            <p class="text-muted">Gráfico de tendencia de usuarios activos</p>
+            <small class="text-muted">Datos actualizados en tiempo real</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Distribución por Región</h5>
+        </div>
+        <div class="card-body">
+          <div class="region-item">
+            <div class="region-name">América Latina</div>
+            <div class="region-value">45.2%</div>
+            <div class="progress">
+              <div class="progress-bar bg-primary"></div>
+            </div>
+          </div>
+          <div class="region-item">
+            <div class="region-name">Europa</div>
+            <div class="region-value">28.7%</div>
+            <div class="progress">
+              <div class="progress-bar bg-success"></div>
+            </div>
+          </div>
+          <div class="region-item">
+            <div class="region-name">Asia Pacífico</div>
+            <div class="region-value">18.9%</div>
+            <div class="progress">
+              <div class="progress-bar bg-info"></div>
+            </div>
+          </div>
+          <div class="region-item">
+            <div class="region-name">Norteamérica</div>
+            <div class="region-value">7.2%</div>
+            <div class="progress">
+              <div class="progress-bar bg-warning"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Métricas detalladas -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Métricas Detalladas</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Métrica</th>
+                  <th>Valor Actual</th>
+                  <th>Cambio 24h</th>
+                  <th>Cambio 7d</th>
+                  <th>Cambio 30d</th>
+                  <th>Estado</th>
+                  <th>Última Actualización</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-people text-primary me-2"></i>
+                      Usuarios Registrados
+                    </div>
+                  </td>
+                  <td><strong>15,423</strong></td>
+                  <td><span class="text-success">+127</span></td>
+                  <td><span class="text-success">+892</span></td>
+                  <td><span class="text-success">+3,421</span></td>
+                  <td><span class="badge bg-success">Excelente</span></td>
+                  <td>Hace 5 min</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-cursor text-info me-2"></i>
+                      Sesiones Activas
+                    </div>
+                  </td>
+                  <td><strong>2,847</strong></td>
+                  <td><span class="text-success">+45</span></td>
+                  <td><span class="text-warning">-23</span></td>
+                  <td><span class="text-success">+156</span></td>
+                  <td><span class="badge bg-success">Bueno</span></td>
+                  <td>Hace 2 min</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-graph-up text-success me-2"></i>
+                      Conversiones
+                    </div>
+                  </td>
+                  <td><strong>3.24%</strong></td>
+                  <td><span class="text-success">+0.12%</span></td>
+                  <td><span class="text-success">+0.45%</span></td>
+                  <td><span class="text-warning">-0.08%</span></td>
+                  <td><span class="badge bg-warning">Regular</span></td>
+                  <td>Hace 10 min</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                      Errores del Sistema
+                    </div>
+                  </td>
+                  <td><strong>12</strong></td>
+                  <td><span class="text-danger">+3</span></td>
+                  <td><span class="text-success">-8</span></td>
+                  <td><span class="text-success">-15</span></td>
+                  <td><span class="badge bg-success">Bueno</span></td>
+                  <td>Hace 1 min</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-clock text-secondary me-2"></i>
+                      Tiempo de Carga
+                    </div>
+                  </td>
+                  <td><strong>1.2s</strong></td>
+                  <td><span class="text-success">-0.1s</span></td>
+                  <td><span class="text-success">-0.3s</span></td>
+                  <td><span class="text-success">-0.5s</span></td>
+                  <td><span class="badge bg-success">Excelente</span></td>
+                  <td>Hace 3 min</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alertas de métricas -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Alertas Activas</h5>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Alerta de Rendimiento:</strong> El tiempo de respuesta de la API ha aumentado un 15% en las últimas 2 horas.
+          </div>
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Información:</strong> Se detectó un pico inusual de usuarios entre las 14:00 y 15:00.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

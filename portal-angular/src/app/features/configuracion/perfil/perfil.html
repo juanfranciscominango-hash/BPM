@@ -1,0 +1,198 @@
+<div class="perfil-container">
+<div class="row">
+    <!-- Información del perfil -->
+    <div class="col-lg-8 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Información Personal</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" [value]="userInfo.firstName || ''" aria-label="Nombre">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Apellido</label>
+                <input type="text" class="form-control" [value]="userInfo.lastName || ''" aria-label="Apellido">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [value]="userEmail" aria-label="Email" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" [value]="userInfo.phone || ''" aria-label="Teléfono">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Fecha de Nacimiento</label>
+                <input type="date" class="form-control" [value]="userInfo.birthDate || ''" aria-label="Fecha de nacimiento">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">País</label>
+                <select class="form-select" [value]="userInfo.country || 'Ecuador'" aria-label="País">
+                  <option>Ecuador</option>
+                  <option>Colombia</option>
+                  <option>Perú</option>
+                  <option>Chile</option>
+                  <option>Argentina</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Dirección</label>
+                <textarea class="form-control" rows="3" [value]="userInfo.address || ''" aria-label="Dirección"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Biografía</label>
+                <textarea class="form-control" rows="4" [value]="userInfo.bio || ''" placeholder="Cuéntanos un poco sobre ti..." aria-label="Biografía"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary" aria-label="Guardar cambios del perfil">
+            <i class="bi bi-check-lg me-2"></i>
+            Guardar Cambios
+          </button>
+          <button class="btn btn-outline-secondary ms-2" aria-label="Cancelar cambios">
+            <i class="bi bi-x-lg me-2"></i>
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avatar y configuración adicional -->
+    <div class="col-lg-4">
+      <!-- Avatar -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Foto de Perfil</h5>
+        </div>
+        <div class="card-body text-center">
+          <div class="avatar-container mb-3">
+            <div class="avatar-preview">
+              <img *ngIf="userInfo.avatar" [src]="userInfo.avatar" [alt]="userInfo.firstName + ' ' + userInfo.lastName" [title]="userInfo.firstName + ' ' + userInfo.lastName" class="avatar-image">
+              <i *ngIf="!userInfo.avatar" class="bi bi-person-circle fs-1 text-muted"></i>
+            </div>
+          </div>
+          <div class="mb-2">
+            <strong>{{ userFullName }}</strong><br>
+            <small class="text-muted">{{ userRole | titlecase }}</small>
+          </div>
+          <button class="btn btn-outline-primary btn-sm me-2" aria-label="Cambiar foto de perfil">
+            <i class="bi bi-camera me-2"></i>
+            Cambiar Foto
+          </button>
+          <button class="btn btn-outline-danger btn-sm" aria-label="Eliminar foto de perfil">
+            <i class="bi bi-trash me-2"></i>
+            Eliminar
+          </button>
+        </div>
+      </div>
+
+      <!-- Preferencias -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Preferencias</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Idioma</label>
+            <select class="form-select" [value]="userInfo.preferences?.language || 'Español'" aria-label="Idioma">
+              <option>Español</option>
+              <option>Inglés</option>
+              <option>Portugués</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Zona Horaria</label>
+            <select class="form-select" [value]="userInfo.preferences?.timezone || 'America/Guayaquil (GMT-5)'" aria-label="Zona horaria">
+              <option>America/Guayaquil (GMT-5)</option>
+              <option>America/Bogota (GMT-5)</option>
+              <option>America/Lima (GMT-5)</option>
+              <option>America/Santiago (GMT-4)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Formato de Fecha</label>
+            <select class="form-select" [value]="userInfo.preferences?.dateFormat || 'DD/MM/YYYY'" aria-label="Formato de fecha">
+              <option>DD/MM/YYYY</option>
+              <option>MM/DD/YYYY</option>
+              <option>YYYY-MM-DD</option>
+            </select>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="notificaciones" [checked]="userInfo.preferences?.notifications !== false" aria-label="Recibir notificaciones">
+            <label class="form-check-label" for="notificaciones">
+              Recibir notificaciones por email
+            </label>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary btn-sm w-100" aria-label="Guardar preferencias">
+            <i class="bi bi-check-lg me-2"></i>
+            Guardar Preferencias
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Actividad reciente -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Actividad Reciente</h5>
+        </div>
+        <div class="card-body">
+          <div class="activity-timeline">
+            <div class="activity-item">
+              <div class="activity-icon bg-success">
+                <i class="bi bi-person-check"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Inicio de sesión exitoso</div>
+                <div class="activity-description">Desde Chrome en Windows</div>
+                <div class="activity-time">Hace 2 horas</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon bg-primary">
+                <i class="bi bi-pencil"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Perfil actualizado</div>
+                <div class="activity-description">Información personal modificada</div>
+                <div class="activity-time">Hace 1 día</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon bg-warning">
+                <i class="bi bi-key"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Contraseña cambiada</div>
+                <div class="activity-description">Contraseña actualizada exitosamente</div>
+                <div class="activity-time">Hace 3 días</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon bg-info">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Email verificado</div>
+                <div class="activity-description">Dirección de email confirmada</div>
+                <div class="activity-time">Hace 1 semana</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

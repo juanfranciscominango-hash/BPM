@@ -1,0 +1,42 @@
+<div class="container-fluid p-0">
+  <div class="mb-4">
+    <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-clock-history me-2"></i>Historial de Solicitudes</h2>
+    <p class="text-muted">Revisa tus créditos anteriores y descarga tus documentos.</p>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light text-muted small text-uppercase">
+            <tr>
+              <th class="ps-4">Proceso / Instancia</th>
+              <th>Fecha de Inicio</th>
+              <th>Estado Final</th>
+              <th class="text-end pe-4">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let h of historial">
+              <td class="ps-4">
+                <div class="fw-bold text-dark">{{ h.proceso }}</div>
+                <small class="text-muted">Instancia: {{ h.id }}</small>
+              </td>
+              <td>{{ h.fecha }}</td>
+              <td>
+                <span class="badge rounded-pill px-3 py-2" [ngClass]="h.estado === 'Aprobado' ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'">
+                  <i class="bi" [ngClass]="h.estado === 'Aprobado' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> {{ h.estado }}
+                </span>
+              </td>
+              <td class="text-end pe-4">
+                <button class="btn btn-sm btn-light border shadow-sm px-3 rounded-pill me-2" routerLink="/portal/resumen/{{h.id}}">
+                  <i class="bi bi-eye"></i> Ver
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

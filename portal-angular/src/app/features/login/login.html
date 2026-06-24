@@ -1,0 +1,126 @@
+<div class="login-page">
+  <!-- Toggle de tema -->
+  @if (showThemeToggle) {
+    <div class="theme-toggle-position">
+      <innova-theme-toggle></innova-theme-toggle>
+    </div>
+  }
+
+  <div class="split-container">
+    <!-- Columna Izquierda: Branding Visual -->
+    <div class="branding-section">
+      <div class="branding-content">
+        <div class="icon-group mb-4">
+          <img src="assets/images/logo-chibuleo.png" onerror="this.style.display='none';" alt="Cooperativa Chibuleo" style="max-width: 300px; height: auto;" />
+        </div>
+        
+        <h1 class="logo-text">Chibuleo</h1>
+        <p class="logo-subtitle">COOPERATIVA DE AHORRO Y CRÉDITO</p>
+      </div>
+      
+      <!-- Badge de Entorno opcional -->
+      <div class="environment-info">
+        <span class="badge" [ngClass]="environmentClass">
+          {{ currentEnvironment }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Columna Derecha: Formulario de Ingreso -->
+    <div class="login-section">
+      <div class="login-form-wrapper">
+        <div class="form-header text-end mb-5">
+           <div class="small-logo-group d-flex flex-column align-items-end">
+            <img src="assets/images/logo-chibuleo.png" onerror="this.style.display='none';" alt="Chibuleo" style="max-height: 40px; margin-bottom: 5px;" />
+            <div class="small-logo-subtitle">COOPERATIVA DE AHORRO Y CRÉDITO</div>
+           </div>
+        </div>
+
+        <form (ngSubmit)="onLogin(loginForm)" #loginForm="ngForm">
+          <div class="form-group mb-4">
+            <label for="username" class="form-label">USUARIO</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [ngClass]="{'is-invalid': userName.invalid && (userName.dirty || userName.touched)}"
+              id="username" 
+              [(ngModel)]="username"
+              name="username"
+              #userName="ngModel"
+              placeholder="Usuario"
+              required>
+            <div *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="invalid-feedback">
+              El usuario es requerido.
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="password" class="form-label">CONTRASEÑA</label>
+            <input 
+              [type]="showPassword ? 'text' : 'password'" 
+              class="form-control" 
+              [ngClass]="{'is-invalid': passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)}"
+              id="password" 
+              [(ngModel)]="password"
+              name="password"
+              placeholder="Contraseña"
+              #passwordInput="ngModel"
+              required>
+            <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="invalid-feedback">
+              La contraseña es requerida.
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="dominio" class="form-label">DOMINIO</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="dominio" 
+              [(ngModel)]="dominio"
+              name="dominio"
+              placeholder="Dominio">
+          </div>
+
+          <div class="form-check mb-4">
+            <input 
+              type="checkbox" 
+              class="form-check-input" 
+              id="authDomain" 
+              [(ngModel)]="autenticarContraDominio"
+              name="authDomain">
+            <label class="form-check-label" for="authDomain">
+              Autenticar contra dominio
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary-login w-100" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Ingresar</span>
+            <span *ngIf="isLoading">
+              <i class="bi bi-arrow-clockwise spin me-2"></i>
+              Ingresando...
+            </span>
+          </button>
+        </form>
+
+        <!-- Botón Entra ID como opción secundaria si está habilitado -->
+        @if (showEntraIdButton) {
+          <div class="mt-4 pt-3 border-top text-center">
+            <button 
+              type="button" 
+              class="btn btn-link text-decoration-none" 
+              (click)="loginWithEntraId()">
+              <i class="bi bi-microsoft me-2"></i>
+              Ingresar con Microsoft Entra ID
+            </button>
+          </div>
+        }
+
+        <div *ngIf="errorMessage" class="alert alert-danger mt-4" role="alert">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

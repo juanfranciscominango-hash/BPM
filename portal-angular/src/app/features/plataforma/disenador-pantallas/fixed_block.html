@@ -1,0 +1,150 @@
+          <!-- TAB 3: VALIDACIONES -->
+          <div *ngIf="activeSidebarTab === 'validations' && selectedProcessKey" class="fade-in">
+            <div class="card border-0 shadow-xs mb-3 card-premium">
+              <div class="card-header bg-white border-0 fw-bold text-dark py-2 d-flex justify-content-between align-items-center">
+                <span class="d-flex align-items-center gap-2"><i class="bi bi-shield-exclamation text-danger"></i>Reglas de Validación</span>
+                <button class="btn btn-sm btn-outline-danger shadow-xs py-1 px-2" (click)="addValidation()">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+              </div>
+              <div class="card-body p-0 border-top">
+                <div *ngIf="!layout.validations || layout.validations.length === 0" class="text-muted small text-center py-4">
+                  <i class="bi bi-shield-check fs-2 text-success opacity-50 mb-2 d-block"></i>
+                  No hay validaciones configuradas.
+                </div>
+                <div class="list-group list-group-flush" *ngIf="layout.validations && layout.validations.length > 0">
+                  <div *ngFor="let val of layout.validations; let i = index" class="list-group-item bg-light border-bottom border-light">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <input type="text" class="form-control form-control-sm fw-bold border-0 bg-transparent text-dark shadow-none px-0" [(ngModel)]="val.name" placeholder="Nombre de validación">
+                      <button class="btn btn-sm btn-link text-danger p-0" (click)="removeValidation(i)" title="Eliminar regla"><i class="bi bi-trash-fill"></i></button>
+                    </div>
+                    
+                    <label class="form-label small fw-bold text-muted mb-0" style="font-size: 0.65rem;">Condición (JavaScript):</label>
+                    <div class="input-group input-group-sm mb-2 shadow-sm">
+                      <input type="text" class="form-control font-monospace text-primary shadow-none border-primary-subtle" [(ngModel)]="val.condition" placeholder="ej: edad < 18">
+                      <select class="form-select border-primary-subtle bg-light text-secondary" style="max-width: 180px; font-size: 0.75rem;" (change)="val.condition = (val.condition || '') + ' ' + $any($event.target).value + ' '; $any($event.target).value=''">
+                        <option value="">+ Insertar campo...</option>
+                        <option *ngFor="let f of _cachedFieldsList" [value]="f.name">{{f.label || f.name}}</option>
+                      </select>
+                    </div>
+                    
+                    <label class="form-label small fw-bold text-muted mb-0" style="font-size: 0.65rem;">Mensaje de Error:</label>
+                    <textarea class="form-control form-control-sm shadow-none" rows="2" [(ngModel)]="val.message" placeholder="Mensaje mostrado al usuario..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="activeSidebarTab === 'validations' && !selectedProcessKey" class="text-center py-5 text-muted card-premium border p-4">
+            <i class="bi bi-exclamation-triangle fs-2 d-block mb-2 text-warning animate-bounce"></i>
+            <span class="small fw-semibold">Selecciona un proceso para configurar validaciones.</span>
+          </div>
+
+          <!-- TAB 4: ACCIONES -->
+          <div *ngIf="activeSidebarTab === 'actions' && selectedProcessKey" class="fade-in">
+            <div class="card border-0 shadow-xs mb-3 card-premium">
+              <div class="card-header bg-white border-0 fw-bold text-dark py-2 d-flex justify-content-between align-items-center">
+                <span class="d-flex align-items-center gap-2"><i class="bi bi-lightning-charge-fill text-warning"></i>Reglas de Acciones</span>
+                <button class="btn btn-sm btn-outline-warning shadow-xs py-1 px-2 text-dark" (click)="addAction()">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+              </div>
+              <div class="card-body p-0 border-top">
+                <div *ngIf="!layout.actions || layout.actions.length === 0" class="text-muted small text-center py-4">
+                  <i class="bi bi-lightning fs-2 text-secondary opacity-50 mb-2 d-block"></i>
+                  No hay acciones configuradas.
+                </div>
+                <div class="list-group list-group-flush" *ngIf="layout.actions && layout.actions.length > 0">
+                  <div *ngFor="let act of layout.actions; let i = index" class="list-group-item bg-light border-bottom border-light">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <input type="text" class="form-control form-control-sm fw-bold border-0 bg-transparent text-dark shadow-none px-0" [(ngModel)]="act.name" placeholder="Nombre de acción">
+                      <button class="btn btn-sm btn-link text-danger p-0" (click)="removeAction(i)" title="Eliminar regla"><i class="bi bi-trash-fill"></i></button>
+                    </div>
+                    
+                    <label class="form-label small fw-bold text-muted mb-0 mt-2" style="font-size: 0.65rem;">SI (Condición JavaScript):</label>
+                    <div class="input-group input-group-sm mb-2 shadow-sm">
+                      <input type="text" class="form-control font-monospace text-primary shadow-none border-primary-subtle" [(ngModel)]="act.condition" placeholder="ej: edad < 18">
+                      <select class="form-select border-primary-subtle bg-light text-secondary" style="max-width: 180px; font-size: 0.75rem;" (change)="act.condition = (act.condition || '') + ' ' + $any($event.target).value + ' '; $any($event.target).value=''">
+                        <option value="">+ Insertar campo...</option>
+                        <option *ngFor="let f of _cachedFieldsList" [value]="f.name">{{f.label || f.name}}</option>
+                      </select>
+                    </div>
+                    
+                    <!-- ENTONCES -->
+                    <div class="bg-white border rounded p-2 mb-2">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label class="form-label small fw-bold text-success mb-0" style="font-size: 0.65rem;">ENTONCES (Efectos):</label>
+                        <button class="btn btn-sm btn-link text-success p-0" (click)="addEffect(act, 'then')"><i class="bi bi-plus-circle"></i></button>
+                      </div>
+                      <div *ngFor="let eff of act.thenEffects; let eIdx = index" class="d-flex gap-1 mb-1 align-items-center">
+                        <select class="form-select form-select-sm" [(ngModel)]="eff.type" style="width: 35%; font-size: 0.7rem;">
+                          <option value="visibility">Visibilidad</option>
+                          <option value="requirement">Obligatorio</option>
+                          <option value="editability">Editable</option>
+                          <option value="setValue">Asignar Valor</option>
+                        </select>
+                        <select class="form-select form-select-sm" [(ngModel)]="eff.target" style="width: 35%; font-size: 0.7rem;">
+                           <option *ngFor="let f of getAllFieldsList()" [value]="f.name">{{f.label || f.name}}</option>
+                        </select>
+                        <input *ngIf="eff.type !== 'setValue'" type="checkbox" class="form-check-input mt-0" [(ngModel)]="eff.value">
+                        <input *ngIf="eff.type === 'setValue'" type="text" class="form-control form-control-sm" [(ngModel)]="eff.value" style="width: 20%;">
+                        <button class="btn btn-sm btn-link text-danger p-0" (click)="act.thenEffects.splice(eIdx, 1)"><i class="bi bi-x"></i></button>
+                      </div>
+                    </div>
+
+                    <!-- SINO -->
+                    <div class="bg-white border rounded p-2">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label class="form-label small fw-bold text-danger mb-0" style="font-size: 0.65rem;">SINO (Efectos Alternos):</label>
+                        <button class="btn btn-sm btn-link text-danger p-0" (click)="addEffect(act, 'else')"><i class="bi bi-plus-circle"></i></button>
+                      </div>
+                      <div *ngFor="let eff of act.elseEffects; let eIdx = index" class="d-flex gap-1 mb-1 align-items-center">
+                        <select class="form-select form-select-sm" [(ngModel)]="eff.type" style="width: 35%; font-size: 0.7rem;">
+                          <option value="visibility">Visibilidad</option>
+                          <option value="requirement">Obligatorio</option>
+                          <option value="editability">Editable</option>
+                          <option value="setValue">Asignar Valor</option>
+                        </select>
+                        <select class="form-select form-select-sm" [(ngModel)]="eff.target" style="width: 35%; font-size: 0.7rem;">
+                           <option *ngFor="let f of getAllFieldsList()" [value]="f.name">{{f.label || f.name}}</option>
+                        </select>
+                        <input *ngIf="eff.type !== 'setValue'" type="checkbox" class="form-check-input mt-0" [(ngModel)]="eff.value">
+                        <input *ngIf="eff.type === 'setValue'" type="text" class="form-control form-control-sm" [(ngModel)]="eff.value" style="width: 20%;">
+                        <button class="btn btn-sm btn-link text-danger p-0" (click)="act.elseEffects.splice(eIdx, 1)"><i class="bi bi-x"></i></button>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="activeSidebarTab === 'actions' && !selectedProcessKey" class="text-center py-5 text-muted card-premium border p-4">
+            <i class="bi bi-lightning-charge fs-2 d-block mb-2 text-warning animate-bounce"></i>
+            <span class="small fw-semibold">Selecciona un proceso para configurar acciones.</span>
+          </div>
+
+        </div> <!-- Cierra PANEL IZQUIERDO -->
+
+        <!-- PANEL CENTRAL: LIENZO DE DISEÑO / PREVISUALIZACION -->
+        <div [ngClass]="(activeField || activeSection) ? 'col-xxl-7 col-xl-6 col-lg-7' : 'col-xxl-10 col-xl-9 col-lg-10'">
+          <div class="card border-0 shadow-sm min-vh-75 card-premium overflow-hidden">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+              <span class="fw-bold text-indigo d-flex align-items-center gap-2">
+                <i class="bi bi-display"></i>Lienzo de Diseño Interactivo
+              </span>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-indigo shadow-xs rounded-3 px-3 py-1.5" (click)="addTab()">
+                  <i class="bi bi-plus-square-fill me-1"></i>Añadir Pestaña
+                </button>
+              </div>
+            </div> 
+
+            <div class="card-body bg-light overflow-auto p-4" style="max-height: 750px; background-color: #f7f9fc !important;">
+              
+              <!-- Pestañas del Formulario -->
+              <ul class="nav nav-tabs mb-4 custom-tabs" *ngIf="layout.tabs.length > 0">
+                <li class="nav-item" *ngFor="let tab of layout.tabs; let tIdx = index">
+                  <a class="nav-link d-flex align-items-center gap-2 cursor-pointer py-2 px-3"

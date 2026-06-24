@@ -1,0 +1,209 @@
+// =============================================================================
+// ESTILOS GLOBALES - PLANTILLA EMPRESARIAL InnovaConsulting
+// =============================================================================
+
+// Importar variables SASS necesarias
+@use 'tokens.colors' as *;
+@use 'tokens.spacing' as *;
+@use 'tokens.typography' as *;
+
+// =============================================================================
+// RESET Y CONFIGURACIÓN BASE
+// =============================================================================
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-sans-serif);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// =============================================================================
+// ENLACES
+// =============================================================================
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-base);
+
+  &:hover {
+    color: var(--color-primary-light);
+    text-decoration: underline;
+  }
+}
+
+// =============================================================================
+// UTILIDADES DE COLORES
+// =============================================================================
+.text-primary { color: var(--color-primary) !important; }
+.text-secondary { color: var(--color-secondary) !important; }
+.text-success { color: var(--color-success) !important; }
+.text-info { color: var(--color-info) !important; }
+.text-warning { color: var(--color-warning) !important; }
+.text-danger { color: var(--color-danger) !important; }
+.text-muted { color: var(--text-muted) !important; }
+
+.bg-primary { background-color: var(--color-primary) !important; }
+.bg-secondary { background-color: var(--color-secondary) !important; }
+.bg-success { background-color: var(--color-success) !important; }
+.bg-info { background-color: var(--color-info) !important; }
+.bg-warning { background-color: var(--color-warning) !important; }
+.bg-danger { background-color: var(--color-danger) !important; }
+
+// =============================================================================
+// UTILIDADES DE ESPACIADO
+// =============================================================================
+.m-xs { margin: var(--spacer-xs) !important; }
+.m-sm { margin: var(--spacer-sm) !important; }
+.m-lg { margin: var(--spacer-lg) !important; }
+.m-xl { margin: var(--spacer-xl) !important; }
+
+.p-xs { padding: var(--spacer-xs) !important; }
+.p-sm { padding: var(--spacer-sm) !important; }
+.p-lg { padding: var(--spacer-lg) !important; }
+.p-xl { padding: var(--spacer-xl) !important; }
+
+// =============================================================================
+// UTILIDADES DE SOMBRAS
+// =============================================================================
+.shadow-sm { box-shadow: var(--box-shadow-sm) !important; }
+.shadow { box-shadow: var(--box-shadow) !important; }
+.shadow-lg { box-shadow: var(--box-shadow-lg) !important; }
+
+// =============================================================================
+// UTILIDADES DE BORDER RADIUS
+// =============================================================================
+.rounded-sm { border-radius: var(--border-radius-sm) !important; }
+.rounded { border-radius: var(--border-radius) !important; }
+.rounded-lg { border-radius: var(--border-radius-lg) !important; }
+.rounded-xl { border-radius: var(--border-radius-xl) !important; }
+
+// =============================================================================
+// ESTILOS ESPECÍFICOS PARA COMPONENTES
+// =============================================================================
+
+// Cards
+.card {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+  }
+
+  .card-body {
+    color: var(--text-primary);
+  }
+
+  .card-header {
+    border-color: var(--border-color);
+  }
+}
+
+// Botones
+.btn-primary {
+  background: var(--gradient-bgr) !important;
+  border: none !important;
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-base);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 57, 118, 0.4);
+  }
+}
+
+.btn-outline-primary {
+  border-color: var(--btn-outline-primary-border-color) !important;
+  color: var(--btn-outline-primary-color) !important;
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-base);
+  
+  &:hover {
+    background-color: var(--btn-outline-primary-color) !important;
+    border-color: var(--btn-outline-primary-color) !important;
+    color: var(--bg-primary) !important;
+    transform: translateY(-2px);
+  }
+}
+
+// Formularios
+.form-control {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.2rem rgba(0, 57, 118, 0.25);
+    background-color: var(--bg-surface);
+  }
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+// Input groups
+.input-group {
+  .input-group-text {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+  }
+}
+
+// =============================================================================
+// ESTILOS PARA LAYOUT PRINCIPAL
+// =============================================================================
+.bg-corporate {
+  background: var(--gradient-bgr) !important;
+  transition: background 0.3s ease;
+}
+
+.navbar-logo {
+  height: 32px;
+  width: auto;
+}
+
+.main-content {
+  margin-top: 56px;
+  min-height: calc(100vh - 56px - 60px);
+  padding-bottom: 60px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  z-index: 1020;
+}
+
+// =============================================================================
+// RESPONSIVE
+// =============================================================================
+@media (max-width: 768px) {
+  .main-content {
+    padding-bottom: 80px;
+  }
+  
+  .footer {
+    height: 80px;
+  }
+}

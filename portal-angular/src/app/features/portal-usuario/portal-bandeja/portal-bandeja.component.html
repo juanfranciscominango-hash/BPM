@@ -1,0 +1,59 @@
+<div class="container-fluid p-0">
+  <div class="mb-4 d-flex justify-content-between align-items-center">
+    <div>
+      <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-inbox-fill me-2"></i>Mis Procesos Activos</h2>
+      <p class="text-muted mb-0">Tareas que requieren tu acción o revisión.</p>
+    </div>
+    <button class="btn btn-outline-primary btn-sm rounded-pill px-3" (click)="cargarTareas()">
+      <i class="bi bi-arrow-clockwise me-1"></i>Actualizar
+    </button>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light text-muted small text-uppercase">
+            <tr>
+              <th class="ps-4">Tarea / Actividad</th>
+              <th>Proceso</th>
+              <th>Fecha de Ingreso</th>
+              <th class="text-end pe-4">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="loading">
+              <td colspan="4" class="text-center py-4 text-muted">Cargando tareas...</td>
+            </tr>
+            <tr *ngIf="!loading && tasks.length === 0">
+              <td colspan="4" class="text-center py-5">
+                <i class="bi bi-check-circle text-success fs-1 mb-2 d-block opacity-50"></i>
+                <h5 class="text-muted">¡Al día! No tienes tareas pendientes.</h5>
+              </td>
+            </tr>
+            <tr *ngFor="let task of tasks" class="cursor-pointer">
+              <td class="ps-4" (click)="abrirTarea(task)">
+                <div class="fw-bold text-dark">{{ task.name }}</div>
+                <small class="text-muted">ID Tarea: {{ task.id }}</small>
+              </td>
+              <td (click)="abrirTarea(task)">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">
+                  {{ task.processDefinitionId.split(':')[0] }}
+                </span>
+                <div class="small text-muted mt-2">Instancia: {{ task.processInstanceId }}</div>
+              </td>
+              <td (click)="abrirTarea(task)">
+                {{ task.createTime }}
+              </td>
+              <td class="text-end pe-4">
+                <button class="btn btn-sm btn-primary px-4 rounded-pill shadow-sm" (click)="abrirTarea(task)">
+                  <i class="bi bi-play-fill me-1"></i>Continuar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

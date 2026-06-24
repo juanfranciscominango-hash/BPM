@@ -1,0 +1,13 @@
+﻿import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'innova-reportes',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './reportes.html',
+  styleUrl: './reportes.scss'
+})
+export class ReportesComponent {
+
+}

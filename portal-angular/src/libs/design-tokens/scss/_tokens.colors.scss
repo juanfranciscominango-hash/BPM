@@ -1,0 +1,261 @@
+// =============================================================================
+// PALETA DE COLORES - PLANTILLA EMPRESARIAL InnovaConsulting
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// COLORES PRIMARIOS InnovaConsulting (OPCIÓN 1: CONFIANZA CORPORATIVA)
+// -----------------------------------------------------------------------------
+$innova-primary: #e30613;      // Deep Navy
+$innova-secondary: #b30000;    // Slate Blue
+$innova-accent: #D4AF37;       // Matte Gold
+$innova-blue: $innova-primary;
+$innova-blue-light: $innova-secondary;
+$innova-blue-dark: #800000;
+
+$innova-on-primary: #ffffff;
+$innova-on-secondary: #ffffff;
+$innova-on-accent: #ffffff;
+
+// Colores adicionales InnovaConsulting
+$innova-gray: #f8f9fa;
+$innova-accent-orange: #ff9800;
+
+// -----------------------------------------------------------------------------
+// COLORES DE SUPERFICIE Y FONDO
+// -----------------------------------------------------------------------------
+$innova-surface: #ffffff;
+$innova-surface-variant: #f1f3f4;
+$innova-surface-disabled: #dee2e6;
+$innova-on-surface: #e30613;
+$innova-on-surface-variant: #b30000;
+$innova-outline: #dee2e6;
+$innova-outline-variant: #e9ecef;
+
+$innova-background: #f8f9fa;
+$innova-background-secondary: #ffffff;
+
+// -----------------------------------------------------------------------------
+// COLORES DE ESTADO
+// -----------------------------------------------------------------------------
+$innova-success: #198754;
+$innova-success-light: #d1eddb;
+$innova-on-success: #ffffff;
+
+$innova-warning: #fd7e14;
+$innova-warning-light: #fff3cd;
+$innova-on-warning: #000000;
+
+$innova-error: #dc3545;
+$innova-error-light: #f8d7da;
+$innova-on-error: #ffffff;
+
+$innova-info: #0dcaf0;
+$innova-info-light: #cff4fc;
+$innova-on-info: #000000;
+
+// -----------------------------------------------------------------------------
+// COLORES NEUTROS
+// -----------------------------------------------------------------------------
+$white: #ffffff;
+$light: #f8f9fa;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$dark: #212529;
+$black: #000000;
+
+// -----------------------------------------------------------------------------
+// COLORES ESPECIALES
+// -----------------------------------------------------------------------------
+$innova-gold: #ffd700;
+$innova-silver: #c0c0c0;
+
+// Colores de entorno
+$env-production: #dc3545;
+$env-test: #0dcaf0;
+$env-development: #ffc107;
+
+// -----------------------------------------------------------------------------
+// COLORES DE TEXTO
+// -----------------------------------------------------------------------------
+$text-primary: $gray-900;
+$text-secondary: $gray-600;
+$text-muted: $gray-500;
+$text-light: $gray-400;
+$text-white: $white;
+
+// -----------------------------------------------------------------------------
+// COLORES DE BORDE Y SOMBRA
+// -----------------------------------------------------------------------------
+$border-color: $gray-300;
+$border-light: $gray-200;
+$border-dark: $gray-400;
+
+$shadow-color: rgba(0, 0, 0, 0.15);
+$shadow-light: rgba(0, 0, 0, 0.08);
+$shadow-dark: rgba(0, 0, 0, 0.25);
+
+// -----------------------------------------------------------------------------
+// GRADIENTES
+// -----------------------------------------------------------------------------
+$gradient-primary: linear-gradient(135deg, $innova-primary 0%, $innova-secondary 100%);
+$gradient-bgr: linear-gradient(135deg, $innova-primary 0%, $innova-secondary 100%);
+$gradient-login-bg: linear-gradient(135deg, $innova-background 0%, #ffffff 100%);
+$gradient-light: linear-gradient(135deg, $light 0%, $gray-200 100%);
+$gradient-gray-login: linear-gradient(135deg, $gray-800 0%, $gray-600 50%, $gray-400 100%);
+
+// -----------------------------------------------------------------------------
+// COLORES DE HOVER Y FOCUS
+// -----------------------------------------------------------------------------
+$hover-primary: $innova-secondary;
+$hover-secondary: $gray-700;
+$hover-light: $gray-200;
+$focus-ring: rgba($innova-primary, 0.25);
+
+// =============================================================================
+// COLORES PARA TEMA OSCURO
+// =============================================================================
+$dark-bg-primary: #1a1a1a;
+$dark-bg-secondary: #2d2d2d;
+$dark-bg-surface: #383838;
+$dark-bg-elevated: #404040;
+$dark-text-primary: #ffffff;
+$dark-text-secondary: #e0e0e0;
+$dark-text-muted: #b0b0b0;
+$dark-border-color: #484848;
+$dark-border-light: #404040;
+
+$dark-innova-blue: $innova-primary;
+$dark-innova-blue-light: #ff4d4d;
+$dark-innova-blue-dark: #800000;
+
+$dark-success: #22c55e;
+$dark-info: #0ea5e9;
+$dark-warning: #f59e0b;
+$dark-danger: #ef4444;
+
+// -----------------------------------------------------------------------------
+// COLORES PARA TOGGLE DE TEMA
+// -----------------------------------------------------------------------------
+$theme-toggle-bg: transparent;
+$theme-toggle-border: $border-color;
+$theme-toggle-text: $border-color;
+$theme-toggle-hover-bg: $gray-100;
+$theme-toggle-hover-border: $innova-blue;
+$theme-toggle-hover-text: $innova-blue;
+$theme-toggle-focus-shadow: rgba($innova-blue, 0.25);
+
+$theme-toggle-dark-bg: transparent;
+$theme-toggle-dark-border: $dark-border-color;
+$theme-toggle-dark-text: $dark-border-color;
+$theme-toggle-dark-hover-bg: $dark-bg-elevated;
+$theme-toggle-dark-hover-border: $dark-innova-blue;
+$theme-toggle-dark-hover-text: $dark-innova-blue;
+
+// CSS Custom Properties
+:root {
+  /* Brand - InnovaConsulting Corporate Trust (OPCIÓN 1) */
+  --color-primary: #{$innova-primary};
+  --color-primary-light: #{$innova-secondary};
+  --color-primary-dark: #{$innova-blue-dark};
+  --color-secondary: #{$innova-secondary};
+  --color-accent: #{$innova-accent};
+  
+  /* Estados */
+  --color-success: #{$innova-success};
+  --color-info: #{$innova-info};
+  --color-warning: #{$innova-warning};
+  --color-danger: #{$innova-error};
+  
+  /* Fondos */
+  --bg-primary: #{$innova-background};
+  --bg-secondary: #{$innova-background-secondary};
+  --bg-surface: #{$innova-surface};
+  
+  /* Textura */
+  --text-primary: #{$innova-on-surface};
+  --text-secondary: #{$innova-on-surface-variant};
+  --text-muted: #{$text-muted};
+  
+  /* Bordes */
+  --border-color: #{$innova-outline};
+  --border-light: #{$innova-outline-variant};
+  
+  /* Sombras */
+  --shadow-color: rgba(0, 33, 71, 0.15);
+  --shadow-light: rgba(0, 33, 71, 0.08);
+  
+  /* Gradientes */
+  --gradient-bgr: #{$gradient-bgr};
+  --gradient-primary: #{$gradient-primary};
+  --gradient-login-bg: #{$gradient-login-bg};
+  
+  /* Estilos de botones */
+  --btn-outline-primary-color: #{$innova-primary};
+  --btn-outline-primary-border-color: #{$innova-primary};
+  
+  /* ... (mantenido) ... */
+  
+  /* Theme toggle */
+  --theme-toggle-bg: #{$theme-toggle-bg};
+  --theme-toggle-border: #{$theme-toggle-border};
+  --theme-toggle-text: #{$theme-toggle-text};
+  --theme-toggle-hover-bg: #{$theme-toggle-hover-bg};
+  --theme-toggle-hover-border: #{$theme-toggle-hover-border};
+  --theme-toggle-hover-text: #{$theme-toggle-hover-text};
+  --theme-toggle-focus-shadow: #{$theme-toggle-focus-shadow};
+}
+
+[data-theme="dark"] {
+  /* Brand colors adjusted for dark mode */
+  --color-primary: #{$dark-innova-blue};
+  --color-innova-blue: #{$dark-innova-blue};
+  --color-innova-blue-light: #{$dark-innova-blue-light};
+  --color-innova-blue-dark: #{$dark-innova-blue-dark};
+  
+  /* States for dark mode */
+  --color-success: #{$dark-success};
+  --color-info: #{$dark-info};
+  --color-warning: #{$dark-warning};
+  --color-danger: #{$dark-danger};
+  
+  /* Backgrounds for dark mode */
+  --bg-primary: #{$dark-bg-primary};
+  --bg-secondary: #{$dark-bg-secondary};
+  --bg-surface: #{$dark-bg-surface};
+  
+  /* Text for dark mode */
+  --text-primary: #{$dark-text-primary};
+  --text-secondary: #{$dark-text-secondary};
+  --text-muted: #{$dark-text-muted};
+  
+  /* Borders for dark mode */
+  --border-color: #{$dark-border-color};
+  --border-light: #{$dark-border-light};
+  
+  /* Shadows for dark mode */
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-light: rgba(0, 0, 0, 0.2);
+  
+  /* Gradients for dark mode */
+  --gradient-bgr: #{$gradient-gray-login};
+  
+  /* Button styles for dark mode */
+  --btn-outline-primary-color: #{$white};
+  --btn-outline-primary-border-color: #{$white};
+  
+  /* Theme toggle for dark mode */
+  --theme-toggle-bg: #{$theme-toggle-dark-bg};
+  --theme-toggle-border: #{$theme-toggle-dark-border};
+  --theme-toggle-text: #{$theme-toggle-dark-text};
+  --theme-toggle-hover-bg: #{$theme-toggle-dark-hover-bg};
+  --theme-toggle-hover-border: #{$theme-toggle-dark-hover-border};
+  --theme-toggle-hover-text: #{$theme-toggle-dark-hover-text};
+  --theme-toggle-focus-shadow: rgba(74, 144, 164, 0.25);
+}

@@ -1,0 +1,7 @@
+const { Client } = require('pg');
+const client = new Client({ user: 'postgres', host: 'localhost', database: 'INC_BPM_PLATFORM', password: 'Desarrollo', port: 5432 });
+
+client.connect()
+  .then(() => client.query("SELECT id, name, process_key, task_key FROM screen_definition WHERE process_key = 'Flujo_Credito_Completo'"))
+  .then(res => { console.log(res.rows); client.end(); })
+  .catch(e => { console.error(e); client.end(); });

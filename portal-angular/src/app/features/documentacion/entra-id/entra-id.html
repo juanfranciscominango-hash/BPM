@@ -1,0 +1,491 @@
+<div class="documentacion-container">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/dashboard" title="Inicio" aria-label="Ir a página de inicio">
+          <i class="bi bi-house-door"></i>
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a routerLink="/documentacion" aria-label="Ir a documentación">Documentación</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Entra ID</li>
+    </ol>
+  </nav>
+
+  <div class="page-header mb-4">
+    <div class="d-flex align-items-center">
+      <div class="azure-logo me-3">
+        <i class="bi bi-microsoft fs-1 text-primary"></i>
+      </div>
+      <div>
+        <h1 class="page-title mb-1">Documentación Entra ID</h1>
+        <p class="page-subtitle mb-0">Guía completa para la integración con Microsoft Entra ID</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Introducción -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-info-circle me-2"></i>
+            ¿Qué es Entra ID?
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="mb-3">
+            Microsoft Entra ID (anteriormente Azure Active Directory) es el servicio de identidad y acceso basado en la nube de Microsoft.
+            Proporciona autenticación y autorización para aplicaciones web y móviles.
+          </p>
+          <div class="alert alert-info">
+            <i class="bi bi-lightbulb me-2"></i>
+            <strong>Nota:</strong> Esta aplicación utiliza MSAL Browser v4 para la integración con Entra ID.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configuración en Azure -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-gear me-2"></i>
+            Configuración en Azure Portal
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="accordion" id="azureConfigAccordion">
+            <!-- App Registration -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#app-reg">
+                  <i class="bi bi-plus-circle me-2"></i>Registro de Aplicación
+                </button>
+              </h2>
+              <div id="app-reg" class="accordion-collapse collapse show" data-bs-parent="#azureConfigAccordion">
+                <div class="accordion-body">
+                  <ol class="steps-list">
+                    <li>
+                      <strong>Acceder al Azure Portal:</strong>
+                      <p>Ve a portal.azure.com e inicia sesión.</p>
+                    </li>
+                    <li>
+                      <strong>Buscar "App registrations":</strong>
+                      <p>En la barra de búsqueda, escribe "App registrations" y selecciónalo.</p>
+                    </li>
+                    <li>
+                      <strong>Crear nueva aplicación:</strong>
+                      <p>Haz clic en "New registration" y completa los campos requeridos.</p>
+                    </li>
+                    <li>
+                      <strong>Guardar Application ID:</strong>
+                      <p>Copia el "Application (client) ID" que se genera.</p>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <!-- Permissions -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#permissions">
+                  <i class="bi bi-shield-check me-2"></i>Configurar Permisos
+                </button>
+              </h2>
+              <div id="permissions" class="accordion-collapse collapse" data-bs-parent="#azureConfigAccordion">
+                <div class="accordion-body">
+                  <h6>Permisos de API</h6>
+                  <ol class="steps-list">
+                    <li>En tu App Registration, ve a "API permissions"</li>
+                    <li>Haz clic en "Add a permission"</li>
+                    <li>Selecciona "Microsoft Graph"</li>
+                    <li>Agrega los siguientes permisos delegados:
+                      <ul>
+                        <li><code>User.Read</code> - Leer perfil básico del usuario</li>
+                        <li><code>User.ReadBasic.All</code> - Leer perfiles básicos de todos los usuarios</li>
+                        <li><code>Directory.Read.All</code> - Leer datos del directorio (para roles)</li>
+                      </ul>
+                    </li>
+                    <li>Haz clic en "Grant admin consent" para los permisos</li>
+                  </ol>
+
+                  <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Importante:</strong> Los permisos de directorio requieren consentimiento de administrador.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Authentication -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#authentication">
+                  <i class="bi bi-key me-2"></i>Configurar Autenticación
+                </button>
+              </h2>
+              <div id="authentication" class="accordion-collapse collapse" data-bs-parent="#azureConfigAccordion">
+                <div class="accordion-body">
+                  <h6>URLs de Redireccionamiento</h6>
+                  <p>Configura las siguientes URLs en "Authentication":</p>
+                  <ul>
+                    <li><strong>Desarrollo:</strong> <code>http://localhost:4200</code></li>
+                    <li><strong>Producción:</strong> <code>https://tu-dominio.com</code></li>
+                    <li><strong>Staging:</strong> <code>https://staging.tu-dominio.com</code></li>
+                  </ul>
+
+                  <h6>Flujo de Concesión Implícita</h6>
+                  <p>Habilita "Access tokens" e "ID tokens" para aplicaciones SPA.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configuración en el Proyecto -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-code-slash me-2"></i>
+            Configuración en el Proyecto Angular
+          </h5>
+        </div>
+        <div class="card-body">
+          <h6>Archivo environment.ts</h6>
+          <p>Configura las variables de entorno en <code>src/environments/environment.ts</code>:</p>
+          <div class="bg-light p-3 rounded mb-3">
+            <pre><code>export const environment = &#123;
+  production: false,
+  msalConfig: &#123;
+    auth: &#123;
+      clientId: 'TU_CLIENT_ID_AQUI',
+      authority: 'https://login.microsoftonline.com/TU_TENANT_ID',
+      redirectUri: 'http://localhost:4200'
+    &#125;,
+    cache: &#123;
+      cacheLocation: 'localStorage',
+      storeAuthStateInCookie: false
+    &#125;
+  &#125;,
+  apiConfig: &#123;
+    scopes: ['user.read'],
+    uri: 'https://graph.microsoft.com/v1.0/me'
+  &#125;
+&#125;;</code></pre>
+          </div>
+
+          <h6>Archivo msal.config.ts</h6>
+          <p>Configura MSAL en <code>src/app/config/msal.config.ts</code>:</p>
+          <div class="bg-light p-3 rounded">
+            <pre><code>import &#123; Configuration &#125; from '@azure/msal-browser';
+
+export const msalConfig: Configuration = &#123;
+  auth: &#123;
+    clientId: environment.msalConfig.auth.clientId,
+    authority: environment.msalConfig.auth.authority,
+    redirectUri: environment.msalConfig.auth.redirectUri,
+    postLogoutRedirectUri: environment.msalConfig.auth.redirectUri
+  &#125;,
+  cache: &#123;
+    cacheLocation: 'localStorage',
+    storeAuthStateInCookie: false
+  &#125;
+&#125;;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Uso en Componentes -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-play-circle me-2"></i>
+            Uso en Componentes
+          </h5>
+        </div>
+        <div class="card-body">
+          <h6>Autenticación Básica</h6>
+          <p>Los componentes pueden usar el servicio MSAL para autenticación.</p>
+
+          <h6>Obtener Token de Acceso</h6>
+          <p>Para llamadas a APIs protegidas, obtén tokens de acceso usando MSAL.</p>
+
+          <h6>Protección de Rutas con Guards</h6>
+          <p>Implementa guards para proteger rutas que requieren autenticación.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ejemplos de Consumo de Servicios -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-code-square me-2"></i>
+            Ejemplos de Consumo de Servicios
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <!-- API Service -->
+            <div class="col-md-4 mb-3">
+              <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                  <h6 class="card-title mb-0">
+                    <i class="bi bi-cloud me-2"></i>API Service
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <p class="small">Consumo de APIs REST con autenticación MSAL</p>
+                  <div class="bg-light p-2 rounded">
+                    <pre class="small mb-0"><code>import &#123; HttpClient &#125; from '@angular/common/http';
+import &#123; MsalService &#125; from '@azure/msal-angular';
+
+@Injectable(&#123;
+  providedIn: 'root'
+&#125;)
+export class ApiService &#123;
+  constructor(
+    private http: HttpClient,
+    private msalService: MsalService
+  ) &#123;&#125;
+
+  async getData() &#123;
+    const token = await this.getAccessToken();
+    return this.http.get('/api/data', &#123;
+      headers: &#123; Authorization: `Bearer $&#123;token&#125;` &#125;
+    &#125;);
+  &#125;
+
+  private async getAccessToken(): Promise&lt;string&gt; &#123;
+    const result = await this.msalService.acquireTokenSilent(&#123;
+      scopes: ['api://tu-api-id/.default']
+    &#125;);
+    return result.accessToken;
+  &#125;
+&#125;</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Redis Service -->
+            <div class="col-md-4 mb-3">
+              <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                  <h6 class="card-title mb-0">
+                    <i class="bi bi-database me-2"></i>Redis Service
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <p class="small">Cache distribuido con Redis y autenticación</p>
+                  <div class="bg-light p-2 rounded">
+                    <pre class="small mb-0"><code>import &#123; Injectable &#125; from '@angular/core';
+import &#123; HttpClient &#125; from '@angular/common/http';
+
+@Injectable(&#123;
+  providedIn: 'root'
+&#125;)
+export class RedisService &#123;
+  constructor(private http: HttpClient) &#123;&#125;
+
+  async getCachedData(key: string) &#123;
+    return this.http.get(`/api/cache/$&#123;key&#125;`, &#123;
+      headers: &#123; Authorization: `Bearer $&#123;this.getToken()&#125;` &#125;
+    &#125;);
+  &#125;
+
+  async setCacheData(key: string, data: any) &#123;
+    return this.http.post(`/api/cache/$&#123;key&#125;`, data, &#123;
+      headers: &#123; Authorization: `Bearer $&#123;this.getToken()&#125;` &#125;
+    &#125;);
+  &#125;
+
+  private getToken(): string &#123;
+    // Obtener token de MSAL
+    return localStorage.getItem('msal.token') || '';
+  &#125;
+&#125;</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- WCF Service -->
+            <div class="col-md-4 mb-3">
+              <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                  <h6 class="card-title mb-0">
+                    <i class="bi bi-gear me-2"></i>WCF Service
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <p class="small">Integración con servicios WCF legacy</p>
+                  <div class="bg-light p-2 rounded">
+                    <pre class="small mb-0"><code>import &#123; Injectable &#125; from '@angular/core';
+import &#123; HttpClient &#125; from '@angular/common/http';
+
+@Injectable(&#123;
+  providedIn: 'root'
+&#125;)
+export class WcfService &#123;
+  constructor(private http: HttpClient) &#123;&#125;
+
+  async callWcfMethod(data: any) &#123;
+    const soapEnvelope = this.createSoapEnvelope(data);
+    return this.http.post('/wcf/Service.svc', soapEnvelope, &#123;
+      headers: &#123;
+        'Content-Type': 'text/xml',
+        'SOAPAction': 'http://tempuri.org/IMyService/MyMethod',
+        'Authorization': `Bearer $&#123;this.getToken()&#125;`
+      &#125;,
+      responseType: 'text'
+    &#125;);
+  &#125;
+
+  private createSoapEnvelope(data: any): string &#123;
+    return `&lt;soap:Envelope&gt;...&lt;/soap:Envelope&gt;`;
+  &#125;
+
+  private getToken(): string &#123;
+    return localStorage.getItem('msal.token') || '';
+  &#125;
+&#125;</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roles y Permisos -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-person-badge me-2"></i>
+            Roles y Permisos
+          </h5>
+        </div>
+        <div class="card-body">
+          <h6>Obtener Roles del Usuario</h6>
+          <p>Los roles se obtienen del token ID proporcionado por Entra ID.</p>
+
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Nota:</strong> Los roles se configuran en Azure AD y se incluyen automáticamente en el token ID.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Solución de Problemas -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Solución de Problemas
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="accordion" id="troubleshootingAccordion">
+            <!-- Login Issues -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#login-issues">
+                  <i class="bi bi-bug me-2"></i>Problemas de Login
+                </button>
+              </h2>
+              <div id="login-issues" class="accordion-collapse collapse show" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  <div class="alert alert-danger">
+                    <h6>Error: "interaction_in_progress"</h6>
+                    <p><strong>Solución:</strong> Limpiar el localStorage y reiniciar el navegador.</p>
+                    <div class="bg-light p-2 rounded">
+                      <code>localStorage.clear();</code>
+                    </div>
+                  </div>
+
+                  <div class="alert alert-danger">
+                    <h6>Error: "invalid_client"</h6>
+                    <p><strong>Solución:</strong> Verificar que el Client ID sea correcto en la configuración.</p>
+                  </div>
+
+                  <div class="alert alert-danger">
+                    <h6>Error: "access_denied"</h6>
+                    <p><strong>Solución:</strong> Verificar permisos y consentimiento de administrador en Azure AD.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Token Issues -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#token-issues">
+                  <i class="bi bi-key me-2"></i>Problemas con Tokens
+                </button>
+              </h2>
+              <div id="token-issues" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  <div class="alert alert-warning">
+                    <h6>Token Expirado</h6>
+                    <p><strong>Solución:</strong> MSAL automáticamente renueva tokens expirados.</p>
+                  </div>
+
+                  <div class="alert alert-warning">
+                    <h6>Token no Contiene Roles</h6>
+                    <p><strong>Solución:</strong> Verificar que los roles estén asignados en Azure AD.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CORS Issues -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cors-issues">
+                  <i class="bi bi-globe me-2"></i>Problemas de CORS
+                </button>
+              </h2>
+              <div id="cors-issues" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  <div class="alert alert-info">
+                    <h6>Configuración de CORS en Desarrollo</h6>
+                    <p>Para desarrollo local, configurar el proxy en <code>angular.json</code>.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

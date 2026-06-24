@@ -1,0 +1,103 @@
+<div class="portal-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar bg-white text-dark shadow-sm" [class.collapsed]="sidebarCollapsed">
+    <div class="sidebar-header d-flex align-items-center justify-content-between p-3 border-bottom border-light" style="background: var(--gradient-bgr);">
+      <div class="logo-area d-flex align-items-center" *ngIf="!sidebarCollapsed">
+        <i class="bi bi-bank2 fs-4 text-white me-2"></i>
+        <span class="fs-5 fw-bold text-white">Mi Crédito</span>
+      </div>
+      <button class="btn btn-sm text-white border-0" (click)="toggleSidebar()">
+        <i class="bi" [ngClass]="sidebarCollapsed ? 'bi-list' : 'bi-chevron-left'"></i>
+      </button>
+    </div>
+
+    <div class="user-info p-3 border-bottom border-light" *ngIf="!sidebarCollapsed">
+      <div class="d-flex align-items-center">
+        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+          <i class="bi bi-person-fill fs-5"></i>
+        </div>
+        <div>
+          <h6 class="mb-0 fw-bold text-dark">{{ currentUser?.fullName || 'Usuario' }}</h6>
+          <small class="text-muted">{{ currentUser?.roles?.join(', ') || 'Cliente' }}</small>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav flex-column py-3 sidebar-nav">
+      <!-- Opción de Iniciar: Solo visible para Cliente (simulado) -->
+      <li class="nav-item px-3 mb-2" *ngIf="currentUser?.roles?.includes('CLIENTE') || true">
+        <button class="btn btn-primary w-100 text-start shadow-sm d-flex align-items-center" [routerLink]="['/portal/wizard']" *ngIf="!sidebarCollapsed">
+          <i class="bi bi-play-circle-fill me-2"></i> Iniciar Solicitud
+        </button>
+        <button class="btn btn-primary w-100 text-center shadow-sm" [routerLink]="['/portal/wizard']" *ngIf="sidebarCollapsed" title="Iniciar Solicitud">
+          <i class="bi bi-play-circle-fill"></i>
+        </button>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/bandeja" routerLinkActive="active">
+          <i class="bi bi-inbox fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
+          <span *ngIf="!sidebarCollapsed">Mis procesos activos</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/crm" routerLinkActive="active">
+          <i class="bi bi-person-lines-fill fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
+          <span *ngIf="!sidebarCollapsed">Gestión CRM</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/simulacion" routerLinkActive="active">
+          <i class="bi bi-calculator fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
+          <span *ngIf="!sidebarCollapsed">Simulación de Crédito</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/historial" routerLinkActive="active">
+          <i class="bi bi-clock-history fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
+          <span *ngIf="!sidebarCollapsed">Historial de solicitudes</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/notificaciones" routerLinkActive="active">
+          <i class="bi bi-bell fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
+          <span *ngIf="!sidebarCollapsed">Notificaciones <span class="badge bg-danger rounded-pill ms-2">2</span></span>
+        </a>
+      </li>
+
+      <li class="nav-item mt-4">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/ayuda" routerLinkActive="active">
+          <i class="bi bi-question-circle fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
+          <span *ngIf="!sidebarCollapsed">Ayuda / Soporte</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="mt-auto p-3 border-top border-secondary text-center">
+      <a href="#" (click)="logout($event)" class="text-muted text-decoration-none d-flex align-items-center justify-content-center" title="Cerrar Sesión">
+        <i class="bi bi-box-arrow-right fs-5" [ngClass]="{'me-2': !sidebarCollapsed}"></i>
+        <span *ngIf="!sidebarCollapsed">Cerrar sesión</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content bg-light">
+    <!-- Header Pestañas -->
+    <header class="bg-white shadow-sm py-2 px-4 d-flex justify-content-end align-items-center">
+      <span class="text-muted small me-3"><i class="bi bi-calendar-event me-1"></i> Hoy</span>
+      <button class="btn btn-light rounded-circle position-relative me-3">
+        <i class="bi bi-bell text-secondary"></i>
+        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+      </button>
+    </header>
+
+    <div class="content-body p-4 h-100 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

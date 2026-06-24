@@ -1,0 +1,45 @@
+// Bootstrap 5 - Solo sistema de grids y utilidades de layout
+// Importamos solo las partes que necesitamos para evitar conflictos con Material
+
+// 1. Variables y funciones esenciales
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/utilities";
+
+// 4. Breakpoints personalizados si es necesario
+// Puedes sobrescribir los breakpoints de Bootstrap aquí si quieres
+// $grid-breakpoints: (
+//   xs: 0,
+//   sm: 576px,
+//   md: 768px,
+//   lg: 992px,
+//   xl: 1200px,
+//   xxl: 1400px
+// );
+
+// 5. Container personalizado para alinear con tu design system
+.container-bgr {
+  @extend .container-fluid;
+  max-width: 1400px; // Alineado con tu dashboard actual
+  margin: 0 auto;
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+}
+
+// 6. Clases de utilidad personalizadas para spacing con tus tokens
+.gap-innova-xs { gap: var(--spacing-xs) !important; }
+.gap-innova-sm { gap: var(--spacing-sm) !important; }
+.gap-innova-md { gap: var(--spacing-md) !important; }
+.gap-innova-lg { gap: var(--spacing-lg) !important; }
+.gap-innova-xl { gap: var(--spacing-xl) !important; }
+
+// 7. Override de gutters para usar tus spacing tokens
+$grid-gutter-width: var(--spacing-md);
+
+// 8. Prevent conflicts with Material by scoping specific classes
+// Use .bootstrap-layout class wrapper when needed to scope Bootstrap grid styles

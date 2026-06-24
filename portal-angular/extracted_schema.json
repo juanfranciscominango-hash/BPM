@@ -1,0 +1,1802 @@
+{
+  "credito_maestro": {
+    "label": "Solicitud de Crédito",
+    "description": "Entidad central del crédito",
+    "attributes": [
+      {
+        "name": "gestor_documental",
+        "label": "Gestor Documental",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "posibilidad_de_adjuntar_respaldos_hasta_12_mb",
+        "label": "Posibilidad de adjuntar respaldos hasta 12 MB",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "el_sistema_debe_permititr_cargar_un_solo_documento_por_tipo_de_requisito",
+        "label": "El sistema debe permititr cargar un solo documento por tipo de requisito",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "se_debe_poder_visualizar_los_documentos_durante_todas_las_actividades_del_flujo",
+        "label": "Se debe poder visualizar los documentos durante todas las actividades del flujo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "campos",
+        "label": "Campos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuando_son_campos_numricos_el_formato_es_6_nmeros_con_2_decimales",
+        "label": "Cuando son campos numéricos el formato es: 6 números con 2 decimales",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "notificaciones",
+        "label": "Notificaciones",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "pesetaa_informacin_del_cliente",
+        "label": "PESETAÑA: Información del cliente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_general",
+        "label": "Información General",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fecha_caso",
+        "label": "Fecha Caso",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "nmero_de_caso",
+        "label": "Número de caso",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ciudad",
+        "label": "Ciudad",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "estado_de_caso",
+        "label": "Estado de caso",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "usuario_creador",
+        "label": "Usuario creador",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "agencia_de_usuario",
+        "label": "Agencia de usuario",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nombre_del_asesor",
+        "label": "Nombre del asesor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fecha_solicitud",
+        "label": "Fecha Solicitud",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "reproceso_tcs",
+        "label": "Reproceso TCS",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "reproceso_anlisis",
+        "label": "Reproceso Análisis",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_de_identificacin",
+        "label": "Tipo de identificación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "identificacin",
+        "label": "Identificación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nombres_completos",
+        "label": "Nombres completos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "apellidos_completos",
+        "label": "Apellidos completos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "monto_solicitado",
+        "label": "Monto Solicitado",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "plazo_solicitado",
+        "label": "Plazo Solicitado",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "crdito_vipvis",
+        "label": "Crédito VIP/VIS",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuota_entrada",
+        "label": "Cuota Entrada",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "valor_gastos_legales_asesor",
+        "label": "Valor Gastos Legales/ Asesor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "avalo_comercial",
+        "label": "Avalúo Comercial",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "operacin_gaf",
+        "label": "Operación GAF",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "civil_migrante",
+        "label": "Civil Migrante",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "avalo_comercial_informe",
+        "label": "Avalúo Comercial Informe",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "zona",
+        "label": "Zona",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "consideraciones",
+        "label": "Consideraciones",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "seccin_informacin_general",
+        "label": "Sección: Información General",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "resultado_simulacin",
+        "label": "Resultado Simulación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "din_crdito",
+        "label": "DIN Crédito",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "aprobado_din",
+        "label": "Aprobado DIN",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cin_crdito",
+        "label": "CIN Crédito",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "aprobado_cin",
+        "label": "Aprobado CIN",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "detalle_de_la_exepcion",
+        "label": "Detalle de la exepcion",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "recomendado_por_gerencia",
+        "label": "Recomendado por gerencia",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nombre_cargo_de_recomendacin",
+        "label": "Nombre/ Cargo de Recomendación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "detalle_de_la_descripcin",
+        "label": "Detalle de la descripción",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "autorizado_por",
+        "label": "Autorizado por",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_de_actividad",
+        "label": "Tipo de actividad",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "exepcin",
+        "label": "Exepción",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "descripcin_exepcin",
+        "label": "Descripción exepción",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "extracto_de_poltica",
+        "label": "Extracto de política",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "botn",
+        "label": "Botón",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "aadir_este_botn_permite_aadir_n_veces_otra_seccin_detalle_de_exepcin",
+        "label": "Añadir\r\nEste botón permite añadir n veces otra sección detalle de exepción.",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "observaciones",
+        "label": "Observaciones",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "al_salir",
+        "label": "Al Salir",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "observaciones_asesor",
+        "label": "Observaciones Asesor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "linea_supervisin",
+        "label": "Linea Supervisión",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "respuesta",
+        "label": "Respuesta",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "aprobar",
+        "label": "Aprobar",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "autorizador",
+        "label": "Autorizador",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "motivos_de_negacin",
+        "label": "Motivos de Negación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "pesetaa_inicio",
+        "label": "PESETAÑA: Inicio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "observaciones_digitacin_tcs",
+        "label": "Observaciones Digitación (TCS)",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "observaciones_regularizar_documentacin_uac_asesor",
+        "label": "Observaciones regularizar documentación UAC (Asesor)",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "motivo_de_devolucin_crdito_personas",
+        "label": "Motivo de devolución Crédito Personas",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cliente_acepta_condiciones",
+        "label": "Cliente acepta condiciones",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cerrar_caso",
+        "label": "Cerrar Caso",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "recalificacin",
+        "label": "Recalificación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuando_viene_de_digitacin",
+        "label": "Cuando viene de digitación:",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "vuelve_a_la_actividad_digitar_documentacin_de_crdito",
+        "label": "Vuelve a la actividad digitar documentación de crédito",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuando_viene_de_analisis_de_crdito",
+        "label": "Cuando viene de Analisis de crédito:",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "simulacin",
+        "label": "Simulación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "monto_mnimo",
+        "label": "Monto Mínimo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "monto_mximo",
+        "label": "Monto Máximo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tasa_inters",
+        "label": "Tasa Interés",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "plazo_mnimo_meses",
+        "label": "Plazo Mínimo (meses)",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "plazo_mximo_meses",
+        "label": "Plazo Máximo (meses)",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "plazo_solicitado_meses",
+        "label": "Plazo Solicitado (meses)",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_clculo",
+        "label": "Tipo Cálculo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "_entrada",
+        "label": "% Entrada",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cobertura",
+        "label": "Cobertura",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "total_ingreso_familiar",
+        "label": "Total Ingreso Familiar",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuota_m_crdito",
+        "label": "Cuota M Crédito",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuota_m_tc",
+        "label": "Cuota M TC",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuota_bgr",
+        "label": "Cuota BGR",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "total_deuda",
+        "label": "Total Deuda",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "continuar_solicitud_crdito",
+        "label": "Continuar Solicitud Crédito",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ingresos",
+        "label": "Ingresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ingreso_bruto",
+        "label": "Ingreso bruto",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ingresos_mensuales",
+        "label": "Ingresos Mensuales",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "mes",
+        "label": "Mes",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "deudor",
+        "label": "Deudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cnyuge",
+        "label": "Cónyuge",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "codeudor_cnyuge_codeudor",
+        "label": "Codeudor/ Cónyuge Codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "otros_ingresos",
+        "label": "Otros Ingresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "negociodeudor",
+        "label": "Negocio-deudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "arriendodeudor",
+        "label": "Arriendo-deudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "otrosdeudor",
+        "label": "Otros-deudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "negociocnyuge",
+        "label": "Negocio-cónyuge",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "arriendocnyuge",
+        "label": "Arriendo-cónyuge",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "otroscnyuge",
+        "label": "Otros-cónyuge",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "negociocodeudorcnyuge_codeudor",
+        "label": "Negocio-codeudor/cónyuge codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "arriendocodeudorcnyuge_codeudor",
+        "label": "Arriendo-codeudor/cónyuge codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "otroscodeudorcnyuge_codeudor",
+        "label": "Otros-codeudor/cónyuge codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "total_otros_ingresos",
+        "label": "Total otros ingresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "requiere_anexo_independiente",
+        "label": "Requiere Anexo Independiente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "pesetaa_carta_instrucciones_operativas",
+        "label": "PESETAÑA: Carta Instrucciones Operativas",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tiene_garanta_constituida",
+        "label": "Tiene Garantía constituida",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "producto_multidestino",
+        "label": "Producto Multidestino",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nmero_expediente",
+        "label": "Número Expediente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "instrucciones_multidestino",
+        "label": "Instrucciones Multidestino",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "forma_de_pago",
+        "label": "Forma de Pago",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "no_cuenta_destino",
+        "label": "No Cuenta Destino",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "valor",
+        "label": "Valor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "beneficiario",
+        "label": "Beneficiario",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "banco_de_destino",
+        "label": "Banco de Destino",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cdularuc",
+        "label": "Cédula/RUC",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nip",
+        "label": "Nip",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "proceso",
+        "label": "Proceso",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "sitcrdito_personasin_proceso",
+        "label": "SitCrédito Personasión proceso",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "actividad",
+        "label": "Actividad",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tiempo_promedio",
+        "label": "Tiempo promedio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "inicio_atencin",
+        "label": "Inicio Atención",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "referencia",
+        "label": "Referencia",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "descripcin",
+        "label": "Descripción",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "reproceso",
+        "label": "Reproceso",
+        "type": "INTEGER",
+        "required": false
+      }
+    ]
+  },
+  "credito_interviniente": {
+    "label": "Intervinientes",
+    "description": "Datos de clientes, codeudores y garantes",
+    "attributes": [
+      {
+        "name": "informacin_del_cliente",
+        "label": "Información del cliente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "indentificacin",
+        "label": "Indentificación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "botn_actualizar_este_botn_enva_a_actualizar_la_informacin_en_tcses",
+        "label": "Botón \r\nActualizar\r\nEste botón envía a actualizar la información en TCSes",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "estado_civil",
+        "label": "Estado Civil",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fecha_de_caducidad_de_la_ci",
+        "label": "Fecha de caducidad de la CI",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fecha_nacimiento",
+        "label": "Fecha nacimiento",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "edad",
+        "label": "Edad",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "sexo",
+        "label": "Sexo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nacionalidad",
+        "label": "Nacionalidad",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "pais_de_nacimiento",
+        "label": "Pais de nacimiento",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ciudad_de_nacimiento",
+        "label": "Ciudad de nacimiento",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "profesin",
+        "label": "Profesión",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nivel_de_estudios",
+        "label": "Nivel de estudios",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "peps",
+        "label": "PEP´s",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "separacin_de_bienes",
+        "label": "Separación de bienes",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "subsegmento",
+        "label": "Subsegmento",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "lista_de_observados",
+        "label": "Lista de observados",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "requiere_codeudor",
+        "label": "Requiere codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "requiere_apoderado",
+        "label": "Requiere apoderado",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "proposito_relacin_comercial",
+        "label": "Proposito Relación Comercial",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "aos_que_reside_en_el_pas",
+        "label": "Años que reside en el país",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_de_contacto",
+        "label": "Información de contacto",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "medios_de_contacto",
+        "label": "Medios de contacto",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "correo_electronico",
+        "label": "Correo  Electronico",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "telf_celular",
+        "label": "Telf. Celular",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "telf_convencional",
+        "label": "Telf. Convencional",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "direccin_domicilio",
+        "label": "Dirección domicilio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "pas",
+        "label": "País",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "provincia",
+        "label": "Provincia",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cantn",
+        "label": "Cantón",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "parroquia",
+        "label": "Parroquia",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "barriosector",
+        "label": "Barrio/sector",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "calle_principal_y_nmero",
+        "label": "Calle principal y número",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "calle_secundaria",
+        "label": "Calle secundaria",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "referencia_de_ubicacin",
+        "label": "Referencia de ubicación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cdigo_postal",
+        "label": "Código postal",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "mapa_ubicacin",
+        "label": "Mapa Ubicación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_de_vivienda",
+        "label": "Información de Vivienda",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_de_vivienda",
+        "label": "Tipo de vivienda",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nmero_de_personas_que_dependen_econmicamente_de_ud",
+        "label": "Número de personas que dependen económicamente de ud",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tiempo_de_vivienda_aos",
+        "label": "Tiempo de vivienda años",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "valor_vivienda",
+        "label": "Valor Vivienda",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ingresos",
+        "label": "Ingresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "sueldo_lquido_deudor",
+        "label": "Sueldo Líquido deudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "sueldo_lquido_cnyuge",
+        "label": "Sueldo Líquido cónyuge",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "dividendos",
+        "label": "Dividendos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "comisiones",
+        "label": "Comisiones",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "otros_ingresos",
+        "label": "Otros ingresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "rentas",
+        "label": "Rentas",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "total_ingresos",
+        "label": "Total ingresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "origen_de_ingresos",
+        "label": "Origen de Ingresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "situacin_laboral",
+        "label": "Situación Laboral",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "relacin_clientebanco",
+        "label": "Relación cliente/Banco",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "egresos",
+        "label": "Egresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "alquiler",
+        "label": "Alquiler",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "alimentacin",
+        "label": "Alimentación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "servicios_bsicos",
+        "label": "Servicios básicos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "vestuario",
+        "label": "Vestuario",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tarjeta_crdito",
+        "label": "Tarjeta Crédito",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "educacin",
+        "label": "Educación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuota_mensual_prstamo",
+        "label": "Cuota Mensual Préstamo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "transporte",
+        "label": "Transporte",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "otros_egresos",
+        "label": "Otros egresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "total_egresos",
+        "label": "Total egresos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ahorro_neto",
+        "label": "Ahorro Neto",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ahorro_neto_mensual",
+        "label": "Ahorro Neto Mensual",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "patrimonio",
+        "label": "Patrimonio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "activos",
+        "label": "Activos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "propiedades",
+        "label": "Propiedades",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "valor_comercial",
+        "label": "Valor Comercial",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "prenda_o_hipotecada",
+        "label": "Prenda o Hipotecada",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "no_propiedades",
+        "label": "No Propiedades",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "vehculos",
+        "label": "Vehículos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "vehiculos",
+        "label": "Vehiculos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "no_vehculos",
+        "label": "No Vehículos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "mercadera",
+        "label": "Mercadería",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "pignorada",
+        "label": "Pignorada",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "mercaderaotros",
+        "label": "Mercadería/Otros",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "origen_patrimonio",
+        "label": "Origen Patrimonio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "pasivos",
+        "label": "Pasivos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "deuda_sistema_financiero",
+        "label": "Deuda Sistema Financiero",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_deuda",
+        "label": "Tipo Deuda",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "institucin",
+        "label": "Institución",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "monto_deuda",
+        "label": "Monto Deuda",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuota_deuda",
+        "label": "Cuota Deuda",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "total_pasivos",
+        "label": "Total Pasivos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "patrimonio_cliente",
+        "label": "Patrimonio Cliente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "total_patrimonio",
+        "label": "Total Patrimonio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_econmica",
+        "label": "Información Económica",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "empleado",
+        "label": "Empleado",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "independiente",
+        "label": "Independiente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fuerza",
+        "label": "Fuerza",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "grado",
+        "label": "Grado",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "rango",
+        "label": "Rango",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "reparto",
+        "label": "Reparto",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "datos_de_la_empresa",
+        "label": "Datos de la empresa",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "actividad_econmica",
+        "label": "Actividad económica",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "sector_econmico",
+        "label": "Sector Económico",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "empresa",
+        "label": "Empresa",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cargo",
+        "label": "Cargo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_de_contrato",
+        "label": "Tipo de contrato",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fecha_de_ingreso_a_la_empresa",
+        "label": "Fecha de ingreso a la empresa",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "pais",
+        "label": "Pais",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "canton",
+        "label": "Canton",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "telf_empresa",
+        "label": "Telf. empresa",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "extensin",
+        "label": "Extensión",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nombre_jefe",
+        "label": "Nombre Jefe",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nombre_contacto_rrhh",
+        "label": "Nombre Contacto RRHH",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cargo_contacto_rrhh",
+        "label": "Cargo contacto RRHH",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "correo_institucional_rrhh",
+        "label": "Correo Institucional RRHH",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "afiliado_al_iess",
+        "label": "Afiliado al IESS",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fecha_ingreso_a_la_empresa",
+        "label": "Fecha ingreso a la empresa",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "estabilidad_actual_meses",
+        "label": "Estabilidad Actual (Meses)",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "datos_del_negocio_para_independientes",
+        "label": "Datos del negocio para independientes",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nombre_del_negocio",
+        "label": "Nombre del negocio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ruc",
+        "label": "RUC",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "barrio_sector",
+        "label": "Barrio / Sector",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "referencia_de_la_ubicacin",
+        "label": "Referencia de la ubicación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "telf_negocio",
+        "label": "Telf. negocio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "local",
+        "label": "Local",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "lugar_de_venta",
+        "label": "Lugar de venta",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tiempo_de_funcionamiento",
+        "label": "Tiempo de funcionamiento",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "horario_de_negocio",
+        "label": "Horario de negocio",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "no_de_trabajadores",
+        "label": "No de trabajadores",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "descripcin_de_la_garanta",
+        "label": "Descripción de la Garantía",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "direccin",
+        "label": "Dirección",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ubicacin_del_inmueble_parroquia",
+        "label": "Ubicación del inmueble (parroquia)",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "destino_crdito_de_vivienda",
+        "label": "Destino crédito de vivienda",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "referencias_personales",
+        "label": "Referencias personales",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_de_referencia",
+        "label": "Tipo de referencia",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "nombres_y_apellidos",
+        "label": "Nombres y apellidos",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "parentesco",
+        "label": "Parentesco",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "ciudad_ubicacin",
+        "label": "Ciudad Ubicación",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "provincia_ubicacinprefijo",
+        "label": "Provincia Ubicación-Prefijo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "hora_ubicable",
+        "label": "Hora Ubicable",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "referencia_bancaria",
+        "label": "Referencia Bancaria",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cuenta_tarjeta",
+        "label": "Cuenta/ Tarjeta",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_cuenta",
+        "label": "Tipo Cuenta",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "tipo_tarjeta",
+        "label": "Tipo Tarjeta",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "pertenece",
+        "label": "Pertenece",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "referencia_comerciales_yo_proveedores",
+        "label": "Referencia Comerciales y/o Proveedores",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "almacn_yo_proveedor",
+        "label": "Almacén y/o proveedor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "valor_artculo",
+        "label": "Valor artículo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "articulo",
+        "label": "Articulo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fecha",
+        "label": "Fecha",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "telefono",
+        "label": "Telefono",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "correo_electrnico",
+        "label": "Correo Electrónico",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_apoderado_cliente",
+        "label": "Información Apoderado Cliente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "genero",
+        "label": "Genero",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "correo",
+        "label": "Correo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "datos_personales_del_cnyuge_del_cliente",
+        "label": "Datos personales del cónyuge del cliente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "fecha_de_caducidad_ci",
+        "label": "Fecha de caducidad CI",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "fecha_de_nacimiento",
+        "label": "Fecha de nacimiento",
+        "type": "DATE",
+        "required": false
+      },
+      {
+        "name": "tiene_trabajo",
+        "label": "Tiene trabajo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "aos_que_reside",
+        "label": "Años que reside",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_de_contacto_cnyuge_del_cliente",
+        "label": "Información de contacto cónyuge del cliente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_apoderado_cnyuge_del_cliente",
+        "label": "Información Apoderado cónyuge del cliente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_econmica_cnyuge_del_cliente",
+        "label": "Información Económica Cónyuge del cliente",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "sector_economico",
+        "label": "Sector Economico",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "cumple_nmero_de_aportaciones_iess",
+        "label": "Cumple número de aportaciones IESS",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "datos_personales_del_codeudor",
+        "label": "Datos personales del codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_de_contacto_codeudor",
+        "label": "Información de contacto codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "sueldo_lquico",
+        "label": "Sueldo Líquico",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "sueldo_lquico_cnyuge",
+        "label": "Sueldo Líquico cónyuge",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "prenda_hipotecada",
+        "label": "Prenda Hipotecada",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_econmica_codeudor",
+        "label": "Información Económica Codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_apoderado_cnyuge_del_codeudor",
+        "label": "Información Apoderado cónyuge del codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "almacen_yo_proveedor",
+        "label": "Almacen y/o proveedor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "datos_personales_conyuge_codeudor",
+        "label": "Datos Personales Conyuge Codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_de_contacto_conyuge_codeudor",
+        "label": "Información de contacto Conyuge Codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "informacin_econmica_conyuge_codeudor",
+        "label": "Información Económica Conyuge Codeudor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "es_agente_externo",
+        "label": "Es Agente Externo",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "devolver_al_asesor",
+        "label": "Devolver al Asesor",
+        "type": "STRING",
+        "required": false
+      },
+      {
+        "name": "motivo_devolucin",
+        "label": "Motivo devolución",
+        "type": "STRING",
+        "required": false
+      }
+    ]
+  }
+}

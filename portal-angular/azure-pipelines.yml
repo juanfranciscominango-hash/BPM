@@ -1,0 +1,361 @@
+# ============================================
+# Azure DevOps CI/CD Pipeline
+# PlantillaAngularBootstrap - Angular 20.3.0
+# ============================================
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - feature/*
+  paths:
+    include:
+      - src/**
+      - cypress/**
+      - package.json
+      - tsconfig.json
+      - angular.json
+
+pr:
+  branches:
+    include:
+      - main
+      - develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  nodeVersion: '24.x'
+  ngVersion: '20.3.0'
+  buildConfiguration: 'production'
+  stagingAppName: 'plantilla-angular-bootstrap-staging'
+  productionAppName: 'plantilla-angular-bootstrap-prod'
+  artifactName: 'dist'
+
+stages:
+  # ============================================
+  # STAGE 1: BUILD
+  # ============================================
+  - stage: Build
+    displayName: 'Build & Test'
+    jobs:
+      - job: BuildAngularApp
+        displayName: 'Build Angular Application'
+
+        steps:
+          # 1. Setup Node.js
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(nodeVersion)
+            displayName: 'Setup Node.js $(nodeVersion)'
+
+          # 2. Install Dependencies
+          - script: |
+              npm ci
+            displayName: 'Install npm Dependencies'
+            condition: succeeded()
+
+          # 3. Lint Code
+          - script: |
+              npm run lint -- --max-warnings 0
+            displayName: 'Lint TypeScript Code'
+            condition: succeeded()
+            continueOnError: true
+
+          # 4. Build Development
+          - script: |
+              npm run build:dev
+            displayName: 'Build Development Bundle'
+            condition: succeeded()
+
+          # 5. Build Production
+          - script: |
+              npm run build:prod
+            displayName: 'Build Production Bundle'
+            condition: succeeded()
+
+          # 6. Test Coverage Report
+          - script: |
+              npm run build
+            displayName: 'Build (ng build)'
+            condition: succeeded()
+
+  # ============================================
+  # STAGE 2: UNIT TESTS
+  # ============================================
+  - stage: UnitTests
+    displayName: 'Unit Tests & Coverage'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: RunUnitTests
+        displayName: 'Execute Unit Tests'
+
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(nodeVersion)
+
+          - script: npm ci
+            displayName: 'Install Dependencies'
+
+          - script: |
+              npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
+            displayName: 'Run Unit Tests with Coverage'
+            condition: succeeded()
+
+          # Publish coverage reports
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+              reportDirectory: '$(System.DefaultWorkingDirectory)/coverage'
+              failIfCoverageEmpty: false
+            displayName: 'Publish Code Coverage'
+            condition: always()
+
+          # Fail if coverage below threshold
+          - script: |
+              COVERAGE=$(grep -oP 'line-rate="\K[0-9.]+' coverage/cobertura-coverage.xml | head -1)
+              THRESHOLD=30
+              if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
+                echo "Code coverage $COVERAGE% is below threshold $THRESHOLD%"
+                exit 1
+              else
+                echo "Code coverage $COVERAGE% meets threshold $THRESHOLD%"
+              fi
+            displayName: 'Check Coverage Threshold (30%)'
+            condition: succeeded()
+
+          # Publish test results
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/junit.xml'
+              searchFolder: '$(System.DefaultWorkingDirectory)'
+              failTaskOnFailedTests: true
+            displayName: 'Publish Test Results'
+            condition: always()
+
+  # ============================================
+  # STAGE 3: E2E TESTS (Optional - Staging Only)
+  # ============================================
+  - stage: E2ETests
+    displayName: 'E2E Tests (Cypress)'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: RunE2ETests
+        displayName: 'Execute E2E Tests'
+        timeoutInMinutes: 30
+
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(nodeVersion)
+
+          - script: npm ci
+            displayName: 'Install Dependencies'
+
+          # Start Angular app in background
+          - script: |
+              npm run start:dev > server.log 2>&1 &
+              sleep 10
+            displayName: 'Start Dev Server'
+            condition: succeeded()
+
+          # Run Cypress E2E tests
+          - script: |
+              npm run e2e
+            displayName: 'Run Cypress E2E Tests'
+            continueOnError: true
+
+          # Publish Cypress videos
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: '$(System.DefaultWorkingDirectory)/cypress/videos'
+              artifactName: 'cypress-videos'
+              publishLocation: 'Container'
+            displayName: 'Publish Cypress Videos'
+            condition: always()
+
+          # Publish Cypress screenshots
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: '$(System.DefaultWorkingDirectory)/cypress/screenshots'
+              artifactName: 'cypress-screenshots'
+              publishLocation: 'Container'
+            displayName: 'Publish Cypress Screenshots'
+            condition: always()
+
+  # ============================================
+  # STAGE 4: PUBLISH ARTIFACTS
+  # ============================================
+  - stage: PublishArtifacts
+    displayName: 'Publish Artifacts'
+    dependsOn: [Build, UnitTests]
+    condition: succeeded()
+    jobs:
+      - job: PublishDist
+        displayName: 'Publish Distribution Files'
+
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(nodeVersion)
+
+          - script: npm ci
+            displayName: 'Install Dependencies'
+
+          - script: |
+              npm run build -- --configuration production
+            displayName: 'Build for Production'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: '$(System.DefaultWorkingDirectory)/dist/plantilla-angular-bootstrap/browser'
+              artifactName: $(artifactName)
+              publishLocation: 'Container'
+            displayName: 'Publish Distribution Artifacts'
+
+          - script: |
+              echo "Build info:"
+              echo "  Branch: $(Build.SourceBranch)"
+              echo "  Commit: $(Build.SourceVersion)"
+              echo "  BuildId: $(Build.BuildId)"
+              echo "  Timestamp: $(System.JobProgressThrottlingTimestamp)"
+            displayName: 'Log Build Information'
+
+  # ============================================
+  # STAGE 5: DEPLOY TO STAGING
+  # ============================================
+  - stage: DeployStaging
+    displayName: 'Deploy to Staging'
+    dependsOn: PublishArtifacts
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - deployment: DeployToStaging
+        displayName: 'Deploy to Azure App Service - Staging'
+        environment: 'Staging'
+
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                # Download artifacts
+                - task: DownloadBuildArtifacts@1
+                  inputs:
+                    buildType: 'current'
+                    downloadType: 'single'
+                    artifactName: $(artifactName)
+                    downloadPath: '$(System.ArtifactsDirectory)'
+
+                # Deploy to App Service
+                - task: AzureRmWebAppDeployment@4
+                  inputs:
+                    ConnectedServiceName: 'Azure Service Connection'
+                    appType: 'webAppLinux'
+                    WebAppName: $(stagingAppName)
+                    packageForLinux: '$(System.ArtifactsDirectory)/$(artifactName)'
+                    enableCustomDeployment: true
+                    DeploymentType: 'webDeploy'
+                    RemoveAdditionalFilesFlag: true
+                    TakeAppOfflineFlag: true
+                    StartupCommand: 'node server.js'
+                  displayName: 'Deploy to Staging App Service'
+
+                # Run smoke tests
+                - script: |
+                    echo "Running smoke tests on staging..."
+                    curl -f https://$(stagingAppName).azurewebsites.net/ || exit 1
+                  displayName: 'Run Smoke Tests - Staging'
+                  continueOnError: true
+
+  # ============================================
+  # STAGE 6: DEPLOY TO PRODUCTION
+  # ============================================
+  - stage: DeployProduction
+    displayName: 'Deploy to Production'
+    dependsOn: DeployStaging
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployToProduction
+        displayName: 'Deploy to Azure App Service - Production'
+        environment: 'Production'
+
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                # Download artifacts
+                - task: DownloadBuildArtifacts@1
+                  inputs:
+                    buildType: 'current'
+                    downloadType: 'single'
+                    artifactName: $(artifactName)
+                    downloadPath: '$(System.ArtifactsDirectory)'
+
+                # Deploy to App Service
+                - task: AzureRmWebAppDeployment@4
+                  inputs:
+                    ConnectedServiceName: 'Azure Service Connection'
+                    appType: 'webAppLinux'
+                    WebAppName: $(productionAppName)
+                    packageForLinux: '$(System.ArtifactsDirectory)/$(artifactName)'
+                    enableCustomDeployment: true
+                    DeploymentType: 'webDeploy'
+                    RemoveAdditionalFilesFlag: true
+                    TakeAppOfflineFlag: true
+                    StartupCommand: 'node server.js'
+                  displayName: 'Deploy to Production App Service'
+
+                # Create release notes
+                - task: GitHubRelease@1
+                  inputs:
+                    gitHubConnection: 'GitHub'
+                    repositoryName: 'your-org/PlantillaAngularBootstrap'
+                    action: 'create'
+                    target: '$(Build.SourceVersion)'
+                    tagSource: 'gitTag'
+                    changeLogComparisonType: 'commitId'
+                    changeLogBase: '$(Build.SourceVersion)'
+                  displayName: 'Create GitHub Release'
+                  continueOnError: true
+
+                # Run smoke tests
+                - script: |
+                    echo "Running smoke tests on production..."
+                    curl -f https://$(productionAppName).azurewebsites.net/ || exit 1
+                  displayName: 'Run Smoke Tests - Production'
+
+  # ============================================
+  # STAGE 7: NOTIFICATIONS
+  # ============================================
+  - stage: Notifications
+    displayName: 'Send Notifications'
+    dependsOn: [Build, UnitTests]
+    condition: always()
+    jobs:
+      - job: NotifyResults
+        displayName: 'Send Build Notifications'
+
+        steps:
+          - script: |
+              echo "Pipeline completed with result: $(Agent.JobStatus)"
+              echo "Build URL: $(System.TeamFoundationCollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)"
+            displayName: 'Log Pipeline Results'
+
+          - task: SlackNotification@0
+            inputs:
+              SlackServiceConnection: 'SlackConnection'
+              Channel: '#deployments'
+              Message: |
+                Build $(Build.BuildNumber) - $(Agent.JobStatus)
+                Branch: $(Build.SourceBranch)
+                Commit: $(Build.SourceVersion)
+                URL: $(System.TeamFoundationCollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)
+            displayName: 'Notify Slack'
+            continueOnError: true
+            condition: always()

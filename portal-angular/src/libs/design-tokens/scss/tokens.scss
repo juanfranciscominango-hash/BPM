@@ -1,0 +1,10 @@
+// =============================================================================
+// TOKENS PRINCIPALES - PLANTILLA EMPRESARIAL InnovaConsulting
+// =============================================================================
+// Este archivo expone todos los design tokens y estilos globales del proyecto
+
+// Exponer todos los tokens usando @forward
+@forward 'tokens.colors';
+@forward 'tokens.spacing';
+@forward 'tokens.typography';
+@forward 'global-styles';

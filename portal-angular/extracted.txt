@@ -1,0 +1,94 @@
+Created At: 2026-06-01T19:30:19Z
+Completed At: 2026-06-01T19:30:19Z
+File Path: `file:///c:/ProyectosJava/BMP/portal-angular/src/app/features/portal-usuario/wizard-flujo/wizard-flujo.component.ts`
+Total Lines: 487
+Total Bytes: 17073
+Showing lines 1 to 487
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+2: import { CommonModule } from '@angular/common';
+3: import { FormsModule } from '@angular/forms';
+4: import { Router, ActivatedRoute } from '@angular/router';
+5: import { ApiManagerService } from '../../../core/services/api-manager.service';
+6: import { ParametricService } from '../../../core/services/parametric.service';
+7: import { MetaService } from '../../../core/services/meta.service';
+8: import { ProcessService } from '../../../core/services/process.service';
+9: import { ScreenService } from '../../../core/services/screen.service';
+10: import { TaskService, UserTask } from '../../../core/services/task.service';
+11: 
+12: @Component({
+13:   selector: 'app-wizard-flujo',
+14:   standalone: true,
+15:   imports: [CommonModule, FormsModule],
+16:   templateUrl: './wizard-flujo.component.html'
+17: })
+18: export class WizardFlujoComponent implements OnInit {
+19:   private apiManagerService = inject(ApiManagerService);
+20:   private parametricService = inject(ParametricService);
+21:   private metaService = inject(MetaService);
+22:   private processService = inject(ProcessService);
+23:   private screenService = inject(ScreenService);
+24:   private taskService = inject(TaskService);
+25:   private route = inject(ActivatedRoute);
+26:   private router = inject(Router);
+27:   private cdr = inject(ChangeDetectorRef);
+28: 
+29:   currentTask: UserTask | null = null;
+30:   taskId: string | null = null;
+31:   isSubmitting = false;
+<truncated 15884 bytes>
+ckFiles = {};
+435:     this.simNotification = 'Formulario reiniciado.';
+436:     setTimeout(() => this.simNotification = '', 3000);
+437:   }
+438: 
+439:   simGetValidationErrors(): string[] {
+440:     const errors: string[] = [];
+441:     if (!this.layout || !this.layout.tabs) return errors;
+442:     this.layout.tabs.forEach((tab: any) => {
+443:       tab.sections.forEach((sec: any) => {
+444:         sec.fields.forEach((f: any) => {
+445:           if (this.previewVisible(f)) {
+446:             if (f.required) {
+447:               const val = this.previewModel[f.name];
+448:               if (val === null || val === undefined || val === '') {
+449:                 errors.push(`El campo "${f.label || f.name}" es requerido.`);
+450:               }
+451:             }
+452:           }
+453:         });
+454:       });
+455:     });
+456:     return errors;
+457:   }
+458: 
+459:   getSimOptions(fieldName: string): any[] {
+460:     if (!this.simOptions[fieldName]) {
+461:       this.simOptions[fieldName] = [];
+462:     }
+463:     return this.simOptions[fieldName];
+464:   }
+465: 
+466:   onSimComboChange(field: any) {
+467:     if (!field.config || !field.config.cascadeRules) return;
+468:     const rules = field.config.cascadeRules;
+469:     const val = this.previewModel[field.name];
+470:     if (val) {
+471:       const options = this.getSimOptions(field.name);
+472:       if (options && options.length > 0) {
+473:         const opt = options.find((o: any) => String(o.codigo || o.id || o.code) === String(val));
+474:         if (opt) {
+475:           rules.forEach((rule: any) => {
+476:             if (rule.sourceColumn && rule.targetField) {
+477:               if (opt[rule.sourceColumn] !== undefined) {
+478:                 this.previewModel[rule.targetField] = opt[rule.sourceColumn];
+479:               }
+480:             }
+481:           });
+482:         }
+483:       }
+484:     }
+485:   }
+486: }
+487: 
+The above content shows the entire, complete file contents of the requested file.

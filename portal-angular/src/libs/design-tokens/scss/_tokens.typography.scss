@@ -1,0 +1,178 @@
+// =============================================================================
+// VARIABLES DE TIPOGRAFÍA - PLANTILLA EMPRESARIAL InnovaConsulting
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// VARIABLES SASS PARA TIPOGRAFÍA
+// -----------------------------------------------------------------------------
+$font-family-sans-serif: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+$font-family-monospace: "Consolas", "Monaco", "Courier New", monospace;
+
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-sm: 0.875rem;
+$font-size-xs: 0.75rem;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-base: 1.5;
+$line-height-sm: 1.25;
+$line-height-lg: 1.75;
+
+// -----------------------------------------------------------------------------
+// TRANSITIONS
+// -----------------------------------------------------------------------------
+$transition-base: all .2s ease-in-out;
+$transition-fade: opacity .15s linear;
+$transition-collapse: height .35s ease;
+
+// -----------------------------------------------------------------------------
+// BREAKPOINTS
+// -----------------------------------------------------------------------------
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+:root {
+  /* Font Families */
+  --innova-font-family-sans: "Inter", "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --innova-font-family-serif: "Georgia", "Times New Roman", Times, serif;
+  --innova-font-family-mono: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Courier New", monospace;
+  --innova-font-family-display: "Inter", "Segoe UI", "Roboto", sans-serif;
+
+  /* Sass variables as CSS custom properties */
+  --font-family-sans-serif: #{$font-family-sans-serif};
+  --font-family-monospace: #{$font-family-monospace};
+  --font-size-base: #{$font-size-base};
+  --font-size-lg: #{$font-size-lg};
+  --font-size-sm: #{$font-size-sm};
+  --font-size-xs: #{$font-size-xs};
+  --font-weight-light: #{$font-weight-light};
+  --font-weight-normal: #{$font-weight-normal};
+  --font-weight-medium: #{$font-weight-medium};
+  --font-weight-semibold: #{$font-weight-semibold};
+  --font-weight-bold: #{$font-weight-bold};
+  --line-height-base: #{$line-height-base};
+  --line-height-sm: #{$line-height-sm};
+  --line-height-lg: #{$line-height-lg};
+  --transition-base: #{$transition-base};
+  --transition-fade: #{$transition-fade};
+  --transition-collapse: #{$transition-collapse};
+  
+  /* Font Weights */
+  --innova-font-weight-thin: 100;
+  --innova-font-weight-light: 300;
+  --innova-font-weight-regular: 400;
+  --innova-font-weight-medium: 500;
+  --innova-font-weight-semibold: 600;
+  --innova-font-weight-bold: 700;
+  --innova-font-weight-extrabold: 800;
+  --innova-font-weight-black: 900;
+
+  /* Font Sizes - Type Scale (1.125 - Major Second) */
+  --innova-font-size-xs: 0.75rem;    /* 12px */
+  --innova-font-size-sm: 0.875rem;   /* 14px */
+  --innova-font-size-base: 1rem;     /* 16px */
+  --innova-font-size-lg: 1.125rem;   /* 18px */
+  --innova-font-size-xl: 1.25rem;    /* 20px */
+  --innova-font-size-2xl: 1.5rem;    /* 24px */
+  --innova-font-size-3xl: 1.875rem;  /* 30px */
+  --innova-font-size-4xl: 2.25rem;   /* 36px */
+  --innova-font-size-5xl: 3rem;      /* 48px */
+  --innova-font-size-6xl: 3.75rem;   /* 60px */
+  --innova-font-size-7xl: 4.5rem;    /* 72px */
+
+  /* Line Heights */
+  --innova-line-height-none: 1;
+  --innova-line-height-tight: 1.25;
+  --innova-line-height-snug: 1.375;
+  --innova-line-height-normal: 1.5;
+  --innova-line-height-relaxed: 1.625;
+  --innova-line-height-loose: 2;
+
+  /* Letter Spacing */
+  --innova-letter-spacing-tighter: -0.05em;
+  --innova-letter-spacing-tight: -0.025em;
+  --innova-letter-spacing-normal: 0em;
+  --innova-letter-spacing-wide: 0.025em;
+  --innova-letter-spacing-wider: 0.05em;
+  --innova-letter-spacing-widest: 0.1em;
+
+  /* Semantic Typography Tokens */
+  
+  /* Headings */
+  --innova-text-display-large: var(--innova-font-weight-bold) var(--innova-font-size-6xl)/var(--innova-line-height-tight) var(--innova-font-family-display);
+  --innova-text-display-medium: var(--innova-font-weight-bold) var(--innova-font-size-5xl)/var(--innova-line-height-tight) var(--innova-font-family-display);
+  --innova-text-display-small: var(--innova-font-weight-bold) var(--innova-font-size-4xl)/var(--innova-line-height-tight) var(--innova-font-family-display);
+  
+  --innova-text-h1: var(--innova-font-weight-bold) var(--innova-font-size-3xl)/var(--innova-line-height-tight) var(--innova-font-family-sans);
+  --innova-text-h2: var(--innova-font-weight-semibold) var(--innova-font-size-2xl)/var(--innova-line-height-snug) var(--innova-font-family-sans);
+  --innova-text-h3: var(--innova-font-weight-semibold) var(--innova-font-size-xl)/var(--innova-line-height-snug) var(--innova-font-family-sans);
+  --innova-text-h4: var(--innova-font-weight-semibold) var(--innova-font-size-lg)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-h5: var(--innova-font-weight-medium) var(--innova-font-size-base)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-h6: var(--innova-font-weight-medium) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+
+  /* Body Text */
+  --innova-text-body-large: var(--innova-font-weight-regular) var(--innova-font-size-lg)/var(--innova-line-height-relaxed) var(--innova-font-family-sans);
+  --innova-text-body-medium: var(--innova-font-weight-regular) var(--innova-font-size-base)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-body-small: var(--innova-font-weight-regular) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+
+  /* Labels and UI Text */
+  --innova-text-label-large: var(--innova-font-weight-medium) var(--innova-font-size-base)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-label-medium: var(--innova-font-weight-medium) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-label-small: var(--innova-font-weight-medium) var(--innova-font-size-xs)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+
+  /* Banking Specific Typography */
+  
+  /* Account balances and financial amounts */
+  --innova-text-amount-large: var(--innova-font-weight-bold) var(--innova-font-size-3xl)/var(--innova-line-height-tight) var(--innova-font-family-mono);
+  --innova-text-amount-medium: var(--innova-font-weight-semibold) var(--innova-font-size-xl)/var(--innova-line-height-tight) var(--innova-font-family-mono);
+  --innova-text-amount-small: var(--innova-font-weight-medium) var(--innova-font-size-base)/var(--innova-line-height-normal) var(--innova-font-family-mono);
+  
+  /* Account numbers and codes */
+  --innova-text-account-number: var(--innova-font-weight-regular) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-mono);
+  --innova-text-reference-code: var(--innova-font-weight-regular) var(--innova-font-size-xs)/var(--innova-line-height-normal) var(--innova-font-family-mono);
+  
+  /* Transaction descriptions */
+  --innova-text-transaction-title: var(--innova-font-weight-medium) var(--innova-font-size-base)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-transaction-description: var(--innova-font-weight-regular) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-transaction-date: var(--innova-font-weight-regular) var(--innova-font-size-xs)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+
+  /* Buttons and Interactive Elements */
+  --innova-text-button-large: var(--innova-font-weight-semibold) var(--innova-font-size-lg)/var(--innova-line-height-none) var(--innova-font-family-sans);
+  --innova-text-button-medium: var(--innova-font-weight-medium) var(--innova-font-size-base)/var(--innova-line-height-none) var(--innova-font-family-sans);
+  --innova-text-button-small: var(--innova-font-weight-medium) var(--innova-font-size-sm)/var(--innova-line-height-none) var(--innova-font-family-sans);
+
+  /* Form Elements */
+  --innova-text-input: var(--innova-font-weight-regular) var(--innova-font-size-base)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-placeholder: var(--innova-font-weight-regular) var(--innova-font-size-base)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-helper: var(--innova-font-weight-regular) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-error: var(--innova-font-weight-regular) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+
+  /* Navigation and Menu */
+  --innova-text-nav-primary: var(--innova-font-weight-medium) var(--innova-font-size-base)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-nav-secondary: var(--innova-font-weight-regular) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+
+  /* Status and Badges */
+  --innova-text-badge: var(--innova-font-weight-medium) var(--innova-font-size-xs)/var(--innova-line-height-none) var(--innova-font-family-sans);
+  --innova-text-status: var(--innova-font-weight-medium) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+
+  /* Legal and Fine Print */
+  --innova-text-legal: var(--innova-font-weight-regular) var(--innova-font-size-xs)/var(--innova-line-height-relaxed) var(--innova-font-family-sans);
+  --innova-text-caption: var(--innova-font-weight-regular) var(--innova-font-size-xs)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+
+  /* Dashboard and Cards */
+  --innova-text-card-title: var(--innova-font-weight-semibold) var(--innova-font-size-lg)/var(--innova-line-height-snug) var(--innova-font-family-sans);
+  --innova-text-card-subtitle: var(--innova-font-weight-regular) var(--innova-font-size-sm)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+  --innova-text-metric-value: var(--innova-font-weight-bold) var(--innova-font-size-2xl)/var(--innova-line-height-tight) var(--innova-font-family-mono);
+  --innova-text-metric-label: var(--innova-font-weight-medium) var(--innova-font-size-xs)/var(--innova-line-height-normal) var(--innova-font-family-sans);
+}

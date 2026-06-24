@@ -1,0 +1,30 @@
+[
+  {
+    "id_campana": "CMP-ECU-2026-001",
+    "nombre": "Campaña Crédito Consumo",
+    "estado": "activa",
+    "segmentacion": {
+      "edad": "25-40",
+      "ubicacion": "Quito",
+      "sector": "Empleados públicos y privados"
+    },
+    "fechas": {
+      "inicio": "2026-06-01",
+      "fin": "2026-08-31",
+      "ultima_actualizacion": "2026-06-14"
+    },
+    "canales": ["email", "redes_sociales", "banca_virtual"],
+    "presupuesto": {
+      "asignado": 10000,
+      "ejecutado": 4200,
+      "disponible": 5800
+    },
+    "resultados": {
+      "leads_generados": 500,
+      "conversiones": 120,
+      "tasa_apertura": "40%",
+      "roi": "18%"
+    },
+    "responsable": "Gerencia de Marketing Banco Pichincha"
+  }
+]

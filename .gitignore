@@ -1,0 +1,28 @@
+# Node
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+# Java/Maven/Spring
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.iml
+.metadata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+hs_err_pid*.log
+replay_pid*.log

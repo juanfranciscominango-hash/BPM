@@ -1,0 +1,46 @@
+/* Estilos globales de la Plantilla Empresarial InnovaConsulting */
+
+// =============================================================================
+// IMPORTAR DESIGN TOKENS Y ESTILOS GLOBALES - DEBEN IR AL PRINCIPIO
+// =============================================================================
+@use 'libs/bootstrap/scss/bootstrap-grid-only' as *;
+@use 'libs/design-tokens/scss/tokens' as *;
+
+// =============================================================================
+// LIBRERÍAS EXTERNAS (BPMN & DMN)
+// =============================================================================
+@import 'bpmn-js/dist/assets/diagram-js.css';
+@import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
+@import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
+@import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
+@import '@bpmn-io/properties-panel/dist/assets/properties-panel.css';
+
+// DMN JS
+@import 'dmn-js/dist/assets/diagram-js.css';
+@import 'dmn-js/dist/assets/dmn-js-shared.css';
+@import 'dmn-js/dist/assets/dmn-js-drd.css';
+@import 'dmn-js/dist/assets/dmn-js-decision-table.css';
+@import 'dmn-js/dist/assets/dmn-js-decision-table-controls.css';
+@import 'dmn-js/dist/assets/dmn-js-literal-expression.css';
+@import 'dmn-js/dist/assets/dmn-font/css/dmn.css';
+
+/* Custom designer styles */
+.designer-container {
+  display: flex;
+  height: 100%;
+}
+
+.canvas-container {
+  flex-grow: 1;
+}
+
+.properties-container {
+  width: 300px;
+  border-left: 1px solid #ccc;
+  overflow-y: auto;
+  background: #f8f8f8;
+}
+
+.glassmorphism { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); padding: 20px; }
+.real-time-invalid { border-color: #e74c3c !important; animation: shake 0.5s; box-shadow: 0 0 5px rgba(231, 76, 60, 0.5); }
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }

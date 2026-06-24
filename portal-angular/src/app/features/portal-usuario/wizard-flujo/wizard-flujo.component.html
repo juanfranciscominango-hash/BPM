@@ -1,0 +1,396 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h3 fw-bold text-dark mb-0"><i class="bi bi-diagram-3-fill text-primary me-2"></i>Asistente de Solicitud</h2>
+  </div>
+  
+  <div class="card border-0 shadow-sm rounded-4 mb-4" *ngIf="currentTask">
+    <div class="card-body p-4 bg-light rounded-4">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h5 class="fw-bold text-primary mb-1">{{ currentTask.name }}</h5>
+          <p class="text-muted small mb-0">Instancia: {{ currentTask.processInstanceId }} | Asignado a: {{ currentTask.assignee || 'Ti' }}</p>
+        </div>
+        <div class="col-md-4 text-end">
+          <span class="badge bg-primary text-white py-2 px-3 shadow-sm rounded-pill">
+            <i class="bi bi-clock-history me-1"></i>En Progreso
+          </span>
+        </div>
+    </div>
+  </div>
+
+  <div *ngIf="layout" class="mt-4">
+
+        <!-- NOTIFICACION FLASH -->
+        <div *ngIf="simNotification" class="alert border-0 shadow mb-3 rounded-3 d-flex align-items-center gap-2"
+             [ngClass]="simNotificationType === 'success' ? 'alert-success' : simNotificationType === 'warning' ? 'alert-warning' : 'alert-info'">
+          <i class="bi fs-5" [ngClass]="simNotificationType === 'success' ? 'bi-check-circle-fill text-success' : simNotificationType === 'warning' ? 'bi-exclamation-triangle-fill text-warning' : 'bi-info-circle-fill text-info'"></i>
+          <span class="fw-semibold">{{ simNotification }}</span>
+        </div>
+
+                <div class="row g-3" [ngClass]="{'glassmorphism': layout.ux?.includes('glassmorphism')}">
+
+          <!-- STEPPER UX (LOW CODE) -->
+          <div class="col-12 mb-3" *ngIf="layout.stepper && layout.stepperSteps">
+            <div class="d-flex justify-content-between align-items-center position-relative">
+              <div class="progress position-absolute w-100" style="height: 4px; z-index: 0; top: 50%; transform: translateY(-50%);">
+                <div class="progress-bar bg-primary" role="progressbar" [style.width]="((layout.stepper - 1) / (layout.stepperSteps.length - 1 || 1) * 100) + '%'"></div>
+              </div>
+              <div class="d-flex flex-column align-items-center position-relative z-index-1" style="z-index: 1;" *ngFor="let stepName of layout.stepperSteps; let i = index">
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm" [ngClass]="layout.stepper > i ? 'bg-primary' : 'bg-secondary'" style="width: 35px; height: 35px;">{{ i + 1 }}</div>
+                <small class="mt-1 fw-semibold text-muted">{{ stepName }}</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL PRINCIPAL DEL FORMULARIO -->
+          <div class="col-12">
+            <!-- PESTAÑAS SUPERIORES -->
+            <ul class="nav border-0 mb-3" style="border-bottom: 2px solid #e9ecef !important;">
+              <li class="nav-item" *ngFor="let tab of layout.tabs; let ti = index">
+                <button class="nav-link px-4 py-2" style="background-color: transparent !important; border-top: none !important; border-left: none !important; border-right: none !important; border-radius: 0; outline: none; margin-bottom: -2px; font-size: 0.95rem;"
+                        [class.active]="previewTabIdx === ti"
+                        [class.fw-bold]="previewTabIdx === ti"
+                        [class.text-primary]="previewTabIdx === ti"
+                        [class.text-muted]="previewTabIdx !== ti"
+                        [style.border-bottom]="previewTabIdx === ti ? '2px solid #0d6efd' : '2px solid transparent'"
+                        (click)="previewTabIdx = ti">
+                  {{ tab.title }}
+                </button>
+              </li>
+            </ul>
+
+            <!-- CONTENEDOR PRINCIPAL CON BORDE -->
+            <div class="bg-white p-2">
+              <div *ngIf="layout.tabs.length > 0 && layout.tabs[previewTabIdx]">
+                <ng-container *ngFor="let section of layout.tabs[previewTabIdx].sections; let si = index">                  <div *ngIf="previewVisible(section)" class="mb-4 rounded-3" 
+                       [ngClass]="(!section.containerType || section.containerType === 'GROUP') ? 'border border-light-subtle overflow-hidden shadow-sm bg-white' : ''">
+
+                  <!-- CABECERA DE SECCION (ACORDEON) -->
+                  <div *ngIf="!section.containerType || section.containerType === 'GROUP'" class="d-flex align-items-center px-4 py-3 border-bottom border-light-subtle" style="cursor: pointer; background-color: #f8f9fa;" (click)="toggleSection(section)">
+                    <i class="bi text-primary me-2" [ngClass]="isSectionExpanded(section) ? 'bi-chevron-up' : 'bi-chevron-down'" style="font-size: 0.9rem;"></i>
+                    <span class="text-primary fw-bold" style="font-size: 0.95rem;">{{ section.title }}</span>
+                  </div>
+
+                  <!-- CUERPO DE SECCION -->
+                  <div [ngClass]="(!section.containerType || section.containerType === 'GROUP') ? 'p-4 bg-white' : ''" *ngIf="section.containerType === 'PANEL' || isSectionExpanded(section)">
+                    <div class="row g-4">
+                      <ng-container *ngFor="let field of section.fields">
+                        <div *ngIf="previewVisible(field)" [class]="'col-md-' + (field.cols || 6)">
+                          
+                          <!-- CONTROLES COMUNES -->
+                          <div class="row align-items-center" *ngIf="field.controlType !== 'BUTTON' && field.controlType !== 'LINK' && field.controlType !== 'LABEL' && field.controlType !== 'GRID'">
+                            
+                            <!-- ETIQUETA -->
+                            <div class="col-sm-4 text-dark fw-bold" style="font-size: 0.8rem;">
+                              {{ field.label }}:
+                            </div>
+
+                            <!-- INPUT / VALOR -->
+                            <div class="col-sm-8">
+                              <!-- SOLO LECTURA -->
+                              <div *ngIf="field.readOnly" class="form-control-plaintext text-dark small text-uppercase py-0">
+                                <ng-container *ngIf="field.controlType === 'YESNO'">
+                                  {{ previewModel[field.name] ? 'Sí' : 'No' }}
+                                </ng-container>
+                                <ng-container *ngIf="field.controlType !== 'YESNO'">
+                                  {{ previewModel[field.name] || ' ' }}
+                                </ng-container>
+                              </div>
+
+                              <!-- EDITABLE -->
+                              <ng-container *ngIf="!field.readOnly">
+                                <!-- TEXTBOX -->
+                                <input *ngIf="field.controlType === 'TEXTBOX'"
+                                       type="text"
+                                       [(ngModel)]="previewModel[field.name]"
+                                       class="form-control form-control-sm rounded-1"
+                                       [style.border-left]="field.required ? '3px solid #dc3545' : ''">
+
+                                <!-- NUMBER -->
+                                <input *ngIf="field.controlType === 'NUMBER'"
+                                       type="number"
+                                       [(ngModel)]="previewModel[field.name]"
+                                       class="form-control form-control-sm rounded-1"
+                                       [style.border-left]="field.required ? '3px solid #dc3545' : ''">
+
+                                <!-- MONEY -->
+                                <div *ngIf="field.controlType === 'MONEY'" class="input-group input-group-sm">
+                                  <span class="input-group-text">$</span>
+                                  <input type="number"
+                                         [(ngModel)]="previewModel[field.name]"
+                                         class="form-control rounded-1"
+                                         [style.border-left]="field.required ? '3px solid #dc3545' : ''">
+                                </div>
+
+                                <!-- DATE -->
+                                <input *ngIf="field.controlType === 'DATE'"
+                                       type="date"
+                                       [(ngModel)]="previewModel[field.name]"
+                                       class="form-control form-control-sm rounded-1"
+                                       [style.border-left]="field.required ? '3px solid #dc3545' : ''">
+
+                                <!-- COMBO -->
+                                <select *ngIf="field.controlType === 'COMBO'"
+                                        [(ngModel)]="previewModel[field.name]"
+                                        (change)="onSimComboChange(field)"
+                                        class="form-select form-select-sm rounded-1"
+                                        [style.border-left]="field.required ? '3px solid #dc3545' : ''">
+                                  <option value="">Por favor seleccione...</option>
+                                  <option *ngFor="let opt of getSimOptions(field.name)"
+                                          [value]="opt[field.config?.valueField || 'codigo'] || opt.codigo || opt.id || opt.code">
+                                    {{ opt[field.config?.displayField || 'descripcion'] || opt.descripcion || opt.nombre || opt.name || opt.label }}
+                                  </option>
+                                </select>
+
+                                <!-- YESNO -->
+                                <div *ngIf="field.controlType === 'YESNO'" 
+                                     class="d-flex gap-3 align-items-center py-1"
+                                     [style.border-left]="field.required ? '3px solid #dc3545' : '3px solid transparent'"
+                                     style="padding-left: 8px;">
+                                  <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" 
+                                           [name]="field.name" [id]="field.name + '_yes'" 
+                                           [value]="true" [(ngModel)]="previewModel[field.name]">
+                                    <label class="form-check-label text-muted small" [for]="field.name + '_yes'">Sí</label>
+                                  </div>
+                                  <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" 
+                                           [name]="field.name" [id]="field.name + '_no'" 
+                                           [value]="false" [(ngModel)]="previewModel[field.name]">
+                                    <label class="form-check-label text-muted small" [for]="field.name + '_no'">No</label>
+                                  </div>
+                                </div>
+                                
+                                <!-- FILEUPLOAD -->
+                                <div *ngIf="field.controlType === 'FILEUPLOAD'"
+                                     class="border rounded-2 p-2 text-center bg-light">
+                                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="uploadMock(field.name)">Subir Archivo</button>
+                                  <div *ngIf="uploadedMockFiles[field.name]" class="mt-1 text-success small">{{ uploadedMockFiles[field.name] }}</div>
+                                </div>
+                                
+                                <!-- IMAGE -->
+                                <div *ngIf="field.controlType === 'IMAGE'" class="border p-2 bg-light text-center small text-muted">
+                                  <i class="bi bi-image"></i> Imagen
+                                </div>
+
+                              </ng-container>
+
+                              <!-- ERROR REQUERIDO -->
+                              <div *ngIf="field.required && !previewModel[field.name] && simSubmitted"
+                                   class="text-danger small mt-1" style="font-size:0.75rem;">
+                                <i class="bi bi-exclamation-circle me-1"></i>Requerido
+                              </div>
+
+                            </div>
+                          </div>
+                          
+                          <!-- LABEL (Standalone) -->
+                          <div *ngIf="field.controlType === 'LABEL'" class="text-danger fw-bold" style="font-size:0.85rem;">
+                            {{ field.label }}
+                          </div>
+                          <!-- SIMULADOR (Custom Component) -->
+                          <div *ngIf="field.controlType === 'SIMULADOR'" class="w-100">
+                            <innova-simulacion [initialData]="taskVariables"></innova-simulacion>
+                          </div>
+                          
+                          <!-- RESUMEN_CASO (Custom Component) -->
+                          <div *ngIf="field.controlType === 'RESUMEN_CASO'" class="w-100">
+                            <!-- TODO: Replace with the actual Resumen Caso component if available -->
+                            <div class="border p-3 rounded bg-light text-center text-muted">
+                              <i class="bi bi-file-earmark-person fs-3 mb-2"></i>
+                              <p class="mb-0">Información General (Resumen de Caso)</p>
+                            </div>
+                          </div>
+                          
+                          <!-- ANALISIS_CREDITO (Custom Component) -->
+                          <div *ngIf="field.controlType === 'ANALISIS_CREDITO'" class="w-100">
+                            <innova-analisis-credito [initialData]="taskVariables"></innova-analisis-credito>
+                          </div>
+                          
+                          <!-- BUTTON -->
+                          <div *ngIf="field.controlType === 'BUTTON'">
+                            <button type="button" class="btn btn-sm fw-semibold w-100"
+                                    [ngClass]="field.config?.buttonStyle || 'btn-primary'"
+                                    (click)="simButtonAction(field)">
+                              {{ field.label }}
+                            </button>
+                          </div>
+
+                          <!-- LINK -->
+                          <div *ngIf="field.controlType === 'LINK'">
+                            <a href="javascript:void(0)" class="text-primary text-decoration-underline small fw-semibold" (click)="simButtonAction(field)">
+                              {{ field.label }}
+                            </a>
+                          </div>
+
+                          <!-- GRID -->
+                          <div *ngIf="field.controlType === 'GRID'" class="mt-2 border rounded-2 overflow-hidden">
+                            <div class="d-flex justify-content-between align-items-center p-2 bg-light border-bottom">
+                              <span class="small fw-bold text-secondary"><i class="bi bi-table me-1"></i>{{ field.label }}</span>
+                              <button *ngIf="!field.readOnly && field.config?.allowAdd !== false" type="button" class="btn btn-sm btn-outline-primary py-1 px-2" style="font-size:0.75rem;" (click)="openGridModal(field)">
+                                <i class="bi bi-plus-lg me-1"></i>Agregar
+                              </button>
+                            </div>
+                            <table class="table table-bordered table-sm mb-0" style="font-size:0.8rem;">
+                              <thead class="table-light text-muted small text-uppercase">
+                                <tr>
+                                  <ng-container *ngIf="getGridColumns(field).length > 0; else simGenericCols">
+                                    <th *ngFor="let col of getGridColumns(field)">{{ col.label || col.name }}</th>
+                                  </ng-container>
+                                  <ng-template #simGenericCols>
+                                    <th>Campo 1</th><th>Campo 2</th><th>Campo 3</th>
+                                  </ng-template>
+                                  <th *ngIf="!field.readOnly && field.config?.allowDelete !== false" class="text-center" style="width:50px;"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let row of getPaginatedGridRows(field.name); let ri = index">
+                                  <td *ngFor="let col of getGridColumns(field)" class="align-middle text-center">
+           <ng-container *ngIf="col.type === 'boolean' || col.type === 'BOOLEAN'; else textCell">
+             <div class="form-check d-flex justify-content-center m-0 p-0">
+               <input class="form-check-input" type="checkbox" [(ngModel)]="row[col.name]" [disabled]="field.readOnly">
+             </div>
+           </ng-container>
+           <ng-template #textCell>
+             {{ getSimGridDisplayValue(col, row[col.name]) }}
+           </ng-template>
+         </td>
+                                  <td *ngIf="!field.readOnly && field.config?.allowDelete !== false" class="text-center text-nowrap">
+                                    <button class="btn btn-sm btn-link text-primary p-0 me-2" data-bs-toggle="modal" data-bs-target="#gridModal" (click)="editGridRow(field, ri)" title="Editar"><i class="bi bi-pencil-fill"></i></button>
+                                    <button class="btn btn-sm btn-link text-danger p-0" (click)="removeGridRow(field.name, ri)" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>
+                                  </td>
+                                </tr>
+                                <tr *ngIf="getGridRows(field.name).length === 0">
+                                  <td [attr.colspan]="getGridColumns(field).length + (field.readOnly ? 0 : 1)" class="text-center text-muted py-3 small">
+                                    Sin registros
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <div class="d-flex justify-content-between align-items-center p-2 bg-light border-top" *ngIf="getGridTotalPages(field.name) > 1">
+                              <small class="text-muted" style="font-size: 0.7rem;">Mostrando página {{ gridCurrentPageMap[field.name] || 1 }} de {{ getGridTotalPages(field.name) }}</small>
+                              <nav aria-label="Navegación de grilla">
+                                <ul class="pagination pagination-sm mb-0">
+                                  <li class="page-item" [class.disabled]="(gridCurrentPageMap[field.name] || 1) === 1">
+                                    <button class="page-link py-1 px-2" (click)="changeGridPage(field.name, (gridCurrentPageMap[field.name] || 1) - 1)">Anterior</button>
+                                  </li>
+                                  <li class="page-item" [class.disabled]="(gridCurrentPageMap[field.name] || 1) === getGridTotalPages(field.name)">
+                                    <button class="page-link py-1 px-2" (click)="changeGridPage(field.name, (gridCurrentPageMap[field.name] || 1) + 1)">Siguiente</button>
+                                  </li>
+                                </ul>
+                              </nav>
+                            </div>
+                          </div>
+
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  </div>
+                </ng-container>
+              </div>
+
+              <!-- SIN DISEÑO -->
+              <div *ngIf="layout.tabs.length === 0" class="text-center py-5 text-muted">
+                <i class="bi bi-plus-square fs-1 d-block mb-3"></i>
+                <h6>No hay controles diseñados</h6>
+              </div>
+
+              <!-- PIE DEL FORMULARIO -->
+              <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-secondary px-4" (click)="simReset()">
+                    Limpiar
+                  </button>
+                  <button class="btn btn-outline-primary px-4 fw-bold" (click)="simSave()">
+                    <i class="bi bi-save me-1"></i> Guardar
+                  </button>
+                </div>
+                <button class="btn btn-primary px-5 fw-bold" (click)="simSubmit()">
+                  Siguiente <i class="bi bi-arrow-right-circle ms-1"></i>
+                </button>
+              </div>
+
+          </div>          <!-- FIN DEL FORMULARIO -->
+        
+      
+
+      <!-- MODAL AGREGAR FILA GRID (Nivel RaÃ­z de SimulaciÃ³n) -->
+      <div *ngIf="gridModalField" class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.55);" (click)="closeGridModal()">
+        <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+          <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-header py-3" style="background:linear-gradient(135deg,#4f46e5,#7c3aed);">
+              <h6 class="modal-title text-white fw-bold"><i class="bi bi-plus-circle me-2"></i>Agregar fila - {{ gridModalField.label }}</h6>
+              <button class="btn-close btn-close-white" (click)="closeGridModal()"></button>
+            </div>
+            <div class="modal-body p-4">
+              <div class="mb-3" *ngFor="let col of getGridColumns(gridModalField)">
+                <label class="form-label small fw-semibold">{{ col.label || col.name }}</label>
+                <input *ngIf="getColInputType(col) !== 'date' && getColInputType(col) !== 'boolean' && getColInputType(col) !== 'combo'"
+                       [type]="getColInputType(col)"
+                       class="form-control"
+                       [(ngModel)]="gridNewRow[col.name]"
+                       [placeholder]="'Ingresa ' + (col.label || col.name)">
+                <input *ngIf="getColInputType(col) === 'date'"
+                       type="date" class="form-control"
+                       [(ngModel)]="gridNewRow[col.name]">
+                <div *ngIf="getColInputType(col) === 'boolean'" class="form-check form-switch mt-1">
+                  <input class="form-check-input" type="checkbox" [(ngModel)]="gridNewRow[col.name]">
+                  <label class="form-check-label text-muted small">{{ gridNewRow[col.name] ? 'SÃ­' : 'No' }}</label>
+                </div>
+                <select *ngIf="getColInputType(col) === 'combo'"
+                        class="form-select"
+                        [(ngModel)]="gridNewRow[col.name]">
+                  <option value="">-- Seleccionar {{ col.label || col.name }} --</option>
+                  <option *ngFor="let opt of getSimOptions(col.name)"
+                          [value]="opt.codigo || opt.id || opt.code">
+                    {{ col.displayField && opt[col.displayField] !== undefined ? opt[col.displayField] : (opt.descripcion || opt.nombre || opt.label) }}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="getGridColumns(gridModalField).length === 0" class="text-muted text-center small py-2">
+                Cargando columnas...
+              </div>
+            </div>
+            <div class="modal-footer border-0">
+              <button class="btn btn-outline-secondary rounded-pill px-4" (click)="closeGridModal()">Cancelar</button>
+              <button class="btn btn-primary rounded-pill px-4 fw-semibold" (click)="confirmGridRow(gridModalField)" [disabled]="getGridColumns(gridModalField).length === 0">
+                <i class="bi bi-check-lg me-1"></i>Agregar Fila
+              </button>
+            </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!layout && currentTask" class="text-center py-5 text-muted">
+    <i class="bi bi-display text-muted fs-1 mb-3 d-block opacity-50"></i>
+    <h5>Cargando diseño...</h5>
+  </div>
+
+  <div *ngIf="!taskId" class="row mt-4">
+    <div class="col-md-8 mx-auto">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+          <h5 class="fw-bold text-primary"><i class="bi bi-play-circle-fill me-2"></i>Selecciona un Proceso para Iniciar</h5>
+        </div>
+        <div class="card-body">
+          <div class="list-group list-group-flush">
+            <button *ngFor="let proc of availableProcesses" 
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 border-bottom border-light"
+                    (click)="startProcess(proc.key)">
+              <div>
+                <h6 class="mb-1 fw-bold text-dark">{{ proc.name }} <span class="badge bg-secondary ms-2" style="font-size: 0.65rem;">v{{ proc.version || 1 }}</span></h6>
+                <small class="text-muted">Inicia una nueva solicitud para este flujo.</small>
+              </div>
+              <i class="bi bi-chevron-right text-primary"></i>
+            </button>
+            <div *ngIf="availableProcesses.length === 0" class="text-center py-5 text-muted">
+              <i class="bi bi-inbox fs-1 mb-3 d-block opacity-50"></i>
+              <h6 class="fw-bold">No hay procesos disponibles.</h6>
+              <p class="small">No se encontraron procesos desplegados para iniciar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

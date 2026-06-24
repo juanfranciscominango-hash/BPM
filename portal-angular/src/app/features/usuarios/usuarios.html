@@ -1,0 +1,386 @@
+<div class="usuarios-container">
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/dashboard" title="Inicio" aria-label="Ir a página de inicio">
+        <i class="bi bi-house-door"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+  </ol>
+</nav>
+
+<div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="mb-1">Gestión de Usuarios</h2>
+          <p class="text-muted mb-0">Administra usuarios, roles y permisos del sistema</p>
+        </div>
+        <div>
+          <button class="btn btn-primary" aria-label="Agregar nuevo usuario">
+            <i class="bi bi-plus-lg me-2"></i>
+            Nuevo Usuario
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas de usuarios -->
+  <div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon bg-primary">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="stat-trend text-success">
+            <i class="bi bi-arrow-up"></i>
+            +12%
+          </div>
+        </div>
+        <div class="stat-number">1,234</div>
+        <div class="stat-label">Usuarios Totales</div>
+        <div class="stat-description text-muted">este mes</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon bg-success">
+            <i class="bi bi-person-check"></i>
+          </div>
+          <div class="stat-trend text-success">
+            <i class="bi bi-arrow-up"></i>
+            +8%
+          </div>
+        </div>
+        <div class="stat-number">1,180</div>
+        <div class="stat-label">Usuarios Activos</div>
+        <div class="stat-description text-muted">95.5% de actividad</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon bg-warning">
+            <i class="bi bi-person-exclamation"></i>
+          </div>
+          <div class="stat-trend text-muted">
+            <i class="bi bi-dash"></i>
+            4.5%
+          </div>
+        </div>
+        <div class="stat-number">54</div>
+        <div class="stat-label">Usuarios Inactivos</div>
+        <div class="stat-description text-muted">del total</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon bg-info">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <div class="stat-trend text-muted">
+            <i class="bi bi-dash"></i>
+            7.2%
+          </div>
+        </div>
+        <div class="stat-number">89</div>
+        <div class="stat-label">Administradores</div>
+        <div class="stat-description text-muted">del total</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros y búsqueda -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Buscar usuarios..." aria-label="Buscar usuarios">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select" aria-label="Filtrar por rol">
+            <option>Todos los roles</option>
+            <option>Administrador</option>
+            <option>Usuario</option>
+            <option>Moderador</option>
+            <option>Invitado</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select" aria-label="Filtrar por estado">
+            <option>Todos los estados</option>
+            <option>Activo</option>
+            <option>Inactivo</option>
+            <option>Pendiente</option>
+            <option>Bloqueado</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select" aria-label="Ordenar por">
+            <option>Nombre</option>
+            <option>Fecha de registro</option>
+            <option>Último acceso</option>
+            <option>Rol</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-secondary w-100" aria-label="Limpiar filtros">
+            <i class="bi bi-x-lg me-2"></i>
+            Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Lista de Usuarios</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Último Acceso</th>
+              <th>Fecha de Registro</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="user-avatar bg-primary me-3">
+                    <span>JD</span>
+                  </div>
+                  <div>
+                    <div class="fw-bold">Juan Díaz</div>
+                    <small class="text-muted">ID: 1001</small>
+                  </div>
+                </div>
+              </td>
+              <td>juan.diaz@bgr.com</td>
+              <td><span class="badge bg-danger">Administrador</span></td>
+              <td><span class="badge bg-success">Activo</span></td>
+              <td>Hace 2 horas</td>
+              <td>2024-01-15</td>
+              <td>
+                <div class="btn-group" role="group">
+                  <button class="btn btn-sm btn-outline-primary" aria-label="Editar usuario Juan Díaz">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-info" aria-label="Ver detalles de Juan Díaz">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-warning" aria-label="Cambiar rol de Juan Díaz">
+                    <i class="bi bi-person-gear"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" aria-label="Eliminar usuario Juan Díaz">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="user-avatar bg-success me-3">
+                    <span>MR</span>
+                  </div>
+                  <div>
+                    <div class="fw-bold">María Rodríguez</div>
+                    <small class="text-muted">ID: 1002</small>
+                  </div>
+                </div>
+              </td>
+              <td>maria.rodriguez@bgr.com</td>
+              <td><span class="badge bg-primary">Usuario</span></td>
+              <td><span class="badge bg-success">Activo</span></td>
+              <td>Hace 1 día</td>
+              <td>2024-02-20</td>
+              <td>
+                <div class="btn-group" role="group">
+                  <button class="btn btn-sm btn-outline-primary" aria-label="Editar usuario María Rodríguez">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-info" aria-label="Ver detalles de María Rodríguez">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-warning" aria-label="Cambiar rol de María Rodríguez">
+                    <i class="bi bi-person-gear"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" aria-label="Eliminar usuario María Rodríguez">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="user-avatar bg-info me-3">
+                    <span>CG</span>
+                  </div>
+                  <div>
+                    <div class="fw-bold">Carlos Gómez</div>
+                    <small class="text-muted">ID: 1003</small>
+                  </div>
+                </div>
+              </td>
+              <td>carlos.gomez@bgr.com</td>
+              <td><span class="badge bg-info">Moderador</span></td>
+              <td><span class="badge bg-warning">Inactivo</span></td>
+              <td>Hace 1 semana</td>
+              <td>2024-03-10</td>
+              <td>
+                <div class="btn-group" role="group">
+                  <button class="btn btn-sm btn-outline-primary" aria-label="Editar usuario Carlos Gómez">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-info" aria-label="Ver detalles de Carlos Gómez">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-warning" aria-label="Cambiar rol de Carlos Gómez">
+                    <i class="bi bi-person-gear"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" aria-label="Eliminar usuario Carlos Gómez">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="user-avatar bg-warning me-3">
+                    <span>AL</span>
+                  </div>
+                  <div>
+                    <div class="fw-bold">Ana López</div>
+                    <small class="text-muted">ID: 1004</small>
+                  </div>
+                </div>
+              </td>
+              <td>ana.lopez@bgr.com</td>
+              <td><span class="badge bg-primary">Usuario</span></td>
+              <td><span class="badge bg-secondary">Pendiente</span></td>
+              <td>Nunca</td>
+              <td>2025-01-20</td>
+              <td>
+                <div class="btn-group" role="group">
+                  <button class="btn btn-sm btn-outline-primary" aria-label="Editar usuario Ana López">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-info" aria-label="Ver detalles de Ana López">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-success" aria-label="Activar usuario Ana López">
+                    <i class="bi bi-check-circle"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" aria-label="Eliminar usuario Ana López">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="text-muted">
+          Mostrando 1-4 de 1,234 usuarios
+        </div>
+        <nav aria-label="Paginación de usuarios">
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" aria-label="Página anterior">
+                <i class="bi bi-chevron-left"></i>
+              </a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="#" aria-label="Página 1">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Página 2">2</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Página 3">3</a>
+            </li>
+            <li class="page-item">
+              <span class="page-link">...</span>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Página 310">310</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Página siguiente">
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones masivas -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Acciones Masivas</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <button class="btn btn-outline-primary w-100" aria-label="Exportar usuarios seleccionados">
+                <i class="bi bi-download me-2"></i>
+                Exportar Seleccionados
+              </button>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-outline-success w-100" aria-label="Activar usuarios seleccionados">
+                <i class="bi bi-check-circle me-2"></i>
+                Activar Seleccionados
+              </button>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-outline-warning w-100" aria-label="Cambiar rol masivamente">
+                <i class="bi bi-person-gear me-2"></i>
+                Cambiar Rol
+              </button>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-outline-danger w-100" aria-label="Eliminar usuarios seleccionados">
+                <i class="bi bi-trash me-2"></i>
+                Eliminar Seleccionados
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

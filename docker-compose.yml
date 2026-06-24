@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  bmp-db:
+    image: postgres:15
+    container_name: bmp-db
+    environment:
+      POSTGRES_DB: INC_BPM_PLATFORM
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Desarrollo
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  bmp-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bmp-backend
+    ports:
+      - "9090:9090"
+    depends_on:
+      bmp-db:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://bmp-db:5432/INC_BPM_PLATFORM
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Desarrollo
+
+  bmp-frontend:
+    build:
+      context: ./portal-angular
+      dockerfile: Dockerfile
+    container_name: bmp-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - bmp-backend

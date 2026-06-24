@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "email": "arquitecto@innovaconsulting.com.ec",
+    "password": "123456",
+    "name": "Arquitecto",
+    "role": "arquitecto",
+    "profile": {
+      "firstName": "Arquitecto",
+      "lastName": "Principal",
+      "phone": "+593 99 123 4567",
+      "department": "Arquitectura de Software",
+      "position": "Arquitecto Senior",
+      "joinDate": "2023-01-15",
+      "bio": "Arquitecto de software con más de 10 años de experiencia en diseño de sistemas escalables y microservicios.",
+      "skills": ["Arquitectura de Software", "Microservicios", "AWS", "Docker", "Kubernetes"],
+      "avatar": "https://via.placeholder.com/150/4CAF50/FFFFFF?text=A"
+    }
+  },
+  {
+    "id": 2,
+    "email": "desarrollador@innovaconsulting.com.ec",
+    "password": "654321",
+    "name": "Desarrollador 1",
+    "role": "desarrollador",
+    "profile": {
+      "firstName": "Desarrollador",
+      "lastName": "Uno",
+      "phone": "+593 99 987 6543",
+      "department": "Desarrollo",
+      "position": "Desarrollador Full Stack",
+      "joinDate": "2023-06-01",
+      "bio": "Desarrollador full stack apasionado por crear experiencias de usuario excepcionales y código limpio.",
+      "skills": ["Angular", "Node.js", "TypeScript", "MongoDB", "React"],
+      "avatar": "https://via.placeholder.com/150/2196F3/FFFFFF?text=D"
+    }
+  },
+  {
+    "id": 3,
+    "email": "administrador@innovaconsulting.com.ec",
+    "password": "112233",
+    "name": "Administrador 1",
+    "role": "administrador",
+    "profile": {
+      "firstName": "Administrador",
+      "lastName": "Uno",
+      "phone": "+593 99 555 1234",
+      "department": "Administración",
+      "position": "Administrador del Sistema",
+      "joinDate": "2022-03-10",
+      "bio": "Administrador del sistema con experiencia en gestión de equipos y procesos tecnológicos.",
+      "skills": ["Gestión de Equipos", "DevOps", "Seguridad", "SQL", "Linux"],
+      "avatar": "https://via.placeholder.com/150/FF9800/FFFFFF?text=AD"
+    }
+  }
+]

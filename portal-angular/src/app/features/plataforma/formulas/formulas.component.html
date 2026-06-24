@@ -1,0 +1,203 @@
+<div class="container-fluid py-4 fade-in">
+  <!-- LIST VIEW -->
+  <div *ngIf="viewMode === 'list'">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold mb-0"><i class="bi bi-calculator text-primary me-2"></i>Módulo de Fórmulas Dinámicas</h3>
+      <button class="btn btn-primary" (click)="openEditor()">
+        <i class="bi bi-plus-lg me-1"></i> Nueva Fórmula
+      </button>
+    </div>
+
+    <div class="glass-card section-card">
+      <div class="section-body p-0">
+        <table class="table table-hover align-middle mb-0 custom-table">
+          <thead class="table-light">
+            <tr>
+              <th>ID / Llave</th>
+              <th>Nombre</th>
+              <th>Versión</th>
+              <th>Autor</th>
+              <th>Última Act.</th>
+              <th class="text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let f of formulas">
+              <td><strong>{{ f.key }}</strong></td>
+              <td>
+                <div class="fw-bold">{{ f.name }}</div>
+                <small class="text-muted">{{ f.description }}</small>
+              </td>
+              <td><span class="badge bg-info text-dark">v{{ f.version }}</span></td>
+              <td>{{ f.author }}</td>
+              <td>{{ f.updatedAt | date:'medium' }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="openEditor(f)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteFormula(f.id!)" *ngIf="f.id">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="formulas.length === 0">
+              <td colspan="6" class="text-center py-4 text-muted">
+                No hay fórmulas definidas. Haz clic en "Nueva Fórmula" para empezar.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDITOR VIEW -->
+  <div *ngIf="viewMode === 'editor'">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold mb-0">
+        <button class="btn btn-link text-dark p-0 me-3" (click)="backToList()">
+          <i class="bi bi-arrow-left fs-4"></i>
+        </button>
+        {{ currentFormula.id ? 'Editar Fórmula: ' + currentFormula.name : 'Nueva Fórmula' }}
+      </h3>
+      <button class="btn btn-success fw-bold px-4" (click)="saveFormula()">
+        <i class="bi bi-save me-2"></i> Guardar Fórmula
+      </button>
+    </div>
+
+    <!-- Metadata Panel -->
+    <div class="glass-card section-card mb-4">
+      <div class="section-body p-3">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label small fw-bold">Llave (Key) *</label>
+            <input type="text" class="form-control" [(ngModel)]="currentFormula.key" placeholder="ej: cuota_francesa" [disabled]="!!currentFormula.id">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-bold">Nombre *</label>
+            <input type="text" class="form-control" [(ngModel)]="currentFormula.name" placeholder="Nombre descriptivo">
+          </div>
+          <div class="col-md-5">
+            <label class="form-label small fw-bold">Descripción</label>
+            <input type="text" class="form-control" [(ngModel)]="currentFormula.description" placeholder="Breve explicación">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- PANEL IZQUIERDO: Elementos Disponibles -->
+      <div class="col-lg-3">
+        <div class="glass-card section-card mb-4">
+          <div class="section-header">
+            <h6 class="mb-0 fw-bold"><i class="bi bi-box me-2"></i>Variables Dinámicas</h6>
+          </div>
+          <div class="section-body p-3">
+            <div class="mb-3">
+              <label class="form-label small">Entidad Base:</label>
+              <select class="form-select form-select-sm" [(ngModel)]="selectedEntityId" (change)="onEntityChange()">
+                <option [ngValue]="null">Seleccione...</option>
+                <option *ngFor="let ent of entities" [ngValue]="ent.id">{{ ent.label || ent.name }}</option>
+              </select>
+            </div>
+            
+            <div class="d-flex flex-wrap gap-2" *ngIf="availableVariables.length > 0">
+              <div *ngFor="let v of availableVariables" class="formula-item variable" draggable="true" (dragstart)="onDragStart($event, v)">
+                {{ v.label }}
+              </div>
+            </div>
+            <div *ngIf="availableVariables.length === 0" class="text-muted small">
+              Seleccione una entidad para ver sus campos.
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card section-card mb-4">
+          <div class="section-header">
+            <h6 class="mb-0 fw-bold"><i class="bi bi-plus-slash-minus me-2"></i>Operadores Lógicos / Math</h6>
+          </div>
+          <div class="section-body p-3">
+            <div class="d-flex flex-wrap gap-2">
+              <div *ngFor="let o of availableOperators" class="formula-item operator" draggable="true" (dragstart)="onDragStart($event, o)">
+                {{ o.label }}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="glass-card section-card">
+          <div class="section-header">
+            <h6 class="mb-0 fw-bold"><i class="bi bi-123 me-2"></i>Constante Numérica</h6>
+          </div>
+          <div class="section-body p-3">
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="customNumber" placeholder="Ej: 100">
+              <button class="btn btn-outline-primary" (click)="addCustomNumber()">Añadir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL CENTRAL: Área de Construcción -->
+      <div class="col-lg-6">
+        <div class="glass-card section-card h-100">
+          <div class="section-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-bold"><i class="bi bi-diagram-3 me-2"></i>Lienzo de la Fórmula (Arrastrar aquí)</h6>
+            <button class="btn btn-sm btn-outline-danger" (click)="clearCanvas()"><i class="bi bi-trash"></i> Limpiar</button>
+          </div>
+          <div class="section-body p-4">
+            
+            <div class="drop-zone border rounded p-4 d-flex flex-wrap align-items-center gap-2 mb-4"
+                 [class.drag-over]="isDraggingOver"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event)">
+              
+              <div *ngIf="canvasElements.length === 0" class="text-center w-100 text-muted my-4">
+                <i class="bi bi-arrow-down-square fs-1"></i><br>Suelta los elementos aquí
+              </div>
+
+              <div *ngFor="let item of canvasElements; let i = index" class="formula-item in-canvas" [ngClass]="item.type">
+                {{ item.label }}
+                <span class="remove-btn ms-2" (click)="removeElement(i)">&times;</span>
+              </div>
+            </div>
+
+            <div class="bg-light p-3 rounded text-center border">
+              <p class="mb-1 text-uppercase fw-bold small text-muted">Expresión Generada (SpEL)</p>
+              <code class="fs-5 text-dark">{{ getExpressionString() || 'Vacio' }}</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL DERECHO: Simulador -->
+      <div class="col-lg-3">
+        <div class="glass-card section-card sticky-top" style="top: 20px;">
+          <div class="section-header">
+            <h6 class="mb-0 fw-bold"><i class="bi bi-play-circle me-2"></i>Simulador en Vivo (Backend)</h6>
+          </div>
+          <div class="section-body p-3">
+            <p class="text-muted small">El motor SpEL evaluará los valores en tiempo real.</p>
+            
+            <div class="mb-3" *ngFor="let v of getVariablesInCanvas()">
+              <label class="form-label small fw-bold text-muted">{{ v.label }} ({{v.value}})</label>
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="testValues[v.value]" (change)="evaluateFormula()">
+            </div>
+            
+            <button class="btn btn-outline-secondary btn-sm w-100 mb-3" (click)="evaluateFormula()">Re-evaluar</button>
+
+            <div class="p-3 rounded border text-center" [ngClass]="evaluationError ? 'bg-danger bg-opacity-10 border-danger' : 'bg-success bg-opacity-10 border-success'">
+              <p class="mb-1 text-uppercase fw-bold small" [ngClass]="evaluationError ? 'text-danger' : 'text-success'">
+                {{ evaluationError ? 'Error de Cálculo' : 'Resultado' }}
+              </p>
+              <h3 class="mb-0 fw-bold" [ngClass]="evaluationError ? 'text-danger' : 'text-success'">
+                {{ evaluationError ? 'Error' : resultValue }}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

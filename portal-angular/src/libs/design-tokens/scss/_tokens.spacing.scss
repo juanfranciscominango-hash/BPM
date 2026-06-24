@@ -1,0 +1,172 @@
+// =============================================================================
+// VARIABLES DE ESPACIADO - PLANTILLA EMPRESARIAL InnovaConsulting
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// VARIABLES SASS PARA ESPACIADO
+// -----------------------------------------------------------------------------
+$spacer: 1rem;
+$spacer-xs: $spacer * 0.25;   // 4px
+$spacer-sm: $spacer * 0.5;    // 8px
+$spacer-md: $spacer;          // 16px
+$spacer-lg: $spacer * 1.5;    // 24px
+$spacer-xl: $spacer * 2;      // 32px
+$spacer-xxl: $spacer * 3;     // 48px
+
+// -----------------------------------------------------------------------------
+// BORDER RADIUS
+// -----------------------------------------------------------------------------
+$border-radius: 0.375rem;
+$border-radius-sm: 0.25rem;
+$border-radius-lg: 0.5rem;
+$border-radius-xl: 1rem;
+$border-radius-xxl: 2rem;
+$border-radius-pill: 50rem;
+
+// -----------------------------------------------------------------------------
+// SOMBRAS
+// -----------------------------------------------------------------------------
+$box-shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.08);
+$box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.15);
+$box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+
+// -----------------------------------------------------------------------------
+// COMPONENTES ESPECÍFICOS
+// -----------------------------------------------------------------------------
+$login-wrapper-max-width: 1000px;
+$login-form-width: 400px;
+$login-logo-size: 120px;
+
+$card-border-radius: $border-radius;
+$card-box-shadow: $box-shadow-sm;
+
+$btn-border-radius: $border-radius;
+$btn-padding-y: 0.5rem;
+$btn-padding-x: 1rem;
+
+$input-border-radius: $border-radius;
+$input-focus-box-shadow: 0 0 0 0.2rem rgba(0, 57, 118, 0.25);
+
+:root {
+  /* Base spacing scale - 8px grid system */
+  --innova-space-0: 0px;
+  --innova-space-0-5: 2px;   /* 0.125rem */
+  --innova-space-1: 4px;     /* 0.25rem */
+  --innova-space-1-5: 6px;   /* 0.375rem */
+  --innova-space-2: 8px;     /* 0.5rem */
+  --innova-space-2-5: 10px;  /* 0.625rem */
+  --innova-space-3: 12px;    /* 0.75rem */
+  --innova-space-3-5: 14px;  /* 0.875rem */
+  --innova-space-4: 16px;    /* 1rem */
+  --innova-space-5: 20px;    /* 1.25rem */
+  --innova-space-6: 24px;    /* 1.5rem */
+  --innova-space-7: 28px;    /* 1.75rem */
+  --innova-space-8: 32px;    /* 2rem */
+  --innova-space-9: 36px;    /* 2.25rem */
+  --innova-space-10: 40px;   /* 2.5rem */
+  --innova-space-11: 44px;   /* 2.75rem */
+  --innova-space-12: 48px;   /* 3rem */
+  --innova-space-14: 56px;   /* 3.5rem */
+  --innova-space-16: 64px;   /* 4rem */
+  --innova-space-18: 72px;   /* 4.5rem */
+  --innova-space-20: 80px;   /* 5rem */
+  --innova-space-24: 96px;   /* 6rem */
+  --innova-space-28: 112px;  /* 7rem */
+  --innova-space-32: 128px;  /* 8rem */
+
+  /* Sass variables as CSS custom properties */
+  --spacer-xs: #{$spacer-xs};
+  --spacer-sm: #{$spacer-sm};
+  --spacer-md: #{$spacer-md};
+  --spacer-lg: #{$spacer-lg};
+  --spacer-xl: #{$spacer-xl};
+  --spacer-xxl: #{$spacer-xxl};
+
+  /* Border radius */
+  --border-radius: #{$border-radius};
+  --border-radius-sm: #{$border-radius-sm};
+  --border-radius-lg: #{$border-radius-lg};
+  --border-radius-xl: #{$border-radius-xl};
+  --border-radius-xxl: #{$border-radius-xxl};
+  --border-radius-pill: #{$border-radius-pill};
+
+  /* Box shadows */
+  --box-shadow-sm: #{$box-shadow-sm};
+  --box-shadow: #{$box-shadow};
+  --box-shadow-lg: #{$box-shadow-lg};
+
+  /* Semantic spacing tokens */
+  
+  /* Micro spacing - for fine adjustments */
+  --innova-space-micro: var(--innova-space-0-5);
+  --innova-space-xs: var(--innova-space-1);
+  --innova-space-sm: var(--innova-space-2);
+  --innova-space-md: var(--innova-space-4);
+  --innova-space-lg: var(--innova-space-6);
+  --innova-space-xl: var(--innova-space-8);
+  --innova-space-2xl: var(--innova-space-12);
+  --innova-space-3xl: var(--innova-space-16);
+  --innova-space-4xl: var(--innova-space-24);
+  --innova-space-5xl: var(--innova-space-32);
+
+  /* Component specific spacing */
+  
+  /* Padding tokens */
+  --innova-padding-button-sm: var(--innova-space-2) var(--innova-space-3);
+  --innova-padding-button-md: var(--innova-space-2-5) var(--innova-space-4);
+  --innova-padding-button-lg: var(--innova-space-3) var(--innova-space-6);
+  
+  --innova-padding-input-sm: var(--innova-space-2) var(--innova-space-3);
+  --innova-padding-input-md: var(--innova-space-3) var(--innova-space-4);
+  --innova-padding-input-lg: var(--innova-space-4) var(--innova-space-5);
+  
+  --innova-padding-card: var(--innova-space-6);
+  --innova-padding-card-sm: var(--innova-space-4);
+  --innova-padding-card-lg: var(--innova-space-8);
+  
+  --innova-padding-container: var(--innova-space-4);
+  --innova-padding-container-lg: var(--innova-space-6);
+  --innova-padding-container-xl: var(--innova-space-8);
+  
+  /* Margin tokens */
+  --innova-margin-section: var(--innova-space-12);
+  --innova-margin-element: var(--innova-space-4);
+  --innova-margin-component: var(--innova-space-6);
+  
+  /* Gap tokens for layouts */
+  --innova-gap-xs: var(--innova-space-1);
+  --innova-gap-sm: var(--innova-space-2);
+  --innova-gap-md: var(--innova-space-4);
+  --innova-gap-lg: var(--innova-space-6);
+  --innova-gap-xl: var(--innova-space-8);
+  
+  /* Banking specific spacing */
+  --innova-space-form-field: var(--innova-space-5);     /* Between form fields */
+  --innova-space-form-group: var(--innova-space-8);     /* Between form groups */
+  --innova-space-transaction-item: var(--innova-space-4); /* Between transactions */
+  --innova-space-account-card: var(--innova-space-6);   /* Between account cards */
+  --innova-space-dashboard-widget: var(--innova-space-8); /* Between dashboard widgets */
+  
+  /* Layout spacing */
+  --innova-space-header-height: 64px;                /* App header height */
+  --innova-space-sidebar-width: 280px;               /* Sidebar width */
+  --innova-space-sidebar-collapsed: 80px;            /* Collapsed sidebar */
+  --innova-space-content-max-width: 1200px;          /* Max content width */
+  
+  /* Border radius (included here as it's spacing-related) */
+  --innova-radius-none: 0px;
+  --innova-radius-xs: 2px;
+  --innova-radius-sm: 4px;
+  --innova-radius-md: 6px;
+  --innova-radius-lg: 8px;
+  --innova-radius-xl: 12px;
+  --innova-radius-2xl: 16px;
+  --innova-radius-3xl: 24px;
+  --innova-radius-full: 9999px;
+  
+  /* Banking component radius */
+  --innova-radius-button: var(--innova-radius-md);
+  --innova-radius-input: var(--innova-radius-sm);
+  --innova-radius-card: var(--innova-radius-lg);
+  --innova-radius-modal: var(--innova-radius-xl);
+}

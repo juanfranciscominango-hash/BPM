@@ -1,0 +1,245 @@
+.perfil-container {
+  .card {
+    border: 1px solid #e9ecef;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+
+    .card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+
+      .card-title {
+        color: #2c3e50;
+        font-weight: 600;
+      }
+    }
+
+    .card-body {
+      .form-label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-control, .form-select {
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 0.5rem 1rem;
+
+        &:focus {
+          border-color: #0d6efd;
+          box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+      }
+
+      .form-check {
+        .form-check-input {
+          margin-right: 0.5rem;
+
+          &:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+          }
+        }
+
+        .form-check-label {
+          color: #495057;
+          font-weight: 500;
+        }
+      }
+
+      .avatar-container {
+        .avatar-preview {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          background-color: #f8f9fa;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto;
+          border: 2px dashed #dee2e6;
+        }
+      }
+    }
+
+    .card-footer {
+      background-color: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+
+      .btn {
+        border-radius: 0.375rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .activity-timeline {
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 1rem 0;
+      border-bottom: 1px solid #f8f9fa;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .activity-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-right: 1rem;
+        flex-shrink: 0;
+
+        &.bg-success { background-color: #198754; }
+        &.bg-primary { background-color: #0d6efd; }
+        &.bg-warning { background-color: #ffc107; color: #212529; }
+        &.bg-info { background-color: #0dcaf0; }
+      }
+
+      .activity-content {
+        flex: 1;
+
+        .activity-title {
+          font-weight: 600;
+          color: #2c3e50;
+          margin-bottom: 0.25rem;
+        }
+
+        .activity-description {
+          color: #6c757d;
+          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+          color: #adb5bd;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  .btn {
+    border-radius: 0.375rem;
+    font-weight: 500;
+
+    &.btn-primary {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+
+      &:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+      }
+    }
+
+    &.btn-outline-primary {
+      color: #0d6efd;
+      border-color: #0d6efd;
+
+      &:hover {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+      }
+    }
+
+    &.btn-outline-warning {
+      color: #ffc107;
+      border-color: #ffc107;
+
+      &:hover {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529;
+      }
+    }
+
+    &.btn-outline-info {
+      color: #0dcaf0;
+      border-color: #0dcaf0;
+
+      &:hover {
+        background-color: #0dcaf0;
+        border-color: #0dcaf0;
+      }
+    }
+
+    &.btn-outline-secondary {
+      color: #6c757d;
+      border-color: #6c757d;
+
+      &:hover {
+        background-color: #6c757d;
+        border-color: #6c757d;
+      }
+    }
+
+    &.btn-outline-danger {
+      color: #dc3545;
+      border-color: #dc3545;
+
+      &:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .perfil-container {
+    .row {
+      .col-lg-8, .col-lg-4 {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    .card {
+      .card-body {
+        .row {
+          .col-md-6 {
+            margin-bottom: 1rem;
+          }
+        }
+
+        .avatar-container {
+          .avatar-preview {
+            width: 80px;
+            height: 80px;
+          }
+        }
+      }
+    }
+
+    .activity-timeline {
+      .activity-item {
+        .activity-icon {
+          width: 2rem;
+          height: 2rem;
+          margin-right: 0.75rem;
+        }
+
+        .activity-content {
+          .activity-title {
+            font-size: 0.9rem;
+          }
+
+          .activity-description {
+            font-size: 0.8rem;
+          }
+
+          .activity-time {
+            font-size: 0.75rem;
+          }
+        }
+      }
+    }
+  }
+}

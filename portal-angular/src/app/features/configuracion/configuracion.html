@@ -1,0 +1,35 @@
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/dashboard" title="Inicio" aria-label="Ir a página de inicio">
+        <i class="bi bi-house-door"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Configuración</li>
+  </ol>
+</nav>
+
+<div class="page-header">
+  <h1 class="page-title">Configuración</h1>
+  <p class="page-subtitle">Administra la configuración del sistema y tu perfil personal</p>
+</div>
+
+<!-- Navegación de subpáginas -->
+<div class="config-nav mb-4">
+  <div class="nav nav-tabs" role="tablist">
+    <a routerLink="/configuracion/perfil" routerLinkActive="active" class="nav-link" role="tab">
+      <i class="bi bi-person me-2"></i>
+      Perfil
+    </a>
+    <a routerLink="/configuracion/sistema" routerLinkActive="active" class="nav-link" role="tab">
+      <i class="bi bi-gear me-2"></i>
+      Sistema
+    </a>
+  </div>
+</div>
+
+<!-- Contenido de las subpáginas -->
+<div class="configuracion-content">
+  <router-outlet></router-outlet>
+</div>
