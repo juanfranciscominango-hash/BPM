@@ -114,6 +114,10 @@ export class CrmService {
     return this.http.put<Lead>(`${this.apiUrl}/leads/${id}`, lead);
   }
 
+  deleteProspecto(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/leads/${id}`);
+  }
+
   getCampanas(): Observable<Campana[]> {
     return this.http.get<Campana[]>(`${this.apiUrl}/campanas`);
   }

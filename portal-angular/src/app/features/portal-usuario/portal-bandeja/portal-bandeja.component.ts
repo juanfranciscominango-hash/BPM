@@ -36,9 +36,11 @@ export class PortalBandejaComponent implements OnInit {
   private router = inject(Router);
 
   tasks: UserTask[] = [];
+  filteredTasks: UserTask[] = [];
   loading = false;
   currentUser = this.authService.getCurrentUser();
   pageSize = 10;
+  searchText = '';
 
   // Variables for the graphic query modal
   selectedInstanceId: string = '';
@@ -62,12 +64,26 @@ export class PortalBandejaComponent implements OnInit {
       next: (data) => {
         // Ocultar las tareas de prueba 'Simulacion' para no ensuciar la bandeja
         this.tasks = (data || []).filter(t => t.name !== 'Simulacion');
+        this.filtrarTareas();
         this.loading = false;
       },
       error: () => {
         this.loading = false;
       }
     });
+  }
+
+  filtrarTareas() {
+    if (!this.searchText || this.searchText.trim() === '') {
+      this.filteredTasks = [...this.tasks];
+    } else {
+      const lowerSearch = this.searchText.toLowerCase().trim();
+      this.filteredTasks = this.tasks.filter(t => {
+        const idMatch = t.identificacion?.toLowerCase().includes(lowerSearch);
+        const caseMatch = t.numeroCaso?.toLowerCase().includes(lowerSearch) || t.processInstanceId?.toLowerCase().includes(lowerSearch);
+        return idMatch || caseMatch;
+      });
+    }
   }
 
   abrirTarea(task: UserTask) {

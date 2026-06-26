@@ -305,16 +305,39 @@ export class WizardFlujoComponent implements OnInit {
                   const reqTable = tables.find(t => t.name === 'requisitos');
                   if (reqTable && reqTable.id) {
                     this.parametricService.getTableData(reqTable.id).subscribe(data => {
-                        // Filtrar por producto actual si existe en variables
+                        const tipoId = this.taskVariables['tipo_credito_id'];
                         const prod = String(this.taskVariables['producto_credito'] || this.taskVariables['producto'] || '').trim();
-                        let filtered = data;
-                        if (prod && prod !== 'undefined') {
-                           filtered = data.filter((d:any) => String(d.producto_credito) === prod || String(d.producto) === prod || String(d.codigo).includes(prod));
-                           if (filtered.length === 0) filtered = data; // Fallback
-                        }
                         
-                        this.gridRowsMap['requisitos_array'] = filtered.map(d => ({ ...d, revisado: false }));
-                        this.cdr.detectChanges();
+                        const applyFilter = (tId: string) => {
+                           let filtered = data;
+                           if (tId && tId !== 'undefined') {
+                              filtered = data.filter((d:any) => {
+                                 if (!d.tipo_credito) return false;
+                                 const tipos = String(d.tipo_credito).split(',').map(s => s.trim());
+                                 return tipos.includes(tId);
+                              });
+                           }
+                           if (filtered.length === 0) filtered = data; // Fallback
+                           this.gridRowsMap['requisitos_array'] = filtered.map(d => ({ ...d, revisado: false }));
+                           this.cdr.detectChanges();
+                        };
+
+                        if (tipoId) {
+                           applyFilter(String(tipoId).trim());
+                        } else if (prod && prod !== 'undefined') {
+                           // Fallback para casos antiguos que no tienen tipo_credito_id
+                           this.parametricService.getTableData(16).subscribe((productos: any) => {
+                               const productosArr = Array.isArray(productos) ? productos : (productos.value || []);
+                               const prodSeleccionado = productosArr.find((p:any) => String(p.id) === prod || String(p.codigo) === prod);
+                               if (prodSeleccionado && prodSeleccionado.pro_cre_tipo_credito) {
+                                   applyFilter(String(prodSeleccionado.pro_cre_tipo_credito).trim());
+                               } else {
+                                   applyFilter('');
+                               }
+                           });
+                        } else {
+                           applyFilter('');
+                        }
                     });
                   }
                 });

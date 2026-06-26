@@ -33,7 +33,7 @@
                               <label class="form-label text-uppercase text-muted fw-bold mb-1" style="font-size: 0.65rem;">Dirección</label>
                               <div class="input-group input-group-sm">
                                   <span class="input-group-text bg-light text-muted"><i class="bi bi-geo-alt-fill"></i></span>
-                                  <input type="text" class="form-control bg-light" placeholder="Se completará automáticamente" formControlName="direccion">
+                                  <input type="text" #direccionInput class="form-control bg-light" placeholder="Ingrese su dirección..." formControlName="direccion">
                               </div>
                         </div>
                         <div class="col-md-12 mt-1 d-flex align-items-center gap-3">
@@ -76,7 +76,7 @@
                             <label class="form-label text-uppercase text-muted fw-bold mb-1" style="font-size: 0.65rem;">Producto <span class="text-danger">*</span></label>
                             <select class="form-select form-select-sm" formControlName="producto">
                                 <option value="" disabled selected>Seleccione...</option>
-                                <option *ngFor="let prod of productosCredito" [value]="prod.codigo">{{ prod.descripcion || prod.nombre }}</option>
+                                <option *ngFor="let prod of productosFiltrados" [value]="prod.codigo">{{ prod.descripcion || prod.nombre }}</option>
                             </select>
                         </div>
 
@@ -114,9 +114,15 @@
 
             <!-- SECCIÓN 03: ANÁLISIS FINANCIERO -->
             <div class="glass-card section-card mb-2">
-                <div class="section-header d-flex align-items-center py-1 px-2">
-                    <div class="number-circle" style="width: 20px; height: 20px; font-size: 0.65rem; margin-right: 8px;">03</div>
-                    <h6 class="mb-0 fw-bold text-primary" style="margin-top: 2px; font-size: 0.85rem;">Análisis Financiero</h6>
+                <div class="section-header d-flex align-items-center py-1 px-2 justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="number-circle" style="width: 20px; height: 20px; font-size: 0.65rem; margin-right: 8px;">03</div>
+                        <h6 class="mb-0 fw-bold text-primary" style="margin-top: 2px; font-size: 0.85rem;">Análisis Financiero</h6>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="mb-0 me-2 small text-muted fw-bold" style="font-size: 0.7rem;">Score Crediticio:</label>
+                        <input type="number" class="form-control form-control-sm text-center fw-bold text-primary" formControlName="scoreCrediticio" style="width: 80px; border-radius: 20px;" (blur)="ejecutarAnalisis()">
+                    </div>
                 </div>
                 
                 <div class="section-body p-2 px-3 pt-1">
@@ -300,13 +306,28 @@
                             <div class="col-6">
                                 <p class="text-uppercase text-muted small fw-bold mb-1" style="font-size: 0.65rem;">DIN (Disponibilidad)</p>
                                 <h5 class="fw-bold mb-0">{{ resultadosCalculados.din | number:'1.1-1' }}%</h5>
-                                <small class="text-muted" style="font-size: 0.65rem;">Meta: 44%</small>
+                                <small class="text-muted" style="font-size: 0.65rem;" [ngClass]="resultadosCalculados.dinValido ? 'text-success' : 'text-danger'">
+                                    Válido: {{ resultadosCalculados.dinValido ? 'Sí' : 'No' }}
+                                </small>
                             </div>
                             <div class="col-6 text-end">
                                 <p class="text-uppercase text-muted small fw-bold mb-1" style="font-size: 0.65rem;">CIN (Afectación)</p>
                                 <h5 class="fw-bold mb-0">{{ resultadosCalculados.cin | number:'1.1-1' }}%</h5>
-                                <small class="text-muted" style="font-size: 0.65rem;">Máximo: 45%</small>
+                                <small class="text-muted" style="font-size: 0.65rem;" [ngClass]="resultadosCalculados.cinValido ? 'text-success' : 'text-danger'">
+                                    Válido: {{ resultadosCalculados.cinValido ? 'Sí' : 'No' }}
+                                </small>
                             </div>
+                        </div>
+
+                        <!-- Capacidad de Pago -->
+                        <div class="mb-3 text-center border-bottom pb-3">
+                            <p class="text-uppercase text-muted small fw-bold mb-1" style="font-size: 0.65rem;">Capacidad de Pago Disponible</p>
+                            <h4 class="fw-bold mb-1" [ngClass]="resultadosCalculados.cuotaMensual <= resultadosCalculados.capacidadPago ? 'text-success' : 'text-danger'">
+                                {{ resultadosCalculados.capacidadPago | currency }}
+                            </h4>
+                            <small class="text-muted" style="font-size: 0.65rem;">
+                                Límite DTI ({{ resultadosCalculados.totalIngresos * 0.45 | currency }}) - Deudas SF ({{ resultadosCalculados.totalDeudas | currency }})
+                            </small>
                         </div>
 
                         <!-- Progress Bar DTI -->
@@ -332,14 +353,23 @@
                             <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.dti <= 45 ? 'text-success' : 'text-danger'">
                                 <i class="bi me-2" [ngClass]="resultadosCalculados.dti <= 45 ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> DTI &le; 45% (Real: {{ resultadosCalculados.dti | number:'1.1-1' }}%)
                             </li>
-                            <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.cin <= 45 ? 'text-success' : 'text-danger'">
-                                <i class="bi me-2" [ngClass]="resultadosCalculados.cin <= 45 ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> CIN dentro del rango permitido
+                            <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.cinValido ? 'text-success' : 'text-danger'">
+                                <i class="bi me-2" [ngClass]="resultadosCalculados.cinValido ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> CIN dentro del rango permitido ({{ resultadosCalculados.cinValido ? 'Sí' : 'No' }})
+                            </li>
+                            <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.dinValido ? 'text-success' : 'text-danger'">
+                                <i class="bi me-2" [ngClass]="resultadosCalculados.dinValido ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> DIN dentro del rango permitido ({{ resultadosCalculados.dinValido ? 'Sí' : 'No' }})
                             </li>
                             <li class="mb-2 d-flex align-items-center" [ngClass]="simulacionForm.get('monto')?.valid ? 'text-success' : 'text-danger'">
                                 <i class="bi me-2" [ngClass]="simulacionForm.get('monto')?.valid ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> Monto dentro del rango del producto
                             </li>
                             <li class="mb-2 d-flex align-items-center" [ngClass]="simulacionForm.get('plazo')?.valid ? 'text-success' : 'text-danger'">
                                 <i class="bi me-2" [ngClass]="simulacionForm.get('plazo')?.valid ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> Plazo dentro del rango del producto
+                            </li>
+                            <li class="mb-2 d-flex align-items-center" [ngClass]="simulacionForm.get('scoreCrediticio')?.value >= 650 ? 'text-success' : 'text-danger'">
+                                <i class="bi me-2" [ngClass]="simulacionForm.get('scoreCrediticio')?.value >= 650 ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> Score Crediticio aceptable (&ge; 650)
+                            </li>
+                            <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.cuotaMensual <= resultadosCalculados.capacidadPago ? 'text-success' : 'text-danger'">
+                                <i class="bi me-2" [ngClass]="resultadosCalculados.cuotaMensual <= resultadosCalculados.capacidadPago ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> Cuota no excede capacidad de pago
                             </li>
                         </ul>
                         </div>

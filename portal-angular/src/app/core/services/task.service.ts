@@ -13,6 +13,7 @@ export interface UserTask {
   processName?: string;
   identificacion?: string;
   nombreCompleto?: string;
+  numeroCaso?: string;
 }
 
 @Injectable({

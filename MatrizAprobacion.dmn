@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_0xyz123" name="Matriz de Aprobacion" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="MatrizAprobacion" name="Matriz de Aprobacion">
+    <decisionTable id="DecisionTable_13xyz" hitPolicy="UNIQUE">
+      <input id="Input_1" label="Monto del Crédito">
+        <inputExpression id="InputExpression_1" typeRef="integer">
+          <text>solicitud_credito_monto_aprobado</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Rol Aprobador" name="rolAprobador" typeRef="string" />
+      <rule id="DecisionRule_1">
+        <description>Nivel 1: Asesor</description>
+        <inputEntry id="UnaryTests_1">
+          <text>&lt;= 80000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1">
+          <text>"ASESOR_CREDITO"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_2">
+        <description>Nivel 2: Jefe de Crédito</description>
+        <inputEntry id="UnaryTests_2">
+          <text>[80001..150000]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2">
+          <text>"JEFE_CREDITO"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_3">
+        <description>Nivel 3: Subgerente de Crédito</description>
+        <inputEntry id="UnaryTests_3">
+          <text>[150001..200000]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_3">
+          <text>"SUBGERENTE_CREDITO"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_4">
+        <description>Nivel 4: Gerente de Crédito</description>
+        <inputEntry id="UnaryTests_4">
+          <text>&gt;= 200001</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_4">
+          <text>"GERENTE_CREDITO"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

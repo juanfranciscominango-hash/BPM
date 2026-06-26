@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.flowable.task.api.Task;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.RepositoryService;
+import org.flowable.engine.RuntimeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class TaskRestController {
 
     private final TaskService taskService;
     private final RepositoryService repositoryService;
+    private final RuntimeService runtimeService;
     private final com.innovacred.bpm.application.service.BpmTaskService bpmTaskService;
 
     @GetMapping
@@ -84,6 +86,14 @@ public class TaskRestController {
             // fallback if null or not found
         }
 
+        String numeroCaso = task.getProcessInstanceId(); // default fallback
+        try {
+            org.flowable.engine.runtime.ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+            if (pi != null && pi.getName() != null && !pi.getName().trim().isEmpty()) {
+                numeroCaso = pi.getName();
+            }
+        } catch (Exception e) {}
+
         return new TaskResponse(
                 task.getId(),
                 task.getName(),
@@ -94,7 +104,8 @@ public class TaskRestController {
                 task.getTaskDefinitionKey(),
                 processName,
                 ident,
-                nombres
+                nombres,
+                numeroCaso
         );
     }
 
@@ -108,6 +119,7 @@ public class TaskRestController {
             String taskDefinitionKey,
             String processName,
             String identificacion,
-            String nombreCompleto
+            String nombreCompleto,
+            String numeroCaso
     ) {}
 }

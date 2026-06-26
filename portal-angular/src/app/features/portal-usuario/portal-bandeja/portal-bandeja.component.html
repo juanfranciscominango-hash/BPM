@@ -10,8 +10,11 @@
           <option [ngValue]="50">50</option>
         </select>
       </div>
+      <div class="d-flex align-items-center gap-2">
+        <input type="text" class="form-control form-control-sm" placeholder="Buscar por ID o Caso..." [(ngModel)]="searchText" (input)="filtrarTareas()">
+      </div>
       <button class="btn btn-sm btn-light border text-secondary"><i class="bi bi-funnel"></i></button>
-      <button class="btn btn-sm btn-primary" (click)="cargarTareas()"><i class="bi bi-eye"></i></button>
+      <button class="btn btn-sm btn-primary" (click)="cargarTareas()"><i class="bi bi-arrow-clockwise"></i></button>
     </div>
   </div>
 
@@ -32,10 +35,10 @@
         <tr *ngIf="loading">
           <td colspan="7" class="py-4">Cargando tareas...</td>
         </tr>
-        <tr *ngIf="!loading && tasks.length === 0">
+        <tr *ngIf="!loading && filteredTasks.length === 0">
           <td colspan="7" class="py-4">No hay tareas pendientes.</td>
         </tr>
-        <tr *ngFor="let task of tasks" class="cursor-pointer task-row" style="height: 50px;">
+        <tr *ngFor="let task of filteredTasks" class="cursor-pointer task-row" style="height: 50px;">
           <td class="text-nowrap">
             <i class="bi bi-star me-2 text-muted" role="button" title="Favorito"></i>
             <i class="bi bi-zoom-in me-2 text-muted" role="button" title="Consulta Gráfica del Flujo" (click)="abrirConsultaGrafica(task, $event)"></i>
@@ -44,7 +47,7 @@
             <i class="bi bi-search text-muted" role="button" title="Ver / Continuar" (click)="abrirTarea(task)"></i>
             <i class="bi bi-x-circle text-danger ms-2" role="button" title="Cancelar Caso" (click)="cancelarProceso(task, $event)"></i>
           </td>
-          <td>{{ task.processInstanceId }}</td>
+          <td>{{ task.numeroCaso || task.processInstanceId }}</td>
           <td>{{ task.processName || task.processDefinitionId.split(':')[0] }}</td>
           <td class="text-start text-dark fw-medium" (click)="abrirTarea(task)">
             <div class="d-flex align-items-center justify-content-between">

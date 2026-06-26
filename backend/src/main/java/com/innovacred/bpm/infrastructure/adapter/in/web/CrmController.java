@@ -36,6 +36,12 @@ public class CrmController {
         return ResponseEntity.ok(crmService.updateLead(id, lead));
     }
 
+    @DeleteMapping("/leads/{id}")
+    public ResponseEntity<Void> deleteLead(@PathVariable Long id) {
+        crmService.deleteLead(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/leads/{id}/interactions")
     public ResponseEntity<List<LeadInteraction>> getInteractions(@PathVariable Long id) {
         return ResponseEntity.ok(crmService.getInteractions(id));

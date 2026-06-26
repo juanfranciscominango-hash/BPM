@@ -46,6 +46,18 @@ public class CrmService {
     }
 
     @Transactional
+    public void deleteLead(Long id) {
+        if (!leadRepository.existsById(id)) {
+            throw new RuntimeException("Lead no encontrado con id " + id);
+        }
+        // Delete interactions and tasks first to avoid constraint violation
+        interactionRepository.deleteByLeadId(id);
+        taskRepository.deleteByLeadId(id);
+        
+        leadRepository.deleteById(id);
+    }
+
+    @Transactional
     public Lead createLead(Lead lead) {
         if (lead.getAsesorAsignado() != null && lead.getAsesorAsignado().getId() != null) {
             lead.setAsesorAsignado(AsesorRepository.findById(lead.getAsesorAsignado().getId()).orElse(null));

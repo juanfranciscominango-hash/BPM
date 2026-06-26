@@ -144,6 +144,9 @@ import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
                     <button class="btn btn-sm btn-light rounded-circle shadow-sm mx-1 text-success py-0 px-1" (click)="verDetalle(lead.id!); $event.stopPropagation()">
                       <i class="bi bi-person-check" style="font-size: 0.75rem;"></i>
                     </button>
+                    <button class="btn btn-sm btn-light rounded-circle shadow-sm mx-1 text-danger py-0 px-1" (click)="eliminarProspecto(lead.id!, $event)">
+                      <i class="bi bi-trash" style="font-size: 0.75rem;"></i>
+                    </button>
                   </td>
                 </tr>
                 <tr *ngIf="paginatedLeads.length === 0">
@@ -238,6 +241,19 @@ export class ProspectosListComponent implements OnInit {
 
   verDetalle(id: number) {
     this.router.navigate(['/portal/crm/prospecto', id]);
+  }
+
+  eliminarProspecto(id: number, event: Event) {
+    event.stopPropagation();
+    if (confirm('¿Está seguro de eliminar este prospecto?')) {
+      this.crmService.deleteProspecto(id).subscribe({
+        next: () => {
+          this.cargarLeads();
+          this.cargarAnalytics();
+        },
+        error: (err) => console.error('Error al eliminar prospecto', err)
+      });
+    }
   }
 
   getCountByStatus(status: string): number {

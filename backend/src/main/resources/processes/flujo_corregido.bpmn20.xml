@@ -93,7 +93,7 @@
     <bpmn:serviceTask id="BusinessRuleTask_1" name="Evaluacion Matriz de aprobacion" flowable:type="dmn">
       <bpmn:extensionElements>
         <flowable:field name="decisionTableReferenceKey">
-          <flowable:string><![CDATA[matriz_aprobacion]]></flowable:string>
+          <flowable:string><![CDATA[MatrizAprobacion]]></flowable:string>
         </flowable:field>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_08n473g</bpmn:incoming>
@@ -115,29 +115,7 @@
     <bpmn:sequenceFlow id="Flow_ToGerente" name="Gerente" sourceRef="Gateway_0j24kuk" targetRef="Task_4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${rolAprobador == 'GERENTE_CREDITO'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-  
-    <bpmn:businessRuleTask id="BusinessRuleTask_1" name="Evaluacion Matriz de aprobacion" camunda:decisionRef="MatrizAprobacion">
-      <bpmn:incoming>Flow_08n473g</bpmn:incoming>
-      <bpmn:outgoing>Flow_ToGateway</bpmn:outgoing>
-    </bpmn:businessRuleTask>
-    <bpmn:userTask id="Task_7" name="Validar Consideraciones (asesor)" camunda:candidateGroups="ASESOR_CREDITO">
-      <bpmn:incoming>Flow_ToAsesor</bpmn:incoming>
-    </bpmn:userTask>
-    <bpmn:userTask id="Task_8" name="Validar consideraciones (sub gerente)" camunda:candidateGroups="SUBGERENTE_CREDITO">
-      <bpmn:incoming>Flow_ToSubgerente</bpmn:incoming>
-    </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_ToGateway" sourceRef="BusinessRuleTask_1" targetRef="Gateway_0j24kuk" />
-    <bpmn:sequenceFlow id="Flow_ToAsesor" name="Asesor" sourceRef="Gateway_0j24kuk" targetRef="Task_7">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${rolAprobador == 'ASESOR_CREDITO'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_ToSubgerente" name="Subgerente" sourceRef="Gateway_0j24kuk" targetRef="Task_8">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${rolAprobador == 'SUBGERENTE_CREDITO'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_ToGerente" name="Gerente" sourceRef="Gateway_0j24kuk" targetRef="Task_4">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${rolAprobador == 'GERENTE_CREDITO'}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
   </bpmn:process>
-
 
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1i6kfk6">

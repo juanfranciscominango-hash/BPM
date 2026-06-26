@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { TaskService } from '../../core/services/task.service';
 
 import { ParametricService } from '../../core/services/parametric.service';
 import { FormulasUtil } from '../../core/utils/formulas.util';
+import { debounceTime } from 'rxjs/operators';
 
 interface TipoCredito {
   id: number;
@@ -18,6 +19,8 @@ interface TipoCredito {
   descripcion: string;
 }
 
+declare var google: any;
+
 @Component({
   selector: 'innova-simulacion',
   standalone: true,
@@ -25,7 +28,9 @@ interface TipoCredito {
   templateUrl: './simulacion.html',
   styleUrl: './simulacion.scss'
 })
-export class SimulacionComponent implements OnInit {
+export class SimulacionComponent implements OnInit, AfterViewInit {
+  @ViewChild('direccionInput') direccionInput!: ElementRef;
+  
   private _initialData: any = null;
   
   @Input() 
@@ -51,8 +56,32 @@ export class SimulacionComponent implements OnInit {
   private processService = inject(ProcessService);
   private taskService = inject(TaskService);
   private parametricService = inject(ParametricService);
+  private ngZone = inject(NgZone);
 
   buscandoCliente = false;
+
+  ngAfterViewInit() {
+    this.initGooglePlaces();
+  }
+
+  initGooglePlaces() {
+    if (typeof google !== 'undefined' && google.maps && google.maps.places) {
+      const autocomplete = new google.maps.places.Autocomplete(this.direccionInput.nativeElement, {
+        types: ['address']
+      });
+
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          const place = autocomplete.getPlace();
+          if (place && place.formatted_address) {
+            this.simulacionForm.patchValue({ direccion: place.formatted_address });
+          } else if (place && place.name) {
+            this.simulacionForm.patchValue({ direccion: place.name });
+          }
+        });
+      });
+    }
+  }
 
   buscarCliente() {
     const ident = this.simulacionForm.get('identificacion')?.value;
@@ -159,10 +188,20 @@ export class SimulacionComponent implements OnInit {
   tiposCredito: TipoCredito[] = [];
   productosCredito: any[] = [];
   mesesCredito: any[] = [];
+  indicadoresFinancieros: any[] = [];
   selectedProducto: any = null;
   simulacionForm: FormGroup;
   loading = false;
   activeTab: 'ingresos' | 'deudas' = 'ingresos';
+
+  get productosFiltrados(): any[] {
+    const tipoVal = this.simulacionForm?.get('tipo')?.value;
+    if (!tipoVal) return this.productosCredito;
+    const tipoSelec = this.tiposCredito.find(t => t.codigo == tipoVal || t.id == tipoVal);
+    if (!tipoSelec) return this.productosCredito;
+    return this.productosCredito.filter(p => p.pro_cre_tipo_credito == tipoSelec.id);
+  }
+
 
   resultadosCalculados = {
     cuotaMensual: 0,
@@ -174,6 +213,9 @@ export class SimulacionComponent implements OnInit {
     dti: 0,
     din: 0,
     cin: 0,
+    dinValido: false,
+    cinValido: false,
+    capacidadPago: 0,
     califica: false,
     calculado: false
   };
@@ -195,6 +237,7 @@ export class SimulacionComponent implements OnInit {
       tasa: [null],
 
       // 03 Análisis Financiero
+      scoreCrediticio: [750, [Validators.required, Validators.min(0), Validators.max(1000)]],
       ingresos: this.fb.array([]),
       deudas: this.fb.array([])
     });
@@ -206,6 +249,11 @@ export class SimulacionComponent implements OnInit {
       } else {
         this.simulacionForm.patchValue({ requiereCodeudor: false });
       }
+    });
+
+    // Lógica para limpiar el producto si cambia el tipo
+    this.simulacionForm.get('tipo')?.valueChanges.subscribe(() => {
+      this.simulacionForm.get('producto')?.setValue('');
     });
 
     // Lógica para actualizar parámetros de crédito cuando cambia el producto
@@ -250,8 +298,11 @@ export class SimulacionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.simulacionForm.valueChanges.subscribe(() => {
-      this.emitirDataActualizada();
+    this.simulacionForm.valueChanges.pipe(
+      debounceTime(500)
+    ).subscribe(() => {
+      this.ejecutarAnalisis(true);
+      this.cdr.detectChanges();
     });
     this.cargarTipos();
     if (this.initialData) {
@@ -415,15 +466,29 @@ export class SimulacionComponent implements OnInit {
         this.mesesCredito = arr;
       }
     });
+
+    this.parametricService.getTableData(47).subscribe({
+      next: (res: any) => {
+        let arr = Array.isArray(res) ? res : (res.value || []);
+        this.indicadoresFinancieros = arr;
+      }
+    });
   }
 
   ejecutarAnalisis(silent: boolean = false) {
+    const vals = this.simulacionForm.value;
+    const requiereCodeudor = vals.requiereCodeudor;
+    const estadoCivil = vals.estadoCivil;
+    const incluyeConyuge = estadoCivil === 'Casado/a' || estadoCivil === 'Unión de Hecho';
+
     // Validación de ingresos: al menos 2 registros y mayores a 0
     const ingresosArray = this.ingresosFormArray;
     let ingresosValidos = true;
     for (let i = 0; i < ingresosArray.length; i++) {
       const val = ingresosArray.at(i).value;
-      const sum = (Number(val.valorDeudor) || 0) + (Number(val.valorConyuge) || 0) + (Number(val.valorCodeudor) || 0);
+      const sum = (Number(val.valorDeudor) || 0) + 
+                  (incluyeConyuge ? (Number(val.valorConyuge) || 0) : 0) + 
+                  (requiereCodeudor ? (Number(val.valorCodeudor) || 0) : 0);
       if (sum <= 0) {
         ingresosValidos = false;
         break;
@@ -454,7 +519,7 @@ export class SimulacionComponent implements OnInit {
       return;
     }
 
-    const vals = this.simulacionForm.value;
+    const scoreCrediticio = Number(vals.scoreCrediticio) || 0;
     
     // 1. Cuota Mensual
     const cuotaMensual = FormulasUtil.calcularCuotaMensual(
@@ -472,8 +537,8 @@ export class SimulacionComponent implements OnInit {
     if (ingresos && ingresos.length > 0) {
         let sum = ingresos.reduce((acc: number, curr: any) => {
           const vd = Number(curr.valorDeudor) || 0;
-          const vc = Number(curr.valorConyuge) || 0;
-          const vco = Number(curr.valorCodeudor) || 0;
+          const vc = incluyeConyuge ? (Number(curr.valorConyuge) || 0) : 0;
+          const vco = requiereCodeudor ? (Number(curr.valorCodeudor) || 0) : 0;
           sumDeudor += vd;
           sumConyuge += vc;
           sumCodeudor += vco;
@@ -493,10 +558,18 @@ export class SimulacionComponent implements OnInit {
     let totalDeudas = 0;
     const deudas = vals.deudas;
     if (deudas && deudas.length > 0) {
-        totalDeudas = deudas.reduce((acc: number, curr: any) => acc + (Number(curr.cuota) || 0), 0);
+        totalDeudas = deudas.reduce((acc: number, curr: any) => {
+            const prop = curr.propietario;
+            if (prop === 'Cónyuge' && !incluyeConyuge) return acc;
+            if (prop === 'Codeudor' && !requiereCodeudor) return acc;
+            return acc + (Number(curr.cuota) || 0);
+        }, 0);
     }
 
     // 4. Indicadores y Scoring via Backend
+    // Capacidad de pago local: Ingresos * 0.45 - Deudas
+    const capacidadPago = Math.max(0, (totalIngresos * 0.45) - totalDeudas);
+
     const monto = this.simulacionForm.get('monto')?.value || 0;
     const plazo = this.simulacionForm.get('plazo')?.value || 0;
     const tasa = this.simulacionForm.get('tasa')?.value || 0;
@@ -515,8 +588,21 @@ export class SimulacionComponent implements OnInit {
         const montoValido = this.simulacionForm.get('monto')?.valid ?? false;
         const plazoValido = this.simulacionForm.get('plazo')?.valid ?? false;
         
-        // Se califica si el Backend dice APROBADO o PRE_APROBADO
-        const califica = (res.decision === 'APROBADO' || res.decision === 'PRE_APROBADO') && montoValido && plazoValido;
+        const calificaPorScore = scoreCrediticio >= 650;
+        const calificaPorCapacidad = (res.cuotaMensual || 0) <= capacidadPago;
+
+        const cinValue = totalIngresos > 0 ? ((res.cuotaMensual || 0) / totalIngresos) * 100 : 0;
+        const dinValue = totalIngresos > 0 ? ((totalIngresos - totalDeudas - (res.cuotaMensual || 0)) / totalIngresos) * 100 : 0;
+
+        // Obtener parámetros de validación
+        const cinParams = this.indicadoresFinancieros.find(i => i.indicador === 'CIN') || { valor_minimo: 0, valor_maximo: 45 };
+        const dinParams = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
+
+        const cinValido = cinValue >= cinParams.valor_minimo && cinValue <= cinParams.valor_maximo;
+        const dinValido = dinValue >= dinParams.valor_minimo && dinValue <= dinParams.valor_maximo;
+
+        // Se califica si el Backend dice APROBADO o PRE_APROBADO, y se cumplen los indicadores
+        const califica = (res.decision === 'APROBADO' || res.decision === 'PRE_APROBADO') && montoValido && plazoValido && calificaPorScore && calificaPorCapacidad && cinValido && dinValido;
 
         this.resultadosCalculados = {
           cuotaMensual: res.cuotaMensual || 0,
@@ -526,8 +612,11 @@ export class SimulacionComponent implements OnInit {
           promedioIngresosCodeudor: this.resultadosCalculados.promedioIngresosCodeudor,
           totalDeudas,
           dti: res.dti || 0,
-          din: 0, // Omitido por simplicidad en backend
-          cin: 0,
+          din: dinValue,
+          cin: cinValue,
+          dinValido: dinValido,
+          cinValido: cinValido,
+          capacidadPago,
           califica,
           calculado: true
         };
@@ -541,12 +630,27 @@ export class SimulacionComponent implements OnInit {
       error: (err) => {
         console.error("Error evaluando reglas en backend", err);
         // Fallback básico
+        const calificaPorScore = scoreCrediticio >= 650;
+        const fallbackCuota = cuotaMensual;
+        const calificaPorCapacidad = fallbackCuota <= capacidadPago;
+        // Para el fallback asumiremos DTI < 45%
+        const fallbackDti = totalIngresos > 0 ? ((totalDeudas + fallbackCuota) / totalIngresos) * 100 : 100;
+        const cinValueFallback = totalIngresos > 0 ? (fallbackCuota / totalIngresos) * 100 : 0;
+        const dinValueFallback = totalIngresos > 0 ? ((totalIngresos - totalDeudas - fallbackCuota) / totalIngresos) * 100 : 0;
+
+        const cinParamsFB = this.indicadoresFinancieros.find(i => i.indicador === 'CIN') || { valor_minimo: 0, valor_maximo: 45 };
+        const dinParamsFB = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
+        const cinValidoFB = cinValueFallback >= cinParamsFB.valor_minimo && cinValueFallback <= cinParamsFB.valor_maximo;
+        const dinValidoFB = dinValueFallback >= dinParamsFB.valor_minimo && dinValueFallback <= dinParamsFB.valor_maximo;
+
+        const calificaFallback = fallbackDti <= 45 && calificaPorScore && calificaPorCapacidad && cinValidoFB && dinValidoFB;
+
         this.resultadosCalculados = {
-          cuotaMensual: 0, totalIngresos, 
+          cuotaMensual: fallbackCuota, totalIngresos, 
           promedioIngresosDeudor: this.resultadosCalculados.promedioIngresosDeudor,
           promedioIngresosConyuge: this.resultadosCalculados.promedioIngresosConyuge,
           promedioIngresosCodeudor: this.resultadosCalculados.promedioIngresosCodeudor,
-          totalDeudas, dti: 0, din: 0, cin: 0, califica: false, calculado: true
+          totalDeudas, dti: fallbackDti, din: dinValueFallback, cin: cinValueFallback, dinValido: dinValidoFB, cinValido: cinValidoFB, capacidadPago, califica: calificaFallback, calculado: true
         };
         this.emitirDataActualizada();
       }
@@ -576,6 +680,7 @@ export class SimulacionComponent implements OnInit {
         
         tipoCredito: tipoMapped,
         tipo_credito: tipoMapped,
+        tipo_credito_id: tipoSeleccionado ? tipoSeleccionado.id : null,
         producto_credito: productoId,
         monto_solicitado: formData.monto,
         plazo_meses: formData.plazo,
@@ -586,6 +691,13 @@ export class SimulacionComponent implements OnInit {
         interviniente_int_identificacion: formData.identificacion,
         interviniente_int_nombres_completos: formData.nombres,
         interviniente_int_estado_civil: formData.estadoCivil,
+
+        score_crediticio: formData.scoreCrediticio,
+        capacidad_pago: this.resultadosCalculados.capacidadPago,
+        cin_valido: this.resultadosCalculados.cinValido,
+        din_valido: this.resultadosCalculados.dinValido,
+        cin: this.resultadosCalculados.cin,
+        din: this.resultadosCalculados.din,
 
         producto_desc: this.selectedProducto ? (this.selectedProducto.descripcion || this.selectedProducto.nombre || '') : '',
         fecha_caso: new Date().toISOString().split('T')[0],

@@ -98,19 +98,19 @@ public class ProcessService {
             try {
                 // Obtener descripción de la paramétrica Parametros generales
                 String sql = "SELECT p.descripcion FROM pr_paranmetros_generales p " +
-                             "JOIN pr_flujo f ON p.flujo = f.id " +
-                             "WHERE f.descripcion = ?";
+                             "JOIN pr_flujo f ON CAST(p.flujo AS INTEGER) = f.id " +
+                             "WHERE LOWER(f.descripcion) = LOWER(?)";
                 List<String> descripciones = jdbcTemplate.queryForList(sql, String.class, procDef.getName());
                 
                 String caseName = null;
                 if (!descripciones.isEmpty() && descripciones.get(0) != null) {
                     String prefix = descripciones.get(0);
-                    String dateSuffix = new SimpleDateFormat("ddMMyy HHmm").format(new Date());
-                    caseName = prefix + " " + dateSuffix;
+                    String dateSuffix = new SimpleDateFormat("ddMMyyHHmmss").format(new Date());
+                    caseName = prefix + dateSuffix;
                 } else {
                     // Fallback
-                    String dateSuffix = new SimpleDateFormat("ddMMyy HHmm").format(new Date());
-                    caseName = "CASO " + dateSuffix;
+                    String dateSuffix = new SimpleDateFormat("ddMMyyHHmmss").format(new Date());
+                    caseName = "CASO" + dateSuffix;
                 }
                 
                 runtimeService.setProcessInstanceName(finalInstance.getId(), caseName);
