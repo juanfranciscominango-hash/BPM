@@ -5,7 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 public interface ScreenDefinitionRepository extends JpaRepository<ScreenDefinition, Long> {
-    List<ScreenDefinition> findByProcessKey(String processKey);
-    Optional<ScreenDefinition> findByProcessKeyAndTaskKey(String processKey, String taskKey);
+    @Query("SELECT s FROM ScreenDefinition s WHERE LOWER(REPLACE(s.processKey, '_de_', '_')) = LOWER(REPLACE(:processKey, '_de_', '_'))")
+    List<ScreenDefinition> findByProcessKey(@Param("processKey") String processKey);
+    
+    @Query("SELECT s FROM ScreenDefinition s WHERE LOWER(REPLACE(s.processKey, '_de_', '_')) = LOWER(REPLACE(:processKey, '_de_', '_')) AND s.taskKey = :taskKey")
+    Optional<ScreenDefinition> findByProcessKeyAndTaskKey(@Param("processKey") String processKey, @Param("taskKey") String taskKey);
 }

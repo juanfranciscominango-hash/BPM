@@ -219,20 +219,28 @@ export class WizardFlujoComponent implements OnInit {
               (this as any).debugProcsKeys = procs ? procs.map((p:any) => p.key).join(', ') : 'none';
               
               const taskKeyBase = task.processDefinitionId ? task.processDefinitionId.split(':')[0].trim().toLowerCase() : '';
-              const procDef = procs.find(p => 
-                  String(p.id) === String(task.processDefinitionId) || 
-                  (p.key && p.key.trim().toLowerCase() === taskKeyBase) ||
-                  (p.procDefId && p.procDefId === task.processDefinitionId)
-              );
+              const procDef = procs.find(p => {
+                  if (!p) return false;
+                  const pKey = p.key ? p.key.trim().toLowerCase() : '';
+                  return String(p.id) === String(task.processDefinitionId) || 
+                         pKey === taskKeyBase ||
+                         (p.procDefId && p.procDefId === task.processDefinitionId) ||
+                         pKey.replace(/_de_/g, '_') === taskKeyBase.replace(/_de_/g, '_');
+              });
               
               if(procDef) {
                   this.selectedProcessKey = procDef.key;
                   this.screenService.getScreensByProcess(procDef.key).subscribe((screens: any[]) => {
+                      console.log('DEBUG WIZARD: procDef.key =', procDef.key, 'screens.length =', screens?.length, 'task.taskDefinitionKey =', task.taskDefinitionKey, 'task.name =', task.name);
+                      console.log('DEBUG WIZARD screens found:', screens?.map(s => s.taskKey));
                       if (screens && screens.length > 0) {
                           let screen = screens.find((s:any) => s.taskKey === task.taskDefinitionKey);
                           if (!screen) {
                               screen = screens.find((s:any) => s.taskKey === task.name);
                           }
+                          
+                          (this as any).debugError = 'DEBUG: procKey=' + procDef.key + ', tDefKey=' + task.taskDefinitionKey + ', tName=' + task.name + ', sLen=' + screens.length + ', found=' + !!screen;
+                          
                           if (screen && screen.layoutJson) {
                               this.currentScreenName = screen.name;
                               this.layout = typeof screen.layoutJson === 'string' ? JSON.parse(screen.layoutJson) : screen.layoutJson;
@@ -248,12 +256,12 @@ export class WizardFlujoComponent implements OnInit {
                           this.activarPreview();
                       }
                   });
-              } else {
-                  (this as any).debugError = 'procDef no encontrado';
-                  this.currentScreenName = task.name;
-                  this.layout = { tabs: [] }; // Vacío para que muestre advertencia
-                  this.activarPreview();
-              }
+                } else {
+                    (this as any).debugError = 'procDef no encontrado | taskKeyBase: ' + taskKeyBase + ' | task.processDefId: ' + task.processDefinitionId + ' | procs length: ' + (procs ? procs.length : 'undefined') + ' | first proc key: ' + (procs && procs.length > 0 ? procs[0].key : 'N/A');
+                    this.currentScreenName = task.name;
+                    this.layout = { tabs: [] }; // Vacío para que muestre advertencia
+                    this.activarPreview();
+                }
             },
             error: (err) => {
               (this as any).debugError = 'Error cargando procesos: ' + err.message;
