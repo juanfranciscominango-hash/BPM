@@ -1,0 +1,27 @@
+[
+  {
+    "cedula": "1700000003",
+    "cuentas": [
+      {
+        "numero_cuenta": "1029384756",
+        "tipo_cuenta": "Ahorros",
+        "estado_cuenta": "Activa"
+      },
+      {
+        "numero_cuenta": "9081726354",
+        "tipo_cuenta": "Corriente",
+        "estado_cuenta": "Activa"
+      }
+    ]
+  },
+  {
+    "cedula": "0900000001",
+    "cuentas": [
+      {
+        "numero_cuenta": "8080808080",
+        "tipo_cuenta": "Ahorros",
+        "estado_cuenta": "Inactiva"
+      }
+    ]
+  }
+]

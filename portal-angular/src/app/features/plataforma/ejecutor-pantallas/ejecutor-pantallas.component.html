@@ -250,7 +250,26 @@
                               </thead>
                               <tbody>
                                 <tr *ngFor="let row of getGridRows(field.name); let ri = index">
-                                  <td *ngFor="let col of getGridColumns(field)">{{ getSimGridDisplayValue(col, row[col.name]) }}</td>
+                                  <td *ngFor="let col of getGridColumns(field)">
+                                    <ng-container *ngIf="col.type === 'RADIO' || col.type === 'radio'">
+                                      <div class="form-check d-flex justify-content-center m-0 p-0">
+                                        <input class="form-check-input" type="radio" [name]="field.name + '_radio'" [value]="ri" [(ngModel)]="previewModel[field.name + '_seleccion']">
+                                      </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="col.type === 'CHECKBOX' || col.type === 'checkbox'">
+                                      <div class="form-check d-flex justify-content-center m-0 p-0">
+                                        <input class="form-check-input" type="checkbox" [(ngModel)]="row[col.name]">
+                                      </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="col.type === 'BOOLEAN' || col.type === 'boolean'">
+                                      <div class="form-check d-flex justify-content-center m-0 p-0">
+                                        <input class="form-check-input" type="checkbox" [(ngModel)]="row[col.name]" [disabled]="isFieldDisabled(field)">
+                                      </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="col.type !== 'RADIO' && col.type !== 'radio' && col.type !== 'CHECKBOX' && col.type !== 'checkbox' && col.type !== 'BOOLEAN' && col.type !== 'boolean'">
+                                      {{ getSimGridDisplayValue(col, row[col.name]) }}
+                                    </ng-container>
+                                  </td>
                                   <td *ngIf="!isFieldDisabled(field)" class="text-center">
                                     <button class="btn btn-sm btn-link text-danger p-0" (click)="removeGridRow(field.name, ri)"><i class="bi bi-trash3-fill"></i></button>
                                   </td>

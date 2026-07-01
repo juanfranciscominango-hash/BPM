@@ -9,13 +9,13 @@ import { ParametricService, ParametricTable } from '../../../core/services/param
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <div class="container-fluid p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="container-fluid p-4 pe-lg-5">
+      <div class="d-flex justify-content-between align-items-center mb-4 pe-5">
         <div>
           <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-list-stars me-2"></i>Tablas Paramétricas</h2>
           <p class="text-muted">Gestiona diccionarios y catálogos de datos reutilizables.</p>
         </div>
-        <button class="btn btn-primary shadow-sm" (click)="abrirModal()">
+        <button class="btn btn-primary shadow-sm" (click)="abrirModal()" style="margin-right: 15rem;">
           <i class="bi bi-plus-lg me-1"></i>Nuevo Catálogo
         </button>
       </div>

@@ -6,6 +6,8 @@
 @use 'libs/bootstrap/scss/bootstrap-grid-only' as *;
 @use 'libs/design-tokens/scss/tokens' as *;
 
+*, *::before, *::after { box-sizing: border-box; }
+
 // =============================================================================
 // LIBRERÍAS EXTERNAS (BPMN & DMN)
 // =============================================================================

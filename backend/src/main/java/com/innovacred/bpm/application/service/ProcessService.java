@@ -43,6 +43,22 @@ public class ProcessService {
     private final JdbcTemplate jdbcTemplate;
 
     @Transactional
+    public void delete(Long id) {
+        ProcessDefinition processDef = processDefinitionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Proceso no encontrado"));
+                
+        if (processDef.getDeploymentId() != null) {
+            try {
+                repositoryService.deleteDeployment(processDef.getDeploymentId(), true); // true = cascade delete instances
+            } catch (Exception e) {
+                log.warn("No se pudo eliminar el deployment en Flowable: {}", e.getMessage());
+            }
+        }
+        
+        processDefinitionRepository.delete(processDef);
+    }
+
+    @Transactional
     public ProcessDefinition deploy(Long id) {
         ProcessDefinition processDef = processDefinitionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Proceso no encontrado"));
@@ -151,7 +167,13 @@ public class ProcessService {
     }
 
     public ProcessDefinition getByProcDefId(String procDefId) {
-        return processDefinitionRepository.findByProcDefId(procDefId).orElse(null);
+        return processDefinitionRepository.findByProcDefId(procDefId).orElseGet(() -> {
+            if (procDefId != null && procDefId.contains(":")) {
+                String key = procDefId.split(":")[0];
+                return processDefinitionRepository.findByKey(key).orElse(null);
+            }
+            return null;
+        });
     }
 
     private String preprocessLinkEvents(String xml) throws Exception {

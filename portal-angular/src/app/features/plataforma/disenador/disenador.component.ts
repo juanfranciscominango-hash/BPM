@@ -25,34 +25,36 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="designer-container-full">
-      <div class="designer-header bg-white border-bottom p-3 d-flex justify-content-between align-items-center shadow-sm">
-        <div>
-          <h2 class="h4 mb-0 text-primary fw-bold"><i class="bi bi-diagram-3-fill me-2"></i>Diseñador de Flujos BPMN 2.0</h2>
-          <div class="d-flex align-items-center mt-1">
-            <small class="text-muted me-3" *ngIf="currentProcessId">Editando: <span class="fw-bold">{{ formatName(currentProcessName) }}</span></small>
-            <div class="input-group input-group-sm" style="width: 300px;">
-              <span class="input-group-text bg-light text-muted"><i class="bi bi-table me-1"></i>Tabla Virtual:</span>
-              <select class="form-select border-primary-subtle" [(ngModel)]="selectedMetaEntityId">
-                <option [ngValue]="null">-- Sin vincular --</option>
-                <option *ngFor="let ent of metaEntities" [ngValue]="ent.id">{{ ent.label }}</option>
-              </select>
+      <div class="designer-header bg-white border-bottom shadow-sm">
+        <div class="container-fluid p-3 d-flex justify-content-start align-items-center w-100">
+          <div>
+            <h2 class="h4 mb-0 text-primary fw-bold"><i class="bi bi-diagram-3-fill me-2"></i>Diseñador de Flujos BPMN 2.0</h2>
+            <div class="d-flex align-items-center mt-1">
+              <small class="text-muted me-3" *ngIf="currentProcessId">Editando: <span class="fw-bold">{{ formatName(currentProcessName) }}</span></small>
+              <div class="input-group input-group-sm" style="width: 300px;">
+                <span class="input-group-text bg-light text-muted"><i class="bi bi-table me-1"></i>Tabla Virtual:</span>
+                <select class="form-select border-primary-subtle" [(ngModel)]="selectedMetaEntityId">
+                  <option [ngValue]="null">-- Sin vincular --</option>
+                  <option *ngFor="let ent of metaEntities" [ngValue]="ent.id">{{ ent.label }}</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="actions">
-            <input type="file" #fileInput style="display: none;" accept=".bpmn,.xml" (change)="importFile($event)">
-            <button class="btn btn-outline-secondary me-2" (click)="fileInput.click()">
-              <i class="bi bi-upload me-1"></i>Importar BPMN
+          <div class="actions text-nowrap d-flex align-items-center ms-4">
+              <input type="file" #fileInput style="display: none;" accept=".bpmn,.xml" (change)="importFile($event)">
+              <button class="btn btn-outline-secondary btn-sm me-2" (click)="fileInput.click()">
+                <i class="bi bi-upload me-1"></i>Importar
+              </button>
+              <button class="btn btn-outline-secondary btn-sm me-2" (click)="exportXml()">
+                <i class="bi bi-filetype-xml me-1"></i>Exportar
+              </button>
+              <button class="btn btn-primary shadow-sm px-3 btn-sm" (click)="saveProcess(true)">
+              <i class="bi bi-cloud-upload me-1"></i>Guardar y Desplegar
             </button>
-            <button class="btn btn-outline-secondary me-2" (click)="exportXml()">
-              <i class="bi bi-filetype-xml me-1"></i>Exportar BPMN
+            <button class="btn btn-outline-primary shadow-sm px-3 ms-2 btn-sm" (click)="saveProcess(false)">
+              <i class="bi bi-save me-1"></i>Guardar
             </button>
-            <button class="btn btn-primary shadow-sm px-4" (click)="saveProcess(true)">
-            <i class="bi bi-cloud-upload me-1"></i>Guardar y Desplegar
-          </button>
-          <button class="btn btn-outline-primary shadow-sm px-4 ms-2" (click)="saveProcess(false)">
-            <i class="bi bi-save me-1"></i>Solo Guardar
-          </button>
+          </div>
         </div>
       </div>
       <div class="designer-main">

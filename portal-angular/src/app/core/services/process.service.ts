@@ -61,6 +61,10 @@ export class ProcessService {
     return this.http.get<ProcessDefinition>(`${this.apiUrl}/definition/${procDefId}`);
   }
 
+  deleteProcess(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
   deployProcess(id: number): Observable<ProcessDefinition> {
     return this.http.post<ProcessDefinition>(`${this.apiUrl}/${id}/deploy`, {});
   }

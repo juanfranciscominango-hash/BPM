@@ -9,8 +9,8 @@ import { ParametricService, ParametricTable } from '../../../core/services/param
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <div class="container-fluid p-4" *ngIf="table">
-      <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="container-fluid p-4" *ngIf="table" style="max-width: 100%; overflow: hidden;">
+      <div class="d-flex justify-content-between align-items-center mb-4 pe-5">
         <div>
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-1">
@@ -20,7 +20,7 @@ import { ParametricService, ParametricTable } from '../../../core/services/param
           </nav>
           <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-table me-2"></i>Registros: {{ table.label }}</h2>
         </div>
-        <button class="btn btn-primary shadow-sm" (click)="abrirModalNuevo()">
+        <button class="btn btn-primary shadow-sm" (click)="abrirModalNuevo()" style="margin-right: 15rem;">
           <i class="bi bi-plus-lg me-1"></i>Nuevo Registro
         </button>
       </div>
@@ -33,8 +33,8 @@ import { ParametricService, ParametricTable } from '../../../core/services/param
                 <tr>
                   <th class="ps-4">ID</th>
                   <th *ngFor="let col of table.columns" class="notranslate" translate="no">{{ col.label }}</th>
+                  <th class="text-center" style="width: 100px;">Acciones</th>
                   <th>Fecha Creación</th>
-                  <th class="text-end pe-4">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -66,8 +66,7 @@ import { ParametricService, ParametricTable } from '../../../core/services/param
                       {{ row[col.name.toLowerCase()] }}
                     </span>
                   </td>
-                  <td><small class="text-muted">{{ row.created_at | date:'short' }}</small></td>
-                  <td class="text-end pe-4">
+                  <td class="text-center">
                     <button class="btn btn-sm btn-link text-primary p-0 me-2" (click)="abrirModalEditar(row)" title="Editar">
                       <i class="bi bi-pencil"></i>
                     </button>
@@ -75,6 +74,7 @@ import { ParametricService, ParametricTable } from '../../../core/services/param
                       <i class="bi bi-trash"></i>
                     </button>
                   </td>
+                  <td><small class="text-muted">{{ row.created_at | date:'short' }}</small></td>
                 </tr>
                 <tr *ngIf="rows.length === 0">
                   <td [attr.colspan]="table.columns.length + 3" class="text-center py-5 text-muted">

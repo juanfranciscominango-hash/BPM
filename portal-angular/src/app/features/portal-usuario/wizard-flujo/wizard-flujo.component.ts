@@ -38,6 +38,19 @@ export class WizardFlujoComponent implements OnInit {
 
   procesos: any[] = [];
   selectedProcessKey: string = '';
+
+  get resumenCasoData() {
+    if (!this.taskVariables) return [];
+    const tv = this.taskVariables;
+    return [
+      { label: 'Identificación', value: tv.identificacion || tv.interviniente_int_identificacion || 'No disponible' },
+      { label: 'Nombre Completo', value: tv.nombres || tv.interviniente_int_nombre_completo || 'No disponible' },
+      { label: 'Monto Solicitado', value: '$' + Number(tv.monto || tv.monto_solicitado || 0).toFixed(2), isSuccess: true },
+      { label: 'Plazo', value: (tv.plazo || tv.plazo_meses || 0) + ' meses' },
+      { label: 'Score Buró', value: tv.score_crediticio || tv.score_buro || tv.score || 'N/A', isPrimary: true }
+    ];
+  }
+
   taskVariables: any = {};
   
   layout: any = null;
@@ -57,6 +70,9 @@ export class WizardFlujoComponent implements OnInit {
   gridNewRow: any = {};
   gridEditIndex: number = -1;
   gridColumnsLoading = false;
+  
+  isUploadingGridFile = false;
+  currentGestor: 'SHAREPOINT' | 'ALFRESCO' = 'SHAREPOINT';
 
   physicalColumnsMap: { [entityId: number]: any[] } = {};
 
@@ -74,6 +90,18 @@ export class WizardFlujoComponent implements OnInit {
     if (data) {
       // Guardar los datos en el previewModel para que sean enviados en simSubmit()
       this.previewModel = { ...this.previewModel, ...data };
+      
+      // Sincronizar automáticamente los arreglos (como deudas_array, ingresos_array) hacia las grillas
+      for (const key in data) {
+        if (Array.isArray(data[key])) {
+          this.gridRowsMap[key] = [...data[key]];
+          // Soporte en caso de que la grilla se llame 'deudas' en lugar de 'deudas_array' en el diseño
+          if (key.endsWith('_array')) {
+            const shortKey = key.replace('_array', '');
+            this.gridRowsMap[shortKey] = [...data[key]];
+          }
+        }
+      }
     }
   }
 
@@ -93,13 +121,59 @@ export class WizardFlujoComponent implements OnInit {
   }
 
   confirmGridRow(field: any) {
-    this.saveGridRow();
+    const pendingCols = Object.keys(this.pendingGridFiles);
+    if (pendingCols.length > 0) {
+      this.isUploadingGridFile = true;
+      // Simulamos que enviamos al gestor documental
+      setTimeout(() => {
+        pendingCols.forEach(colName => {
+          let fileId = '';
+          if (this.currentGestor === 'SHAREPOINT') {
+            fileId = 'sp-' + this.generateUUID();
+            console.log(`[SharePoint] POST /_api/web/GetFolderByServerRelativeUrl(...)/Files/add -> Success, UniqueId: ${fileId}`);
+          } else {
+            fileId = 'alf-' + this.generateUUID();
+            console.log(`[Alfresco] POST /api/-default-/public/alfresco/versions/1/nodes/.../children -> Success, entry.id: ${fileId}`);
+          }
+          this.gridNewRow[colName] = fileId;
+        });
+        
+        this.pendingGridFiles = {}; // Limpiamos pendientes
+        this.isUploadingGridFile = false;
+        this.saveGridRow();
+        this.cdr.detectChanges();
+      }, 1500);
+    } else {
+      // No hay archivos pendientes, guardar directo
+      this.saveGridRow();
+    }
   }
 
 
   availableProcesses: any[] = [];
 
+  minReferenciasConfig: { [key: string]: number } = {};
+
   ngOnInit() {
+    // Cargar parámetros generales para la regla de negocio de referencias
+    this.parametricService.getTables().subscribe((tables: any[]) => {
+      const pGen = tables.find(t => 
+        (t.label && t.label.toLowerCase().includes('parametros generales')) || 
+        (t.name && t.name.toLowerCase().includes('parametros_generales')) ||
+        (t.name && t.name.toLowerCase().includes('parametros generales'))
+      );
+      if (pGen) {
+        this.parametricService.getTableData(pGen.id).subscribe((data: any[]) => {
+          data.forEach(r => {
+             const desc = (r.descripcion || '').toLowerCase();
+             if (desc.includes('personal')) this.minReferenciasConfig['personal'] = Number(r.valor) || 0;
+             if (desc.includes('familiar')) this.minReferenciasConfig['familiar'] = Number(r.valor) || 0;
+             if (desc.includes('bancari')) this.minReferenciasConfig['bancaria'] = Number(r.valor) || 0;
+          });
+        });
+      }
+    });
+
     this.route.paramMap.subscribe(params => {
       this.taskId = params.get('id');
       if (this.taskId) {
@@ -176,6 +250,9 @@ export class WizardFlujoComponent implements OnInit {
                   });
               } else {
                   (this as any).debugError = 'procDef no encontrado';
+                  this.currentScreenName = task.name;
+                  this.layout = { tabs: [] }; // Vacío para que muestre advertencia
+                  this.activarPreview();
               }
             },
             error: (err) => {
@@ -268,36 +345,60 @@ export class WizardFlujoComponent implements OnInit {
 
             // Auto-populate _analisis variables with original values if they don't exist yet or are empty
             for (const key in vars) {
-              if (vars[key] !== null && vars[key] !== undefined && !key.endsWith('_analisis')) {
-                const analisisKey = key + '_analisis';
-                const currentVal = this.previewModel[analisisKey];
+              if (vars[key] !== null && vars[key] !== undefined && !key.endsWith('_analisis') && !key.endsWith('_analista')) {
+                const suffixes = ['_analisis', '_analista'];
                 
-                const isEmpty = currentVal === undefined || 
-                                currentVal === null || 
-                                currentVal === '' || 
-                                currentVal === '[]' || 
-                                (Array.isArray(currentVal) && currentVal.length === 0);
+                for (const suffix of suffixes) {
+                  const targetKey = key + suffix;
+                  const currentVal = this.previewModel[targetKey];
+                  
+                  const isEmpty = currentVal === undefined || 
+                                  currentVal === null || 
+                                  currentVal === '' || 
+                                  currentVal === '[]' || 
+                                  (Array.isArray(currentVal) && currentVal.length === 0);
 
-                if (isEmpty) {
-                  this.previewModel[analisisKey] = vars[key];
-                  if (Array.isArray(vars[key])) {
-                    this.gridRowsMap[analisisKey] = [...vars[key]];
-                  } else if (typeof vars[key] === 'string' && (vars[key].startsWith('[') || vars[key].startsWith('{'))) {
-                    try {
-                      const parsed = JSON.parse(vars[key]);
-                        if (Array.isArray(parsed)) {
-                          this.gridRowsMap[analisisKey] = parsed;
-                          this.previewModel[analisisKey] = parsed; // optional, but keeps consistency
-                          
-                          if (analisisKey === 'ingresos_array_analisis') this.gridRowsMap['ingresos_analisis'] = parsed;
-                          if (analisisKey === 'deudas_array_analisis') this.gridRowsMap['deudas_analisis'] = parsed;
-                        }
-                    } catch(e) {}
+                  if (isEmpty) {
+                    this.previewModel[targetKey] = vars[key];
+                    if (Array.isArray(vars[key])) {
+                      this.gridRowsMap[targetKey] = [...vars[key]];
+                    } else if (typeof vars[key] === 'string' && (vars[key].startsWith('[') || vars[key].startsWith('{'))) {
+                      try {
+                        const parsed = JSON.parse(vars[key]);
+                          if (Array.isArray(parsed)) {
+                            this.gridRowsMap[targetKey] = parsed;
+                            this.previewModel[targetKey] = parsed; // optional, but keeps consistency
+                            
+                            // Map arrays to their base names in case grids are named 'ingresos' or 'deudas'
+                            if (targetKey === 'ingresos_array' + suffix) this.gridRowsMap['ingresos' + suffix] = parsed;
+                            if (targetKey === 'deudas_array' + suffix) this.gridRowsMap['deudas' + suffix] = parsed;
+                          }
+                      } catch(e) {}
+                    }
                   }
                 }
               }
             }
             
+            // Auto-populate Número Caso / Solicitud in main form if empty
+            if (this.layout && this.layout.tabs) {
+              this.layout.tabs.forEach((tab: any) => {
+                tab.sections?.forEach((sec: any) => {
+                  sec.fields?.forEach((f: any) => {
+                    const nameLower = (f.name || '').toLowerCase();
+                    const isIdField = nameLower === 'numero_caso' || nameLower === 'numero_solicitud' || nameLower === 'numero_tramite' || nameLower === 'solicitud_credito' || nameLower === 'id_caso' || nameLower === 'id_tramite' || nameLower === 'referencia_tramite';
+                    
+                    if (isIdField && !this.previewModel[f.name]) {
+                       const caseId = this.taskVariables['numero_tramite'] || this.taskVariables['numero_solicitud'] || (this.currentTask ? (this.currentTask.numeroCaso || this.currentTask.processInstanceId) : null) || this.taskId;
+                       if (caseId) {
+                          this.previewModel[f.name] = caseId;
+                       }
+                    }
+                  });
+                });
+              });
+            }
+
             // Lógica para Requisitos Parametrizados
             if (this.currentTask && (this.currentTask.taskDefinitionKey === 'Task_2' || this.currentTask.name.includes('Validar Requisitos'))) {
               if (!this.gridRowsMap['requisitos_array'] || this.gridRowsMap['requisitos_array'].length === 0) {
@@ -495,6 +596,7 @@ export class WizardFlujoComponent implements OnInit {
       const fn = new Function(...keys, `return ${rule};`);
       return !!fn(...values);
     } catch (e) {
+      console.error('Visibility rule error', e, rule);
       return true;
     }
   }
@@ -573,11 +675,55 @@ export class WizardFlujoComponent implements OnInit {
     if (col.type === 'boolean' || col.type === 'BOOLEAN') return 'boolean';
     if (col.type === 'combo' || col.parametricTableId) return 'combo';
     if (col.name === 'producto_credito' || col.name === 'tipo_credito') return 'combo';
+    if (col.type === 'file' || col.name.toLowerCase() === 'id_archivo' || col.name.toLowerCase() === 'id archivo' || col.name.toLowerCase().includes('archivo')) {
+      return 'file';
+    }
     const t = (col.type || '').toLowerCase();
     if (t.includes('int') || t.includes('numeric') || t.includes('float')) return 'number';
     if (t.includes('date') || t.includes('timestamp')) return 'date';
     if (t.includes('bool')) return 'boolean';
     return 'text';
+  }
+
+  pendingGridFiles: { [colName: string]: any } = {};
+
+  onGridFileUpload(event: any, colName: string) {
+    const file = event.target.files[0];
+    if (!file) {
+      delete this.pendingGridFiles[colName];
+      return;
+    }
+    
+    // Guardar el archivo en memoria, se subirá al darle Aceptar
+    this.pendingGridFiles[colName] = file;
+  }
+
+  // Generador UUID simple para simulación
+  private generateUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  onGridInput(inputEl: any, colName: string) {
+    if (!this.gridNewRow[colName]) return;
+    const lowerName = colName.toLowerCase();
+    let value = String(this.gridNewRow[colName]);
+
+    if (lowerName.includes('telefono') || lowerName.includes('celular')) {
+      // Solo permitir números
+      value = value.replace(/[^0-9]/g, '');
+      // Limitar longitud: 10 para celular, 9 para fijo
+      const maxLength = lowerName.includes('celular') ? 10 : 9;
+      if (value.length > maxLength) {
+        value = value.substring(0, maxLength);
+      }
+      this.gridNewRow[colName] = value;
+      if (inputEl && inputEl.value !== undefined) {
+        inputEl.value = value;
+      }
+    }
   }
 
   getGridRows(fieldName: string): any[] {
@@ -631,6 +777,8 @@ export class WizardFlujoComponent implements OnInit {
       const realIndex = (page - 1) * pageSize + index;
       this.gridRowsMap[fieldName].splice(realIndex, 1);
       
+      delete this._cachedPaginatedRows[fieldName];
+      
       // Si la página se quedó vacía y no es la primera, volver atrás
       if (this.getPaginatedGridRows(fieldName).length === 0 && page > 1) {
         this.gridCurrentPageMap[fieldName] = page - 1;
@@ -671,6 +819,24 @@ export class WizardFlujoComponent implements OnInit {
       if (col.type === 'BOOLEAN' || col.type === 'boolean') {
         this.gridNewRow[col.name] = false;
       }
+      
+      // AUTO-RELLENAR: Número de Solicitud o Caso
+      const colNameLower = col.name.toLowerCase();
+      if (colNameLower.includes('solicitud') || colNameLower.includes('credito') || colNameLower.includes('caso') || colNameLower.includes('tramite') || colNameLower.includes('referencia') || colNameLower.includes('proceso') || colNameLower.includes('instancia') || colNameLower.includes('identificador')) {
+        // Intenta obtener el id del caso desde las variables del proceso o el objeto task
+        const caseId = this.previewModel['numero_solicitud'] 
+                    || this.previewModel['numero_tramite']
+                    || this.previewModel['solicitud_credito'] 
+                    || this.previewModel['tramite'] 
+                    || this.taskVariables['numero_tramite']
+                    || this.taskVariables['numero_solicitud']
+                    || (this.currentTask ? (this.currentTask.numeroCaso || this.currentTask.processInstanceId) : null)
+                    || this.taskId; // Fallback al ID de la tarea actual si no hay variable
+                    
+        if (caseId) {
+           this.gridNewRow[col.name] = caseId;
+        }
+      }
     });
   }
 
@@ -688,6 +854,8 @@ export class WizardFlujoComponent implements OnInit {
     this.gridModalField = null;
     this.gridNewRow = {};
     this.gridEditIndex = -1;
+    this.pendingGridFiles = {}; // Limpiar si cancela
+    this.isUploadingGridFile = false;
   }
 
   saveGridRow() {
@@ -699,6 +867,7 @@ export class WizardFlujoComponent implements OnInit {
       // Add new row
       this.addGridRow(this.gridModalField.name, this.gridNewRow);
     }
+    delete this._cachedPaginatedRows[this.gridModalField.name];
     this.closeGridModal();
   }
 
@@ -896,6 +1065,19 @@ export class WizardFlujoComponent implements OnInit {
         next: (res) => {
           this.simNotification = `Éxito API: ${JSON.stringify(res).substring(0, 50)}...`;
           if (res && typeof res === 'object') {
+            
+            // Detect if the API response is a base64 document
+            if (res.documentBase64 && res.fileName) {
+                 const linkSource = `data:application/pdf;base64,${res.documentBase64}`;
+                 const downloadLink = document.createElement("a");
+                 downloadLink.href = linkSource;
+                 downloadLink.download = res.fileName;
+                 downloadLink.click();
+                 this.simNotification = `Documento ${res.fileName} generado exitosamente.`;
+                 setTimeout(() => this.simNotification = '', 4000);
+                 return;
+            }
+
             const prefix = field.name.startsWith('codeudor_') ? 'codeudor_' : '';
             const prefixedRes: any = {};
             for (let key in res) {
@@ -972,6 +1154,13 @@ export class WizardFlujoComponent implements OnInit {
 
             Object.assign(this.previewModel, prefixedRes);
 
+            // Map arrays to gridRowsMap for GRID mapping
+            for (const key in prefixedRes) {
+                if (Array.isArray(prefixedRes[key])) {
+                    this.gridRowsMap[key] = [...prefixedRes[key]];
+                }
+            }
+
             // LOGICA PARA HABILITAR SECCION SI NO HAY DATOS
             if (field.config?.enableSectionOnApiFail && res.mensaje && res.mensaje.includes('no encontrado')) {
               if (this.layout && this.layout.tabs) {
@@ -1000,10 +1189,11 @@ export class WizardFlujoComponent implements OnInit {
   }
 
   simSubmit() {
-    if (this.simGetValidationErrors().length > 0) {
+    const valErrors = this.simGetValidationErrors();
+    if (valErrors.length > 0) {
       this.simNotificationType = 'warning';
-      this.simNotification = 'Hay errores de validación. Revisa el formulario.';
-      setTimeout(() => this.simNotification = '', 3000);
+      this.simNotification = 'Errores: ' + valErrors.join(', ');
+      setTimeout(() => this.simNotification = '', 8000);
       return;
     }
     
@@ -1017,6 +1207,24 @@ export class WizardFlujoComponent implements OnInit {
             finalVars[key] = "[]";
          }
       });
+      
+      // WORKAROUND: Ensure DMN rules receive correct number types and fallback variable names
+      if (finalVars['monto_aprobado_analista']) {
+          finalVars['monto_aprobado_analista'] = Number(finalVars['monto_aprobado_analista']);
+          if (!finalVars['monto_aprobado']) {
+              finalVars['monto_aprobado'] = finalVars['monto_aprobado_analista'];
+          }
+          if (!finalVars['solicitud_credito_monto_aprobado']) {
+              finalVars['solicitud_credito_monto_aprobado'] = finalVars['monto_aprobado_analista'];
+          }
+      }
+      if (finalVars['monto_aprobado']) {
+          finalVars['monto_aprobado'] = Number(finalVars['monto_aprobado']);
+      }
+      if (finalVars['solicitud_credito_monto_aprobado']) {
+          finalVars['solicitud_credito_monto_aprobado'] = Number(finalVars['solicitud_credito_monto_aprobado']);
+      }
+      
       this.taskService.completeTask(this.taskId, finalVars).subscribe({
         next: () => {
           this.simSubmitted = true;
@@ -1096,9 +1304,16 @@ export class WizardFlujoComponent implements OnInit {
         sec.fields.forEach((f: any) => {
           if (this.previewVisible(f)) {
             if (f.required) {
-              const val = this.previewModel[f.name];
-              if (val === null || val === undefined || val === '') {
-                errors.push(`El campo "${f.label || f.name}" es requerido.`);
+              if (f.type === 'grid' || f.type === 'table' || f.controlType === 'GRID') {
+                const count = (this.gridRowsMap[f.name] || []).length;
+                if (count === 0) {
+                  errors.push(`La tabla "${f.label || f.name}" debe tener al menos un registro.`);
+                }
+              } else {
+                const val = this.previewModel[f.name];
+                if (val === null || val === undefined || val === '') {
+                  errors.push(`El campo "${f.label || f.name}" es requerido.`);
+                }
               }
             }
           }
@@ -1121,6 +1336,33 @@ export class WizardFlujoComponent implements OnInit {
             console.error('Error evaluando validación:', val.name, e);
           }
         }
+      });
+    }
+
+    // Regla de Negocio: Validar número mínimo de referencias (Personal, Familiar, Bancaria)
+    if (Object.keys(this.minReferenciasConfig).length > 0 && this.layout && this.layout.tabs) {
+      this.layout.tabs.forEach((tab: any) => {
+        tab.sections?.forEach((sec: any) => {
+          sec.fields?.forEach((f: any) => {
+            if (f.type === 'grid' || f.type === 'table' || f.controlType === 'GRID') {
+              const lowerName = (f.name || '').toLowerCase();
+              if (lowerName.includes('referencia')) {
+                const count = (this.gridRowsMap[f.name] || []).length;
+                let tipo = '';
+                if (lowerName.includes('personal')) tipo = 'personal';
+                else if (lowerName.includes('familiar')) tipo = 'familiar';
+                else if (lowerName.includes('bancari')) tipo = 'bancaria';
+                
+                if (tipo && this.minReferenciasConfig[tipo] > 0) {
+                  if (count < this.minReferenciasConfig[tipo]) {
+                    const label = tipo === 'bancaria' ? 'bancarias' : tipo + 'es';
+                    errors.push(`Debe ingresar al menos ${this.minReferenciasConfig[tipo]} referencias ${label} para continuar con el proceso.`);
+                  }
+                }
+              }
+            }
+          });
+        });
       });
     }
 
@@ -1193,6 +1435,19 @@ export class WizardFlujoComponent implements OnInit {
     }
     if (fieldName === 'tipoDeuda') {
        return this._cachedTipoDeudaOpts;
+    }
+    if (fieldName === 'parentesco' && (!this.simOptions[fieldName] || this.simOptions[fieldName].length === 0)) {
+      // FORWARD FIX: Just in case the parametric data wasn't fetched correctly
+      this.parametricService.getTableData(30).subscribe((data: any) => {
+        this.simOptions['parentesco'] = Array.isArray(data) ? data : (data?.data || data?.value || []);
+      });
+      return [{ id: 1, codigo: "1", descripcion: "Cargando..." }];
+    }
+    if (fieldName === 'institucion' && (!this.simOptions[fieldName] || this.simOptions[fieldName].length === 0)) {
+      this.parametricService.getTableData(13).subscribe((data: any) => {
+        this.simOptions['institucion'] = Array.isArray(data) ? data : (data?.data || data?.value || []);
+      });
+      return [{ id: 1, codigo: "1", descripcion: "Cargando..." }];
     }
     if (!this.simOptions[fieldName]) {
       this.simOptions[fieldName] = [];

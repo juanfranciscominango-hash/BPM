@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pagaré y Tabla de Amortización</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            line-height: 1.4;
+            margin: 30px;
+        }
+        .header {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .content {
+            text-align: justify;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <p>FECHA: <span th:text="${fechaActual}">01/01/2026</span></p>
+        <p>TRÁMITE No. <span th:text="${operacionId}">0000000</span></p>
+    </div>
+
+    <div class="title">
+        PAGARÉ A LA ORDEN
+    </div>
+
+    <div class="content">
+        <p>
+            Por este PAGARÉ A LA ORDEN, yo/nosotros <strong th:text="${nombresCompletos}">NOMBRE DEL CLIENTE</strong>, portador de la cédula de identidad número <strong th:text="${identificacion}">0000000000</strong> (en adelante "El Deudor"), prometo(emos) y me(nos) obligo(amos) incondicional e irrevocablemente a pagar a la orden del BANCO BOLIVARIANO C.A. o de quien represente sus derechos, la cantidad de <strong th:text="${monto}">0.00</strong> DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA.
+        </p>
+        <p>
+            El capital adeudado devengará una tasa de interés del <strong th:text="${tasaInteres}">0</strong>% anual, pagadero en <strong th:text="${plazoMeses}">0</strong> cuotas mensuales sucesivas según la siguiente Tabla de Amortización:
+        </p>
+    </div>
+
+    <div class="title" style="page-break-before: always;">
+        TABLA DE AMORTIZACIÓN
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No. Cuota</th>
+                <th>Fecha de Pago</th>
+                <th>Capital</th>
+                <th>Interés</th>
+                <th>Cuota</th>
+                <th>Saldo Deudor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cuota : ${tablaAmortizacion}">
+                <td th:text="${cuota.numeroCuota}">1</td>
+                <td th:text="${cuota.fechaPago}">2026-01-01</td>
+                <td th:text="${cuota.capital}">0.00</td>
+                <td th:text="${cuota.interes}">0.00</td>
+                <td th:text="${cuota.cuota}">0.00</td>
+                <td th:text="${cuota.saldoDeudor}">0.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <br/><br/><br/>
+        <p>____________________________________</p>
+        <p><strong th:text="${nombresCompletos}">NOMBRE DEL CLIENTE</strong></p>
+        <p>C.I. <span th:text="${identificacion}">0000000000</span></p>
+        <p><strong>EL DEUDOR</strong></p>
+    </div>
+
+</body>
+</html>

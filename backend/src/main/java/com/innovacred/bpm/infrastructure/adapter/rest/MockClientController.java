@@ -24,6 +24,7 @@ public class MockClientController {
 
     // 20 clientes simulados cargados desde JSON
     private Map<String, Map<String, Object>> mockClients = new HashMap<>();
+    private Map<String, java.util.List<Map<String, Object>>> mockCuentas = new HashMap<>();
 
     @jakarta.annotation.PostConstruct
     public void init() {
@@ -37,6 +38,17 @@ public class MockClientController {
                 log.info("Se cargaron {} clientes simulados desde clients.json", mockClients.size());
             } else {
                 log.warn("No se encontró el archivo /mocks/clients.json");
+            }
+            
+            java.io.InputStream isCuentas = getClass().getResourceAsStream("/mocks/cuentas.json");
+            if (isCuentas != null) {
+                java.util.List<Map<String, Object>> cuentasFile = objectMapper.readValue(isCuentas, new TypeReference<java.util.List<Map<String, Object>>>() {});
+                for (Map<String, Object> data : cuentasFile) {
+                    mockCuentas.put(String.valueOf(data.get("cedula")), (java.util.List<Map<String, Object>>) data.get("cuentas"));
+                }
+                log.info("Se cargaron {} mocks de cuentas desde cuentas.json", mockCuentas.size());
+            } else {
+                log.warn("No se encontró el archivo /mocks/cuentas.json");
             }
         } catch (Exception e) {
             log.error("Error cargando mocks de clientes", e);
@@ -168,6 +180,21 @@ public class MockClientController {
         return response;
     }
 
+
+    @org.springframework.web.bind.annotation.GetMapping("/Mock/Cuentas/{cedula}")
+    public Map<String, Object> getCuentas(@org.springframework.web.bind.annotation.PathVariable String cedula) {
+        log.info("Simulando consulta de cuentas para cédula: {}", cedula);
+        
+        java.util.List<Map<String, Object>> cuentasList = mockCuentas.get(cedula);
+        if (cuentasList == null) {
+            // Fallback random
+            cuentasList = java.util.List.of(
+                Map.of("numero_cuenta", "1111111111", "tipo_cuenta", "Ahorros", "estado_cuenta", "Activa")
+            );
+        }
+        
+        return Map.of("cuentas", cuentasList);
+    }
 
     @org.springframework.web.bind.annotation.PostMapping("/Mock/Email/Send")
     public Map<String, Object> mockEmailSend(@org.springframework.web.bind.annotation.RequestBody Map<String, Object> payload) {

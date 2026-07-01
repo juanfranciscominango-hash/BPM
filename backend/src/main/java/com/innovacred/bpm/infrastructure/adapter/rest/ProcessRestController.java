@@ -44,4 +44,9 @@ public class ProcessRestController {
     public ProcessDefinition getByProcDefId(@PathVariable String procDefId) {
         return processService.getByProcDefId(procDefId);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        processService.delete(id);
+    }
 }

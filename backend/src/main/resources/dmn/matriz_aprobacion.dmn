@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_0xyz123" name="Matriz de Aprobacion" namespace="http://camunda.org/schema/1.0/dmn">
   <decision id="matriz_aprobacion" name="Matriz de Aprobacion">
-    <decisionTable id="DecisionTable_13xyz" hitPolicy="UNIQUE">
+    <decisionTable id="DecisionTable_13xyz" hitPolicy="FIRST">
       <input id="Input_1" label="Monto del CrAcdito">
         <inputExpression id="InputExpression_1" typeRef="integer">
-          <text>solicitud_credito_monto_aprobado</text>
+          <text>monto_aprobado</text>
         </inputExpression>
       </input>
-      <output id="Output_1" label="Rol Aprobador" name="rolAprobador" typeRef="string" />
+      <output id="Output_1" label="Rol Aprobador" name="rol_Aprobador" typeRef="string" />
       <rule id="DecisionRule_1">
         <description>Nivel 1: Asesor</description>
         <inputEntry id="UnaryTests_1">
@@ -20,7 +20,7 @@
       <rule id="DecisionRule_2">
         <description>Nivel 2: Jefe de CrAcdito</description>
         <inputEntry id="UnaryTests_2">
-          <text>[80001..150000]</text>
+          <text>&lt;= 150000</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_2">
           <text>"JEFE_CREDITO"</text>
@@ -29,7 +29,7 @@
       <rule id="DecisionRule_3">
         <description>Nivel 3: Subgerente de CrAcdito</description>
         <inputEntry id="UnaryTests_3">
-          <text>[150001..200000]</text>
+          <text>&lt;= 200000</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_3">
           <text>"SUBGERENTE_CREDITO"</text>
@@ -38,7 +38,7 @@
       <rule id="DecisionRule_4">
         <description>Nivel 4: Gerente de CrAcdito</description>
         <inputEntry id="UnaryTests_4">
-          <text>&gt;= 200001</text>
+          <text>&gt; 200000</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_4">
           <text>"GERENTE_CREDITO"</text>

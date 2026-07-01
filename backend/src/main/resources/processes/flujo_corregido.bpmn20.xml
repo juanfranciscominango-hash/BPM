@@ -93,7 +93,7 @@
     <bpmn:serviceTask id="BusinessRuleTask_1" name="Evaluacion Matriz de aprobacion" flowable:type="dmn">
       <bpmn:extensionElements>
         <flowable:field name="decisionTableReferenceKey">
-          <flowable:string><![CDATA[MatrizAprobacion]]></flowable:string>
+          <flowable:string><![CDATA[matriz_aprobacion]]></flowable:string>
         </flowable:field>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_08n473g</bpmn:incoming>

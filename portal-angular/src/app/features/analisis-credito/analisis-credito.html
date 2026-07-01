@@ -1,94 +1,260 @@
-<div class="card shadow-sm border-0 rounded-4">
-  <div class="card-header bg-white border-bottom-0 py-3 d-flex align-items-center cursor-pointer" data-bs-toggle="collapse" data-bs-target="#collapseInfoGen">
-    <i class="bi bi-chevron-up text-muted me-2" style="font-size: 0.8rem;"></i>
-    <h6 class="mb-0 fw-bold text-dark">Información General</h6>
-  </div>
-  
-  <div id="collapseInfoGen" class="collapse show">
-    <div class="card-body p-4 bg-white border-top">
-      <div class="row g-4">
-        
-        <!-- Columna 1 -->
-        <div class="col-md-3">
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Fecha Caso:</p>
-            <p class="mb-0 info-value">{{ data?.fecha_caso || '' }}</p>
-          </div>
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Asesor:</p>
-            <p class="mb-0 info-value">{{ data?.asesor || data?.asesor_asignado || '' }}</p>
-          </div>
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Destino Comercial:</p>
-            <p class="mb-0 info-value">{{ data?.destino_comercial || '' }}</p>
-          </div>
-          <div class="mb-0">
-            <p class="text-muted info-label mb-1 fw-bold">Solicitante:</p>
-            <p class="mb-0 info-value">{{ data?.interviniente_int_nombres_completos || data?.nombres_completos || '' }}</p>
-          </div>
-        </div>
+﻿<!-- TABS -->
+<ul class="nav custom-tabs mb-3 d-flex w-100">
+    <li class="nav-item flex-fill text-center">
+        <a class="nav-link p-2" [class.active]="activeTab === 'info'" (click)="activeTab = 'info'" style="cursor: pointer; font-size: 0.85rem;">
+            <i class="bi bi-info-circle text-primary me-1"></i> Información General 
+        </a>
+    </li>
+    <li class="nav-item flex-fill text-center">
+        <a class="nav-link p-2" [class.active]="activeTab === 'financiera'" (click)="activeTab = 'financiera'" style="cursor: pointer; font-size: 0.85rem;">
+            <i class="bi bi-graph-up text-primary me-1"></i> Situación Financiera 
+        </a>
+    </li>
+    <li class="nav-item flex-fill text-center">
+        <a class="nav-link p-2" [class.active]="activeTab === 'patrimonial'" (click)="activeTab = 'patrimonial'" style="cursor: pointer; font-size: 0.85rem;">
+            <i class="bi bi-building text-primary me-1"></i> Situación Patrimonial
+        </a>
+    </li>
+</ul>
 
-        <!-- Columna 2 -->
-        <div class="col-md-3">
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Número Caso:</p>
-            <p class="mb-0 info-value">{{ data?.numero_caso || data?.processInstanceId || '' }}</p>
-          </div>
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Fecha Solicitud:</p>
-            <p class="mb-0 info-value">{{ data?.fecha_solicitud || '' }}</p>
-          </div>
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Identificación:</p>
-            <p class="mb-0 info-value">{{ data?.interviniente_int_identificacion || data?.DocumentNumber || '' }}</p>
-          </div>
-          <div class="mb-0">
-            <p class="text-muted info-label mb-1 fw-bold">Monto Aprobado:</p>
-            <p class="mb-0 info-value">{{ formatMoney(data?.monto_aprobado) }}</p>
-          </div>
-        </div>
+<!-- CONTENIDO DE TABS -->
+<div class="tab-content w-100">
 
-        <!-- Columna 3 -->
-        <div class="col-md-3">
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Ciudad:</p>
-            <p class="mb-0 info-value">{{ data?.ciudad || '' }}</p>
-          </div>
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Subsegmento:</p>
-            <p class="mb-0 info-value">{{ data?.subsegmento || '' }}</p>
-          </div>
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Monto Solicitado:</p>
-            <p class="mb-0 info-value">{{ formatMoney(data?.monto_solicitado || data?.monto) }}</p>
-          </div>
-          <div class="mb-0">
-            <p class="text-muted info-label mb-1 fw-bold">Plazo Aprobado:</p>
-            <p class="mb-0 info-value">{{ data?.plazo_aprobado || '' }}</p>
-          </div>
-        </div>
+    <!-- TAB: INFO GENERAL -->
+    <div class="tab-pane fade" [class.show]="activeTab === 'info'" [class.active]="activeTab === 'info'">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4 bg-white border-top">
+                <div class="row g-4">
+                
+                <!-- Columna 1 -->
+                <div class="col-md-3">
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Fecha Caso:</p>
+                    <p class="mb-0 info-value">{{ data?.fecha_caso || '' }}</p>
+                    </div>
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Asesor:</p>
+                    <p class="mb-0 info-value">{{ data?.asesor || data?.asesor_asignado || '' }}</p>
+                    </div>
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Destino Comercial:</p>
+                    <p class="mb-0 info-value">{{ data?.destino_comercial || '' }}</p>
+                    </div>
+                    <div class="mb-0">
+                    <p class="text-muted info-label mb-1 fw-bold">Solicitante:</p>
+                    <p class="mb-0 info-value">{{ data?.interviniente_int_nombres_completos || data?.nombres_completos || '' }}</p>
+                    </div>
+                </div>
 
-        <!-- Columna 4 -->
-        <div class="col-md-3">
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Agencia:</p>
-            <p class="mb-0 info-value">{{ data?.agencia || '' }}</p>
-          </div>
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Producto:</p>
-            <p class="mb-0 info-value">{{ data?.producto_desc || data?.producto || '' }}</p>
-          </div>
-          <div class="mb-4">
-            <p class="text-muted info-label mb-1 fw-bold">Plazo Solicitado:</p>
-            <p class="mb-0 info-value">{{ data?.plazo_solicitado || data?.plazo || '' }}</p>
-          </div>
-          <div class="mb-0">
-            <p class="text-muted info-label mb-1 fw-bold">Cuota de Entrada:</p>
-            <p class="mb-0 info-value">{{ formatMoney(data?.cuota_entrada) }}</p>
-          </div>
-        </div>
+                <!-- Columna 2 -->
+                <div class="col-md-3">
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Número Caso:</p>
+                    <p class="mb-0 info-value">{{ data?.numero_caso || data?.processInstanceId || '' }}</p>
+                    </div>
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Fecha Solicitud:</p>
+                    <p class="mb-0 info-value">{{ data?.fecha_solicitud || '' }}</p>
+                    </div>
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Identificación:</p>
+                    <p class="mb-0 info-value">{{ data?.interviniente_int_identificacion || data?.DocumentNumber || '' }}</p>
+                    </div>
+                    <div class="mb-0">
+                    <p class="text-muted info-label mb-1 fw-bold">Monto Aprobado:</p>
+                    <p class="mb-0 info-value">{{ formatMoney(data?.monto_aprobado) }}</p>
+                    </div>
+                </div>
 
-      </div>
+                <!-- Columna 3 -->
+                <div class="col-md-3">
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Ciudad:</p>
+                    <p class="mb-0 info-value">{{ data?.ciudad || '' }}</p>
+                    </div>
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Subsegmento:</p>
+                    <p class="mb-0 info-value">{{ data?.subsegmento || '' }}</p>
+                    </div>
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Monto Solicitado:</p>
+                    <p class="mb-0 info-value">{{ formatMoney(data?.monto_solicitado || data?.monto) }}</p>
+                    </div>
+                    <div class="mb-0">
+                    <p class="text-muted info-label mb-1 fw-bold">Plazo Aprobado:</p>
+                    <p class="mb-0 info-value">{{ data?.plazo_aprobado || '' }}</p>
+                    </div>
+                </div>
+
+                <!-- Columna 4 -->
+                <div class="col-md-3">
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Agencia:</p>
+                    <p class="mb-0 info-value">{{ data?.agencia || '' }}</p>
+                    </div>
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Producto:</p>
+                    <p class="mb-0 info-value">{{ data?.producto_desc || data?.producto || '' }}</p>
+                    </div>
+                    <div class="mb-4">
+                    <p class="text-muted info-label mb-1 fw-bold">Plazo Solicitado:</p>
+                    <p class="mb-0 info-value">{{ data?.plazo_solicitado || data?.plazo || '' }}</p>
+                    </div>
+                    <div class="mb-0">
+                    <p class="text-muted info-label mb-1 fw-bold">Cuota de Entrada:</p>
+                    <p class="mb-0 info-value">{{ formatMoney(data?.cuota_entrada) }}</p>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <!-- TAB: SITUACION FINANCIERA -->
+    <div class="tab-pane fade" [class.show]="activeTab === 'financiera'" [class.active]="activeTab === 'financiera'">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4 bg-white border-top">
+                <div class="row g-5">
+                    <!-- Columna Ingresos -->
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-4 text-uppercase fw-bold" style="font-size: 0.85rem;">Ingresos Mensuales</h6>
+                        
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Sueldo líquido deudor</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.sueldo_liquido_deudor || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Sueldo líquido cónyuge</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.sueldo_liquido_conyuge || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Comisiones</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.comisiones || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Ingreso del Negocio</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.ingreso_negocio || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Otros Ingresos</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.otros_ingresos || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-4 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Especifique cuales</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light" [value]="data?.especifique_ingresos || ''" readonly></div>
+                        </div>
+                        
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-dark" style="font-weight: 500;">Total ingresos</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-dark text-end" [value]="data?.total_ingresos || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-dark" style="font-weight: 500;">Ahorro neto</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-dark text-end" [value]="data?.ahorro_neto || '0.00'" readonly></div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Gastos -->
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-4 text-uppercase fw-bold" style="font-size: 0.85rem;">Gastos Mensuales</h6>
+                        
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Alquiler domicilio</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.alquiler_domicilio || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Alquiler local</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.alquiler_local || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Alimentación</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.alimentacion || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Educación</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.educacion || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Servicios básicos (Luz, agua, teléfono)</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.servicios_basicos || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Cuota mensual de préstamos</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.cuota_mensual_prestamos || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-4 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Cuota mensual pago tarjeta</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.cuota_mensual_tarjeta || '0.00'" readonly></div>
+                        </div>
+
+                        <div class="row mt-5 pt-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-dark" style="font-weight: 500;">Total gastos</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-dark text-end" [value]="data?.total_gastos || '0.00'" readonly></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: SITUACION PATRIMONIAL -->
+    <div class="tab-pane fade" [class.show]="activeTab === 'patrimonial'" [class.active]="activeTab === 'patrimonial'">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4 bg-white border-top">
+                <div class="row g-5">
+                    <!-- Columna Activos -->
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-4 text-uppercase fw-bold" style="font-size: 0.85rem;">Activos</h6>
+                        
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Inmuebles</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.inmuebles || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Vehículos</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.vehiculos || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-4 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Inversiones</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.inversiones || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-5 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-dark" style="font-weight: 500;">Total activos</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-dark text-end" [value]="data?.total_activos || '0.00'" readonly></div>
+                        </div>
+
+                        <h6 class="text-primary mb-4 text-uppercase fw-bold" style="font-size: 0.85rem;">Patrimonio</h6>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-dark" style="font-weight: 500;">Total Activos - Total Pasivos</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-dark text-end" [value]="data?.total_patrimonio || '0.00'" readonly></div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Pasivos -->
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-4 text-uppercase fw-bold" style="font-size: 0.85rem;">Pasivos</h6>
+                        
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Saldo otros créditos vigentes</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.saldo_otros_creditos || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Saldo de tarjeta de crédito</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.saldo_tarjeta_credito || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-4 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-muted">Otras deudas</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-end" [value]="data?.otras_deudas || '0.00'" readonly></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-6"><label class="form-label mb-0 text-dark" style="font-weight: 500;">Total pasivos</label></div>
+                            <div class="col-sm-6"><input type="text" class="form-control bg-light text-dark text-end" [value]="data?.total_pasivos || '0.00'" readonly></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

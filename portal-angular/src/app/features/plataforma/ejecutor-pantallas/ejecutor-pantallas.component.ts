@@ -512,6 +512,13 @@ export class EjecutorPantallasComponent implements OnInit, DoCheck {
             const preserveId = this.previewModel[prefix + 'identificacion'];
             
             Object.assign(this.previewModel, prefixedRes);
+
+            // Map arrays to gridRowsMap for GRID mapping
+            for (const key in prefixedRes) {
+                if (Array.isArray(prefixedRes[key])) {
+                    this.gridRowsMap[key] = [...prefixedRes[key]];
+                }
+            }
             
             if (preserveTipoId) {
                 this.previewModel[prefix + 'tipo_identificacion'] = preserveTipoId;
@@ -589,9 +596,11 @@ export class EjecutorPantallasComponent implements OnInit, DoCheck {
   }
 
   simSubmit() {
-    if (this.simGetValidationErrors().length > 0) {
-      this.simNotification = 'Hay errores de validación. Revisa el formulario.';
-      setTimeout(() => this.simNotification = '', 3000);
+    const valErrors = this.simGetValidationErrors();
+    if (valErrors.length > 0) {
+      this.simNotificationType = 'warning';
+      this.simNotification = 'Errores: ' + valErrors.join(', ');
+      setTimeout(() => this.simNotification = '', 8000);
       return;
     }
     this.simSubmitted = true;

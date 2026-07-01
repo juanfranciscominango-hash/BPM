@@ -263,6 +263,23 @@ import { catchError, of } from 'rxjs';
 
           <!-- TAB 2: CONTROLES (Caja de Herramientas Robustas al estilo Bizagi) -->
           <div *ngIf="activeSidebarTab === 'controls' && selectedProcessKey" class="fade-in">
+            <!-- Contenedores -->
+            <div class="card border-0 shadow-xs mb-3 card-premium">
+              <div class="card-header bg-white border-0 fw-bold text-dark py-2 d-flex align-items-center gap-2">
+                <i class="bi bi-box text-orange"></i>Contenedores
+              </div>
+              <div class="card-body p-3 border-top">
+                <div class="row g-2">
+                  <div class="col-12">
+                    <button class="btn btn-outline-secondary btn-control w-100 py-2 d-flex flex-column align-items-center" (click)="addSection()">
+                      <i class="bi bi-ui-checks-grid fs-5 mb-1 text-orange"></i>
+                      <span class="lbl-ctrl fw-bold">Sección / Grupo</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Ingreso de Datos -->
             <div class="card border-0 shadow-xs mb-3 card-premium">
               <div class="card-header bg-white border-0 fw-bold text-dark py-2 d-flex align-items-center gap-2">
@@ -999,7 +1016,21 @@ import { catchError, of } from 'rxjs';
                             </div>
                             <div *ngIf="col.visible" class="d-flex flex-column gap-1 px-2 pb-2 ps-5">
                               <div class="d-flex align-items-center gap-2">
-                                <label class="text-muted mb-0" style="font-size: 0.65rem; white-space: nowrap; width: 60px;">Visibilidad:</label>
+                                <label class="text-muted mb-0" style="font-size: 0.65rem; white-space: nowrap; width: 60px;">Tipo:</label>
+                                  <select class="form-select form-select-sm border shadow-none px-1 py-0 bg-light"
+                                          style="font-size: 0.65rem; height: 22px; flex: 1;"
+                                          [(ngModel)]="col.type"
+                                          (ngModelChange)="updateSelectedColumns(draftField)">
+                                    <option [value]="'string'">Texto</option>
+                                    <option [value]="'number'">Número</option>
+                                    <option [value]="'date'">Fecha</option>
+                                    <option [value]="'boolean'">Booleano</option>
+                                    <option [value]="'RADIO'">Radio (Selección)</option>
+                                    <option [value]="'CHECKBOX'">Checkbox (Múltiple)</option>
+                                  </select>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                  <label class="text-muted mb-0" style="font-size: 0.65rem; white-space: nowrap; width: 60px;">Visibilidad:</label>
                                 <input type="text" class="form-control form-control-sm border shadow-none px-1 py-0 bg-light" 
                                        style="font-size: 0.65rem; height: 22px; flex: 1;" 
                                        [(ngModel)]="col.visibilityRule" 
@@ -1539,7 +1570,26 @@ import { catchError, of } from 'rxjs';
                                 </thead>
                                 <tbody>
                                   <tr *ngFor="let row of getGridRows(field.name); let ri = index">
-                                    <td *ngFor="let col of getGridColumns(field)">{{ getSimGridDisplayValue(col, row[col.name]) }}</td>
+                                    <td *ngFor="let col of getGridColumns(field)">
+                                      <ng-container *ngIf="col.type === 'RADIO' || col.type === 'radio'">
+                                        <div class="form-check d-flex justify-content-center m-0 p-0">
+                                          <input class="form-check-input" type="radio" [name]="field.name + '_radio'" [value]="ri" [(ngModel)]="previewModel[field.name + '_seleccion']">
+                                        </div>
+                                      </ng-container>
+                                      <ng-container *ngIf="col.type === 'CHECKBOX' || col.type === 'checkbox'">
+                                        <div class="form-check d-flex justify-content-center m-0 p-0">
+                                          <input class="form-check-input" type="checkbox" [(ngModel)]="row[col.name]">
+                                        </div>
+                                      </ng-container>
+                                      <ng-container *ngIf="col.type === 'BOOLEAN' || col.type === 'boolean'">
+                                        <div class="form-check d-flex justify-content-center m-0 p-0">
+                                          <input class="form-check-input" type="checkbox" [(ngModel)]="row[col.name]" [disabled]="true">
+                                        </div>
+                                      </ng-container>
+                                      <ng-container *ngIf="col.type !== 'RADIO' && col.type !== 'radio' && col.type !== 'CHECKBOX' && col.type !== 'checkbox' && col.type !== 'BOOLEAN' && col.type !== 'boolean'">
+                                        {{ getSimGridDisplayValue(col, row[col.name]) }}
+                                      </ng-container>
+                                    </td>
                                     <td class="text-center">
                                       <button class="btn btn-sm btn-link text-danger p-0" (click)="removeGridRow(field.name, ri)"><i class="bi bi-trash3-fill"></i></button>
                                     </td>
@@ -3620,6 +3670,13 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
             this.simFlashNotification(`✅ [${label}] API ejecutada exitosamente.`, 'success');
             // Populate previewModel with response data
             Object.assign(this.previewModel, res);
+            
+            // Map arrays to gridRowsMap for GRID simulation
+            for (const key in res) {
+                if (Array.isArray(res[key])) {
+                    this.gridRowsMap[key] = [...res[key]];
+                }
+            }
 
             // LOGICA PARA HABILITAR SECCION SI NO HAY DATOS
             if (field.config?.enableSectionOnApiFail && res.mensaje && res.mensaje.includes('no encontrado')) {

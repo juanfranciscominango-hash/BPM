@@ -17,12 +17,47 @@ import { CommonModule } from '@angular/common';
       color: #334155;
       min-height: 24px;
     }
+    .custom-tabs {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      display: flex;
+    }
+    .custom-tabs .nav-item {
+      border-right: 1px solid #e2e8f0;
+      flex: 1 1 auto;
+      text-align: center;
+    }
+    .custom-tabs .nav-item:last-child {
+      border-right: none;
+    }
+    .custom-tabs .nav-link {
+      color: #64748b;
+      font-weight: 600;
+      border: none;
+      border-radius: 0;
+      transition: all 0.2s ease;
+      background-color: transparent;
+      padding: 0.75rem 1rem;
+    }
+    .custom-tabs .nav-link:hover {
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+    .custom-tabs .nav-link.active {
+      color: #0d6efd;
+      background-color: white;
+      border-bottom: 2px solid #0d6efd;
+    }
   `]
 })
 export class AnalisisCreditoComponent implements OnInit {
   @Input() initialData: any = {};
   
   data: any = {};
+  activeTab: string = 'info';
 
   constructor() {}
 

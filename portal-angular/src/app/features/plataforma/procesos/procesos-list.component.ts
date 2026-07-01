@@ -12,12 +12,12 @@ import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dy
   imports: [CommonModule, RouterModule, FormsModule, DynamicFormComponent],
   template: `
     <div class="container-fluid p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex justify-content-start align-items-center mb-4">
         <div>
           <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-stack me-2"></i>Gestión de Procesos</h2>
           <p class="text-muted mb-0">Listado de procesos diseñados y su estado en el motor Flowable.</p>
         </div>
-        <button class="btn btn-primary shadow-sm" routerLink="/plataforma/disenador">
+        <button class="btn btn-primary shadow-sm ms-4" routerLink="/plataforma/disenador">
           <i class="bi bi-plus-lg me-1"></i>Nuevo Proceso
         </button>
       </div>
@@ -31,8 +31,8 @@ import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dy
                 <th>Clave (Key)</th>
                 <th>Entidad Asociada</th>
                 <th>Estado</th>
-                <th>Última Actualización</th>
-                <th class="text-end pe-4">Acciones</th>
+                <th class="text-nowrap">Última Actualización</th>
+                <th class="text-end pe-4 text-nowrap" style="min-width: 130px;">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -53,13 +53,16 @@ import { DynamicFormComponent } from '../../../shared/components/dynamic-form/dy
                     {{ p.status }}
                   </span>
                 </td>
-                <td>{{ p.lastUpdated | date:'short' }}</td>
+                <td class="text-nowrap">{{ p.lastUpdated | date:'short' }}</td>
                 <td class="text-end pe-4">
                   <button class="btn btn-sm btn-success me-2 shadow-sm" (click)="confirmarInicio(p)" *ngIf="p.status === 'DEPLOYED'">
                     <i class="bi bi-play-fill me-1"></i>Iniciar
                   </button>
-                  <button class="btn btn-sm btn-outline-primary shadow-sm" [routerLink]="['/plataforma/disenador']" [queryParams]="{id: p.id}">
+                  <button class="btn btn-sm btn-outline-primary shadow-sm me-2" [routerLink]="['/plataforma/disenador']" [queryParams]="{id: p.id}" title="Editar">
                     <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger shadow-sm" (click)="eliminarProceso(p)" title="Eliminar">
+                    <i class="bi bi-trash"></i>
                   </button>
                 </td>
               </tr>
@@ -186,5 +189,22 @@ export class ProcesosListComponent implements OnInit {
       },
       error: (err) => alert('Error al iniciar: ' + (err.error?.message || 'Error desconocido'))
     });
+  }
+
+  eliminarProceso(p: ProcessDefinition) {
+    if (confirm(`¿Está seguro de que desea eliminar el proceso "${this.formatName(p.name)}"?`)) {
+      if (p.id) {
+        this.processService.deleteProcess(p.id).subscribe({
+          next: () => {
+            alert('¡Proceso eliminado con éxito!');
+            this.loadProcesses();
+          },
+          error: (err) => {
+            console.error('Error al eliminar proceso', err);
+            alert('No se pudo eliminar el proceso. Asegúrese de que no tenga instancias activas.');
+          }
+        });
+      }
+    }
   }
 }

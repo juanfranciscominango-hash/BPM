@@ -11,7 +11,7 @@ import { TaskService } from '../../core/services/task.service';
 import { ParametricService } from '../../core/services/parametric.service';
 import { FormulasUtil } from '../../core/utils/formulas.util';
 import { debounceTime } from 'rxjs/operators';
-
+import { TwoDecimalsDirective } from '../../shared/directives/two-decimals.directive';
 interface TipoCredito {
   id: number;
   codigo: string;
@@ -24,7 +24,7 @@ declare var google: any;
 @Component({
   selector: 'innova-simulacion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TwoDecimalsDirective],
   templateUrl: './simulacion.html',
   styleUrl: './simulacion.scss'
 })
@@ -86,7 +86,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
   buscarCliente() {
     const ident = this.simulacionForm.get('identificacion')?.value;
     if (!ident) {
-      alert("Por favor ingresa una identificación primero.");
+      alert("Por favor ingresa una identificaciÃ³n primero.");
       return;
     }
     
@@ -102,7 +102,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
             else if (estadoCivilDb === 'CASADO') estadoCivilMapped = 'Casado/a';
             else if (estadoCivilDb === 'DIVORCIADO') estadoCivilMapped = 'Divorciado/a';
             else if (estadoCivilDb === 'VIUDO') estadoCivilMapped = 'Viudo/a';
-            else if (estadoCivilDb.includes('HECHO')) estadoCivilMapped = 'Unión de Hecho';
+            else if (estadoCivilDb.includes('HECHO')) estadoCivilMapped = 'UniÃ³n de Hecho';
         }
 
         console.log("=== APICLI RESPONSE ===", res);
@@ -139,7 +139,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
              this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
           }
         } else {
-          // Si el API retorna un arreglo o datos anidados (como se vio en testApi genérico)
+          // Si el API retorna un arreglo o datos anidados (como se vio en testApi genÃ©rico)
           let dataObj = res;
           if (Array.isArray(res) && res.length > 0) dataObj = res[0];
           else if (res && res.data && Array.isArray(res.data) && res.data.length > 0) dataObj = res.data[0];
@@ -157,7 +157,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
                 else if (nestedEstadoCivilDb === 'CASADO') nestedEstadoCivilMapped = 'Casado/a';
                 else if (nestedEstadoCivilDb === 'DIVORCIADO') nestedEstadoCivilMapped = 'Divorciado/a';
                 else if (nestedEstadoCivilDb === 'VIUDO') nestedEstadoCivilMapped = 'Viudo/a';
-                else if (nestedEstadoCivilDb.includes('HECHO')) nestedEstadoCivilMapped = 'Unión de Hecho';
+                else if (nestedEstadoCivilDb.includes('HECHO')) nestedEstadoCivilMapped = 'UniÃ³n de Hecho';
             }
 
             console.log("=== NESTED ESTADO CIVIL DB ===", nestedEstadoCivilDb, "MAPPED ===", nestedEstadoCivilMapped);
@@ -167,13 +167,13 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
             console.log("=== PATCHING NESTED ===", updates);
             this.simulacionForm.patchValue(updates);
             
-            // Forzar el control específico para asegurarnos que Angular lo tome
+            // Forzar el control especÃ­fico para asegurarnos que Angular lo tome
             if (nestedEstadoCivilMapped) {
               this.simulacionForm.get('estadoCivil')?.setValue(nestedEstadoCivilMapped);
               this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
             }
           } else {
-            alert("No se encontraron datos para esta identificación.");
+            alert("No se encontraron datos para esta identificaciÃ³n.");
           }
         }
       },
@@ -188,11 +188,13 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
   tiposCredito: TipoCredito[] = [];
   productosCredito: any[] = [];
   mesesCredito: any[] = [];
+  entidadesFinancieras: any[] = [];
+  tiposDeuda: any[] = [];
   indicadoresFinancieros: any[] = [];
   selectedProducto: any = null;
   simulacionForm: FormGroup;
   loading = false;
-  activeTab: 'ingresos' | 'deudas' = 'ingresos';
+  activeTab: string = 'ingresos';
 
   get productosFiltrados(): any[] {
     const tipoVal = this.simulacionForm?.get('tipo')?.value;
@@ -217,46 +219,70 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     cinValido: false,
     capacidadPago: 0,
     califica: false,
-    calculado: false
+    calculado: false,
+    flujoCajaPositivo: true,
+    ahorroNeto: 0
   };
 
   constructor() {
     this.simulacionForm = this.fb.group({
-      // 01 Información del Solicitante
+      // 01 InformaciÃ³n del Solicitante
       identificacion: ['', Validators.required],
       nombres: [{ value: '', disabled: true }],
       direccion: [{ value: '', disabled: true }],
       estadoCivil: ['', Validators.required],
       requiereCodeudor: [false],
 
-      // 02 Parámetros del Crédito
+      // 02 ParÃ¡metros del CrÃ©dito
       tipo: ['', Validators.required],
       producto: ['', Validators.required],
       monto: [null, [Validators.min(10000), Validators.max(250000), Validators.required]],
       plazo: [null, [Validators.min(36), Validators.max(240), Validators.required]],
       tasa: [null],
 
-      // 03 Análisis Financiero
+      // 03 AnÃ¡lisis Financiero
       scoreCrediticio: [750, [Validators.required, Validators.min(0), Validators.max(1000)]],
       ingresos: this.fb.array([]),
-      deudas: this.fb.array([])
+      deudas: this.fb.array([]),
+      
+      // 04 SituaciÃ³n Financiera y Patrimonial
+      sueldoLiquidoDeudor: [0],
+      sueldoLiquidoConyuge: [0],
+      sueldoLiquidoCodeudor: [0],
+      comisiones: [0],
+      ingresoNegocio: [0],
+      otrosIngresos: [0],
+      especifiqueOtrosIngresos: [''],
+      alquilerDomicilio: [0],
+      alquilerLocal: [0],
+      alimentacion: [0],
+      educacion: [0],
+      serviciosBasicos: [0],
+      cuotaPrestamos: [0],
+      cuotaTarjeta: [0],
+      activosInmuebles: [0],
+      activosVehiculos: [0],
+      activosInversiones: [0],
+      pasivosCreditos: [0],
+      pasivosTarjetas: [0],
+      pasivosOtrasDeudas: [0]
     });
 
-    // Lógica para cambiar Requiere Codeudor según Estado Civil
+    // LÃ³gica para cambiar Requiere Codeudor segÃºn Estado Civil
     this.simulacionForm.get('estadoCivil')?.valueChanges.subscribe(val => {
-      if (val === 'Casado/a' || val === 'Unión de Hecho') {
+      if (val === 'Casado/a' || val === 'UniÃ³n de Hecho') {
         this.simulacionForm.patchValue({ requiereCodeudor: true });
       } else {
         this.simulacionForm.patchValue({ requiereCodeudor: false });
       }
     });
 
-    // Lógica para limpiar el producto si cambia el tipo
+    // LÃ³gica para limpiar el producto si cambia el tipo
     this.simulacionForm.get('tipo')?.valueChanges.subscribe(() => {
       this.simulacionForm.get('producto')?.setValue('');
     });
 
-    // Lógica para actualizar parámetros de crédito cuando cambia el producto
+    // LÃ³gica para actualizar parÃ¡metros de crÃ©dito cuando cambia el producto
     this.simulacionForm.get('producto')?.valueChanges.subscribe(codigoProducto => {
       if (!codigoProducto) return;
       const prod = this.productosCredito.find(p => 
@@ -288,10 +314,10 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         ]);
         this.simulacionForm.get('plazo')?.updateValueAndValidity({ emitEvent: false });
         
-        // Ejecutar análisis automáticamente de forma silenciosa al cambiar producto
+        // Ejecutar anÃ¡lisis automÃ¡ticamente de forma silenciosa al cambiar producto
         this.ejecutarAnalisis(true);
         
-        // Forzar actualización de UI para que se reflejen los cambios en Rango y Tasa
+        // Forzar actualizaciÃ³n de UI para que se reflejen los cambios en Rango y Tasa
         this.cdr.detectChanges();
       }
     });
@@ -336,7 +362,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         else if (initEstadoCivilDb === 'CASADO') dataToPatch.estadoCivil = 'Casado/a';
         else if (initEstadoCivilDb === 'DIVORCIADO') dataToPatch.estadoCivil = 'Divorciado/a';
         else if (initEstadoCivilDb === 'VIUDO') dataToPatch.estadoCivil = 'Viudo/a';
-        else if (initEstadoCivilDb.includes('HECHO')) dataToPatch.estadoCivil = 'Unión de Hecho';
+        else if (initEstadoCivilDb.includes('HECHO')) dataToPatch.estadoCivil = 'UniÃ³n de Hecho';
     }
 
     console.log("=== INIT DATA PATCHING ===", dataToPatch);
@@ -371,32 +397,42 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
       });
     }
     
-    // Forzar actualización si producto está seteado para que ValueChanges se entere
+    // Forzar actualizaciÃ³n si producto estÃ¡ seteado para que ValueChanges se entere
     if (this.initialData.producto || this.initialData.producto_credito) {
       const prod = this.initialData.producto || this.initialData.producto_credito;
       this.simulacionForm.get('producto')?.setValue(prod);
       this.simulacionForm.get('producto')?.updateValueAndValidity();
     }
 
-    // Auto ejecutar el análisis para que el panel derecho se muestre calculado
+    // Auto ejecutar el anÃ¡lisis para que el panel derecho se muestre calculado
     setTimeout(() => {
         this.ejecutarAnalisis(true);
         this.cdr.detectChanges();
     }, 100);
   }
 
-  // --- MÉTODOS DE FORM ARRAY (INGRESOS) ---
-  get ingresosFormArray(): FormArray {
-    return this.simulacionForm.get('ingresos') as FormArray;
-  }
+    // --- MÃ‰TODOS DE FORM ARRAY (INGRESOS) ---
+    get ingresosFormArray(): FormArray {
+      return this.simulacionForm.get('ingresos') as FormArray;
+    }
 
-  get propietariosDisponibles(): string[] {
+    get tieneConyuge(): boolean {
+      const ec = String(this.simulacionForm.get('estadoCivil')?.value || '').toUpperCase();
+      return ec === 'CASADO' || ec === 'UNION LIBRE' || ec === 'CASADO/A' || ec === 'UNI\u00D3N DE HECHO';
+    }
+
+    get requiereCodeudor(): boolean {
+      const val = this.simulacionForm.get('requiereCodeudor')?.value;
+      return val === true || val === 'true' || val === 'SI' || val === 'S';
+    }
+  
+    get propietariosDisponibles(): string[] {
     const opciones = ['Deudor'];
     const estadoCivil = this.simulacionForm.get('estadoCivil')?.value;
     const requiereCodeudor = this.simulacionForm.get('requiereCodeudor')?.value;
 
-    if (estadoCivil === 'Casado/a' || estadoCivil === 'Unión de Hecho') {
-      opciones.push('Cónyuge');
+    if (estadoCivil === 'Casado/a' || estadoCivil === 'UniÃ³n de Hecho') {
+      opciones.push('CÃ³nyuge');
     }
     if (requiereCodeudor) {
       opciones.push('Codeudor');
@@ -418,12 +454,12 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     this.ingresosFormArray.removeAt(index);
   }
 
-  // --- MÉTODOS DE FORM ARRAY (DEUDAS) ---
+  // --- MÃ‰TODOS DE FORM ARRAY (DEUDAS) ---
   get deudasFormArray(): FormArray {
     return this.simulacionForm.get('deudas') as FormArray;
   }
 
-  agregarDeuda(propietario: string = 'Deudor', tipoDeuda: string = 'Préstamo de Consumo', institucion: string = '', cuota: number = 0) {
+  agregarDeuda(propietario: string = 'Deudor', tipoDeuda: string = 'PrÃ©stamo de Consumo', institucion: string = '', cuota: number = 0) {
     const deudaForm = this.fb.group({
       propietario: [propietario, Validators.required],
       tipoDeuda: [tipoDeuda, Validators.required],
@@ -473,15 +509,29 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         this.indicadoresFinancieros = arr;
       }
     });
+
+    this.parametricService.getTableData(13).subscribe({
+      next: (res: any) => {
+        let arr = Array.isArray(res) ? res : (res.value || []);
+        this.entidadesFinancieras = arr;
+      }
+    });
+
+    this.parametricService.getTableData(9).subscribe({
+      next: (res: any) => {
+        let arr = Array.isArray(res) ? res : (res.value || []);
+        this.tiposDeuda = arr;
+      }
+    });
   }
 
   ejecutarAnalisis(silent: boolean = false) {
     const vals = this.simulacionForm.value;
     const requiereCodeudor = vals.requiereCodeudor;
     const estadoCivil = vals.estadoCivil;
-    const incluyeConyuge = estadoCivil === 'Casado/a' || estadoCivil === 'Unión de Hecho';
+    const incluyeConyuge = estadoCivil === 'Casado/a' || estadoCivil === 'UniÃ³n de Hecho';
 
-    // Validación de ingresos: al menos 2 registros y mayores a 0
+    // ValidaciÃ³n de ingresos: al menos 2 registros y mayores a 0
     const ingresosArray = this.ingresosFormArray;
     let ingresosValidos = true;
     for (let i = 0; i < ingresosArray.length; i++) {
@@ -514,7 +564,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
             invalidFields.push(name);
           }
         }
-        alert("No se pudo calcular. Los siguientes campos son inválidos: " + invalidFields.join(', '));
+        alert("No se pudo calcular. Los siguientes campos son invÃ¡lidos: " + invalidFields.join(', '));
       }
       return;
     }
@@ -560,7 +610,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     if (deudas && deudas.length > 0) {
         totalDeudas = deudas.reduce((acc: number, curr: any) => {
             const prop = curr.propietario;
-            if (prop === 'Cónyuge' && !incluyeConyuge) return acc;
+            if (prop === 'CÃ³nyuge' && !incluyeConyuge) return acc;
             if (prop === 'Codeudor' && !requiereCodeudor) return acc;
             return acc + (Number(curr.cuota) || 0);
         }, 0);
@@ -594,15 +644,30 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         const cinValue = totalIngresos > 0 ? ((res.cuotaMensual || 0) / totalIngresos) * 100 : 0;
         const dinValue = totalIngresos > 0 ? ((totalIngresos - totalDeudas - (res.cuotaMensual || 0)) / totalIngresos) * 100 : 0;
 
-        // Obtener parámetros de validación
+        // Obtener parÃ¡metros de validaciÃ³n
         const cinParams = this.indicadoresFinancieros.find(i => i.indicador === 'CIN') || { valor_minimo: 0, valor_maximo: 45 };
         const dinParams = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
 
         const cinValido = cinValue >= cinParams.valor_minimo && cinValue <= cinParams.valor_maximo;
         const dinValido = dinValue >= dinParams.valor_minimo && dinValue <= dinParams.valor_maximo;
+          
+        const cuotaValidar = res.cuotaMensual || 0;
+        const ahorroNeto = totalIngresos 
+          + (this.simulacionForm.get('comisiones')?.value || 0)
+          + (this.simulacionForm.get('ingresoNegocio')?.value || 0)
+          + (this.simulacionForm.get('otrosIngresos')?.value || 0)
+          - (this.simulacionForm.get('alquilerDomicilio')?.value || 0)
+          - (this.simulacionForm.get('alquilerLocal')?.value || 0)
+          - (this.simulacionForm.get('alimentacion')?.value || 0)
+          - (this.simulacionForm.get('educacion')?.value || 0)
+          - (this.simulacionForm.get('serviciosBasicos')?.value || 0)
+          - totalDeudas
+          - (this.simulacionForm.get('cuotaTarjeta')?.value || 0);
+          
+        const flujoCajaPositivo = ahorroNeto > 0 && ahorroNeto >= cuotaValidar;
 
-        // Se califica si el Backend dice APROBADO o PRE_APROBADO, y se cumplen los indicadores
-        const califica = (res.decision === 'APROBADO' || res.decision === 'PRE_APROBADO') && montoValido && plazoValido && calificaPorScore && calificaPorCapacidad && cinValido && dinValido;
+        // Se califica si el Backend dice APROBADO o PRE_APROBADO, y se cumplen los indicadores + flujo de caja
+        const califica = (res.decision === 'APROBADO' || res.decision === 'PRE_APROBADO') && montoValido && plazoValido && calificaPorScore && calificaPorCapacidad && cinValido && dinValido && flujoCajaPositivo;
 
         this.resultadosCalculados = {
           cuotaMensual: res.cuotaMensual || 0,
@@ -617,9 +682,21 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           dinValido: dinValido,
           cinValido: cinValido,
           capacidadPago,
-          califica,
-          calculado: true
+          califica: califica,
+          calculado: true,
+          flujoCajaPositivo: flujoCajaPositivo,
+          ahorroNeto: ahorroNeto
         };
+        
+        // Auto-poblar SituaciÃ³n Financiera
+        this.simulacionForm.patchValue({
+          sueldoLiquidoDeudor: this.resultadosCalculados.promedioIngresosDeudor || 0,
+          sueldoLiquidoConyuge: this.resultadosCalculados.promedioIngresosConyuge || 0,
+          sueldoLiquidoCodeudor: this.resultadosCalculados.promedioIngresosCodeudor || 0,
+          cuotaPrestamos: totalDeudas || 0
+        }, { emitEvent: false });
+
+        this.emitirDataActualizada();
 
         if (res.decision === 'RECHAZADO' && !silent) {
           alert("El motor de reglas de riesgo ha RECHAZADO esta solicitud: " + res.justificacion);
@@ -629,7 +706,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error("Error evaluando reglas en backend", err);
-        // Fallback básico
+        // Fallback bÃ¡sico
         const calificaPorScore = scoreCrediticio >= 650;
         const fallbackCuota = cuotaMensual;
         const calificaPorCapacidad = fallbackCuota <= capacidadPago;
@@ -642,20 +719,45 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         const dinParamsFB = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
         const cinValidoFB = cinValueFallback >= cinParamsFB.valor_minimo && cinValueFallback <= cinParamsFB.valor_maximo;
         const dinValidoFB = dinValueFallback >= dinParamsFB.valor_minimo && dinValueFallback <= dinParamsFB.valor_maximo;
-
-        const calificaFallback = fallbackDti <= 45 && calificaPorScore && calificaPorCapacidad && cinValidoFB && dinValidoFB;
+        
+        const ahorroNetoFB = totalIngresos 
+          + (this.simulacionForm.get('comisiones')?.value || 0)
+          + (this.simulacionForm.get('ingresoNegocio')?.value || 0)
+          + (this.simulacionForm.get('otrosIngresos')?.value || 0)
+          - (this.simulacionForm.get('alquilerDomicilio')?.value || 0)
+          - (this.simulacionForm.get('alquilerLocal')?.value || 0)
+          - (this.simulacionForm.get('alimentacion')?.value || 0)
+          - (this.simulacionForm.get('educacion')?.value || 0)
+          - (this.simulacionForm.get('serviciosBasicos')?.value || 0)
+          - totalDeudas
+          - (this.simulacionForm.get('cuotaTarjeta')?.value || 0);
+          
+        const flujoCajaPositivoFB = ahorroNetoFB > 0 && ahorroNetoFB >= fallbackCuota;
+  
+        const calificaFallback = fallbackDti <= 45 && calificaPorScore && calificaPorCapacidad && cinValidoFB && dinValidoFB && flujoCajaPositivoFB;
 
         this.resultadosCalculados = {
           cuotaMensual: fallbackCuota, totalIngresos, 
           promedioIngresosDeudor: this.resultadosCalculados.promedioIngresosDeudor,
           promedioIngresosConyuge: this.resultadosCalculados.promedioIngresosConyuge,
           promedioIngresosCodeudor: this.resultadosCalculados.promedioIngresosCodeudor,
-          totalDeudas, dti: fallbackDti, din: dinValueFallback, cin: cinValueFallback, dinValido: dinValidoFB, cinValido: cinValidoFB, capacidadPago, califica: calificaFallback, calculado: true
+          totalDeudas, dti: fallbackDti, din: dinValueFallback, cin: cinValueFallback, dinValido: dinValidoFB, cinValido: cinValidoFB, capacidadPago, califica: calificaFallback, calculado: true,
+          flujoCajaPositivo: flujoCajaPositivoFB,
+          ahorroNeto: ahorroNetoFB
         };
+        
+        // Auto-poblar SituaciAA3n Financiera
+        this.simulacionForm.patchValue({
+          sueldoLiquidoDeudor: this.resultadosCalculados.promedioIngresosDeudor || 0,
+          sueldoLiquidoConyuge: this.resultadosCalculados.promedioIngresosConyuge || 0,
+          sueldoLiquidoCodeudor: this.resultadosCalculados.promedioIngresosCodeudor || 0,
+          cuotaPrestamos: totalDeudas || 0
+        }, { emitEvent: false });
+
         this.emitirDataActualizada();
       }
     });
-    // Llamar sincrónicamente por si falla la red, ya se emite con lo local
+    // Llamar sincrÃ³nicamente por si falla la red, ya se emite con lo local
     this.emitirDataActualizada();
   }
 
@@ -682,33 +784,43 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         tipo_credito: tipoMapped,
         tipo_credito_id: tipoSeleccionado ? tipoSeleccionado.id : null,
         producto_credito: productoId,
-        monto_solicitado: formData.monto,
-        plazo_meses: formData.plazo,
-        tasa_interes: formData.tasa,
-        cuota_estimada: Number(this.resultadosCalculados.cuotaMensual || 0).toFixed(2),
-        ingresos: this.resultadosCalculados.totalIngresos,
-        ingreso_bruto: this.resultadosCalculados.totalIngresos,
+        monto_solicitado: Number(formData.monto) || 0,
+        plazo_meses: Number(formData.plazo) || 0,
+        tasa_interes: Number(formData.tasa) || 0,
+        cuota_estimada: Number(this.resultadosCalculados.cuotaMensual) || 0,
+        ingresos: Number(this.resultadosCalculados.totalIngresos) || 0,
+        ingreso_bruto: Number(this.resultadosCalculados.totalIngresos) || 0,
         interviniente_int_identificacion: formData.identificacion,
         interviniente_int_nombres_completos: formData.nombres,
         interviniente_int_estado_civil: formData.estadoCivil,
-
-        score_crediticio: formData.scoreCrediticio,
-        capacidad_pago: this.resultadosCalculados.capacidadPago,
-        cin_valido: this.resultadosCalculados.cinValido,
+        identificacion: formData.identificacion,
+        nombres: formData.nombres,
+        estado_civil: formData.estadoCivil,
+        requiere_codeudor: formData.requiereCodeudor,
+        producto: productoSeleccionado ? productoSeleccionado.pro_cre_nombre : null,
+        monto: Number(formData.monto) || 0,
+        plazo: Number(formData.plazo) || 0,
+        cuota: Number(this.resultadosCalculados.cuotaMensual) || 0,
+        ingresos_totales: Number(this.resultadosCalculados.totalIngresos) || 0,
+        gastos_financieros: Number(this.resultadosCalculados.totalDeudas) || 0,
+        din: Number(this.resultadosCalculados.din) || 0,
+        cin: Number(this.resultadosCalculados.cin) || 0,
+        capacidad_pago: Number(this.resultadosCalculados.capacidadPago) || 0,
+        dti: Number(this.resultadosCalculados.dti) || 0,
+        score_crediticio: 750,
         din_valido: this.resultadosCalculados.dinValido,
-        cin: this.resultadosCalculados.cin,
-        din: this.resultadosCalculados.din,
+        cin_valido: this.resultadosCalculados.cinValido,
 
-        producto_desc: this.selectedProducto ? (this.selectedProducto.descripcion || this.selectedProducto.nombre || '') : '',
+        producto_desc: productoSeleccionado ? (productoSeleccionado.descripcion || productoSeleccionado.nombre || '') : '',
         fecha_caso: new Date().toISOString().split('T')[0],
         fecha_solicitud: new Date().toLocaleString(),
 
-        monto_minimo: this.selectedProducto ? this.selectedProducto.pro_cre_monto_minimo : null,
-        monto_maximo: this.selectedProducto ? this.selectedProducto.pro_cre_monto_maximo : null,
-        plazo_minimo: this.selectedProducto ? this.selectedProducto.pro_cre_plazo_minimo : null,
-        plazo_maximo: this.selectedProducto ? this.selectedProducto.pro_cre_plazo_maximo : null,
-        plazo_solicitado_1: formData.plazo,
-        plazo_solicitado_2: formData.plazo
+        monto_minimo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_monto_minimo) : null,
+        monto_maximo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_monto_maximo) : null,
+        plazo_minimo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_plazo_minimo) : null,
+        plazo_maximo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_plazo_maximo) : null,
+        plazo_solicitado_1: Number(formData.plazo) || 0,
+        plazo_solicitado_2: Number(formData.plazo) || 0
     };
     return processVariables;
   }
@@ -727,7 +839,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
 
     this.processService.startInstance('Flujo_Credito_Completo', processVariables).subscribe({
       next: () => {
-        // Al iniciar la instancia correctamente, buscamos la tarea generada para enviarlo allá
+        // Al iniciar la instancia correctamente, buscamos la tarea generada para enviarlo allÃ¡
         this.taskService.getTasks().subscribe({
           next: (tasks) => {
             if (tasks && tasks.length > 0) {
@@ -743,12 +855,12 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
                 return new Date(dateStr).getTime() || 0;
               };
 
-              // Asumimos que la tarea más reciente es la primera actividad de la solicitud
+              // Asumimos que la tarea mÃ¡s reciente es la primera actividad de la solicitud
               const sortedTasks = tasks.sort((a, b) => parseJavaDate(b.createTime) - parseJavaDate(a.createTime));
               const newTask = sortedTasks[0];
               this.router.navigate(['/portal/wizard', newTask.id]);
             } else {
-              // Si por alguna razón no hay tareas en la bandeja, lo enviamos a la bandeja
+              // Si por alguna razÃ³n no hay tareas en la bandeja, lo enviamos a la bandeja
               this.router.navigate(['/portal/bandeja']);
             }
           },
@@ -766,3 +878,4 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     });
   }
 }
+

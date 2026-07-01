@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Contrato de Préstamo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            margin: 40px;
+        }
+        .header {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+        .title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .content {
+            text-align: justify;
+        }
+        .clause-title {
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <p>FECHA: <span th:text="${fechaActual}">01/01/2026</span></p>
+        <p>TRÁMITE No. <span th:text="${operacionId}">0000000</span></p>
+    </div>
+
+    <div class="title">
+        CONTRATO DE PRÉSTAMO
+    </div>
+
+    <div class="content">
+        <p>
+            Conste por el presente documento, un contrato de préstamo de dinero, que se celebra al tenor de las siguientes cláusulas y declaraciones:
+        </p>
+
+        <p>
+            <span class="clause-title">1.- Partes Contratantes.</span> - Por una parte, el BANCO BOLIVARIANO C.A.., a quien para efectos de este contrato, se lo podrá denominar también como el “Banco” o el “Acreedor”; y, por otra parte, 
+            <strong th:text="${nombresCompletos}">NOMBRE DEL CLIENTE</strong>, portador de la cédula de identidad número <strong th:text="${identificacion}">0000000000</strong>, por sus propios y personales derechos, a quien para los efectos de este contrato se lo podrá denominar como <strong>“EL DEUDOR”</strong>.
+        </p>
+
+        <p>
+            <span class="clause-title">2.- Antecedentes.</span> - (a) El Banco es una institución del sistema financiero privado constituido y existente bajo las leyes ecuatorianas. (b) El Banco ha implementado su sitio Web y aplicativos que permiten a los clientes solicitar créditos. (c) Por su parte, EL DEUDOR ha solicitado expresamente al Banco un crédito destinado al desarrollo de sus actividades.
+        </p>
+
+        <p>
+            <span class="clause-title">3.- Préstamo, Intereses Reajustables y forma de pago.</span> - El Banco entrega en préstamo a EL DEUDOR la cantidad de 
+            <strong th:text="${monto}">0.00</strong> DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA, cantidad que EL DEUDOR declara haberla recibido a su entera satisfacción y que se obliga a pagar.
+        </p>
+
+        <p>
+            El capital y los intereses EL DEUDOR se obliga a pagarlos dentro del plazo de <strong th:text="${plazoMeses}">0</strong> meses mediante cuotas MENSUALES, tal como se establece en la tabla de amortización que forma parte integrante de este contrato.
+        </p>
+
+        <p>
+            <span class="clause-title">4.- Intereses por Mora.</span> - Si EL DEUDOR incurriere en mora en el pago de una cuota, el Acreedor cobrará la máxima tasa de mora permitida por la ley.
+        </p>
+        
+        <p>
+            <span class="clause-title">5.- Aceptación.</span> - EL DEUDOR acepta libre y voluntariamente cada uno de los términos y las condiciones establecidos en las cláusulas del presente contrato.
+        </p>
+    </div>
+
+    <div class="footer">
+        <br/><br/><br/>
+        <p>____________________________________</p>
+        <p><strong th:text="${nombresCompletos}">NOMBRE DEL CLIENTE</strong></p>
+        <p>C.I. <span th:text="${identificacion}">0000000000</span></p>
+        <p><strong>EL DEUDOR</strong></p>
+    </div>
+
+</body>
+</html>
