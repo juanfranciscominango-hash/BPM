@@ -110,7 +110,8 @@ public class ProcessService {
         
         // 2. Persistencia en tabla de negocio (si aplica)
         final var finalInstance = instance;
-        procDefOpt.ifPresent(procDef -> {
+        if (procDefOpt.isPresent()) {
+            var procDef = procDefOpt.get();
             try {
                 // Obtener descripción de la paramétrica Parametros generales
                 String sql = "SELECT p.descripcion FROM pr_paranmetros_generales p " +
@@ -133,9 +134,12 @@ public class ProcessService {
                 log.info("Process instance name set to: {}", caseName);
             } catch (Exception ex) {
                 log.warn("Could not set process instance name from parametrics: {}", ex.getMessage());
+                String dateSuffix = new SimpleDateFormat("ddMMyyHHmmss").format(new Date());
+                runtimeService.setProcessInstanceName(finalInstance.getId(), "CASO" + dateSuffix);
             }
 
             if (procDef.getMetaEntityId() != null) {
+
                 var entity = metaService.listarEntidades().stream()
                         .filter(e -> e.getId().equals(procDef.getMetaEntityId()))
                         .findFirst().orElse(null);
@@ -148,7 +152,15 @@ public class ProcessService {
                     tableGeneratorService.insertData(entity, attributes, variables, finalInstance.getId());
                 }
             }
-        });
+        } else {
+            // Cuando la key de Flowable no coincide con la de nuestra BD (ej: Flujo_Credito_Completo vs flujo_de_credito_completo)
+            // Aseguramos que de igual manera se asigne el nombre por defecto
+            log.warn("Process definition not found for key: {}. Applying generic CASO name.", processKey);
+            String dateSuffix = new SimpleDateFormat("ddMMyyHHmmss").format(new Date());
+            String fallbackName = "CASO" + dateSuffix;
+            runtimeService.setProcessInstanceName(finalInstance.getId(), fallbackName);
+            log.info("Process instance name set to fallback: {}", fallbackName);
+        }
     }
 
     public List<ProcessDefinition> listAll() {
@@ -167,13 +179,44 @@ public class ProcessService {
     }
 
     public ProcessDefinition getByProcDefId(String procDefId) {
-        return processDefinitionRepository.findByProcDefId(procDefId).orElseGet(() -> {
+        ProcessDefinition customDef = processDefinitionRepository.findByProcDefId(procDefId).orElseGet(() -> {
             if (procDefId != null && procDefId.contains(":")) {
                 String key = procDefId.split(":")[0];
-                return processDefinitionRepository.findByKey(key).orElse(null);
+                return processDefinitionRepository.findByKey(key)
+                        .orElseGet(() -> processDefinitionRepository.findByKey(key.toLowerCase())
+                        .orElseGet(() -> {
+                            if (key.equalsIgnoreCase("Flujo_Credito_Completo")) {
+                                return processDefinitionRepository.findByKey("flujo_de_credito_completo").orElse(null);
+                            }
+                            return null;
+                        }));
             }
             return null;
         });
+
+        // Si no tenemos bpmnXml en nuestra tabla (ej. flujos antiguos), extraerlo directo de Flowable
+        if ((customDef == null || customDef.getBpmnXml() == null || customDef.getBpmnXml().isEmpty()) && procDefId != null) {
+            try {
+                java.io.InputStream processModel = repositoryService.getProcessModel(procDefId);
+                if (processModel != null) {
+                    byte[] bytes = org.springframework.util.StreamUtils.copyToByteArray(processModel);
+                    String xml = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+                    
+                    if (customDef == null) {
+                        customDef = new ProcessDefinition();
+                        customDef.setProcDefId(procDefId);
+                        if (procDefId.contains(":")) {
+                            customDef.setKey(procDefId.split(":")[0]);
+                        }
+                    }
+                    customDef.setBpmnXml(xml);
+                }
+            } catch (Exception e) {
+                log.warn("No se pudo obtener el XML desde Flowable para procDefId: {}", procDefId, e);
+            }
+        }
+
+        return customDef;
     }
 
     private String preprocessLinkEvents(String xml) throws Exception {
@@ -228,78 +271,6 @@ public class ProcessService {
                 stringEl.setTextContent(decisionRef);
                 field.appendChild(stringEl);
                 extElements.appendChild(field);
-            }
-        }
-
-        // 2. Preprocess Link Events -> Gateways
-        NodeList throwsList = doc.getElementsByTagNameNS("*", "intermediateThrowEvent");
-        NodeList catchesList = doc.getElementsByTagNameNS("*", "intermediateCatchEvent");
-
-        Map<String, java.util.List<Element>> throwLinks = new HashMap<>();
-        Map<String, Element> catchLinks = new HashMap<>();
-
-        for (int i = 0; i < throwsList.getLength(); i++) {
-            Element el = (Element) throwsList.item(i);
-            NodeList linkDefs = el.getElementsByTagNameNS("*", "linkEventDefinition");
-            if (linkDefs.getLength() > 0) {
-                String name = ((Element) linkDefs.item(0)).getAttribute("name");
-                throwLinks.computeIfAbsent(name, k -> new java.util.ArrayList<>()).add(el);
-            }
-        }
-
-        for (int i = 0; i < catchesList.getLength(); i++) {
-            Element el = (Element) catchesList.item(i);
-            NodeList linkDefs = el.getElementsByTagNameNS("*", "linkEventDefinition");
-            if (linkDefs.getLength() > 0) {
-                String name = ((Element) linkDefs.item(0)).getAttribute("name");
-                catchLinks.put(name, el);
-            }
-        }
-
-        for (String name : throwLinks.keySet()) {
-            if (catchLinks.containsKey(name)) {
-                Element catchEl = catchLinks.get(name);
-                
-                // Convert Catch Event to Gateway
-                doc.renameNode(catchEl, catchEl.getNamespaceURI(), "bpmn:exclusiveGateway");
-                removeChildrenByTagName(catchEl, "linkEventDefinition");
-
-                int index = 0;
-                for (Element throwEl : throwLinks.get(name)) {
-                    // Convert Throw Event to Gateway
-                    doc.renameNode(throwEl, throwEl.getNamespaceURI(), "bpmn:exclusiveGateway");
-                    removeChildrenByTagName(throwEl, "linkEventDefinition");
-
-                    // Create sequence flow
-                    Element seqFlow = doc.createElementNS(throwEl.getNamespaceURI(), "bpmn:sequenceFlow");
-                    String flowId = "GeneratedLinkFlow_" + name.replaceAll("[^a-zA-Z0-9]", "_") + "_" + (index++);
-                    seqFlow.setAttribute("id", flowId);
-                    seqFlow.setAttribute("sourceRef", throwEl.getAttribute("id"));
-                    seqFlow.setAttribute("targetRef", catchEl.getAttribute("id"));
-
-                    Element outgoing = doc.createElementNS(throwEl.getNamespaceURI(), "bpmn:outgoing");
-                    outgoing.setTextContent(flowId);
-                    throwEl.appendChild(outgoing);
-
-                    Element incoming = doc.createElementNS(catchEl.getNamespaceURI(), "bpmn:incoming");
-                    incoming.setTextContent(flowId);
-                    
-                    Node firstOutgoing = null;
-                    NodeList children = catchEl.getChildNodes();
-                    for (int j = 0; j < children.getLength(); j++) {
-                        if ("outgoing".equals(children.item(j).getLocalName())) {
-                            firstOutgoing = children.item(j);
-                            break;
-                        }
-                    }
-                    if (firstOutgoing != null) {
-                        catchEl.insertBefore(incoming, firstOutgoing);
-                    } else {
-                        catchEl.appendChild(incoming);
-                    }
-
-                    throwEl.getParentNode().appendChild(seqFlow);
-                }
             }
         }
 

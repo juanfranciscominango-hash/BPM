@@ -4,7 +4,7 @@
     <decisionTable id="DecisionTable_13xyz" hitPolicy="UNIQUE">
       <input id="Input_1" label="Monto del Crédito">
         <inputExpression id="InputExpression_1" typeRef="integer">
-          <text>solicitud_credito_monto_aprobado</text>
+          <text>monto_aprobado_analista</text>
         </inputExpression>
       </input>
       <output id="Output_1" label="Rol Aprobador" name="rolAprobador" typeRef="string" />

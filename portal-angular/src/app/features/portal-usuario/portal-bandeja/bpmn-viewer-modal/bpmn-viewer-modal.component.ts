@@ -62,15 +62,19 @@ export class BpmnViewerModalComponent implements OnInit, AfterViewInit, OnDestro
           
           // Fit viewport
           const canvas = this.viewer.get('canvas');
-          canvas.zoom('fit-viewport');
+          try {
+            canvas.zoom('fit-viewport');
+          } catch (e) {
+            console.warn('Could not fit viewport, possibly due to corrupted bounds in XML', e);
+          }
 
           // Highlight nodes
           this.highlightNodes(results.historyIds, results.activeIds);
           
           this.loading = false;
-        } catch (err) {
+        } catch (err: any) {
           console.error('Error rendering BPMN', err);
-          this.error = 'Ocurrió un error al renderizar el diagrama.';
+          this.error = 'Ocurrió un error al renderizar el diagrama: ' + (err.message || err);
           this.loading = false;
         }
       },

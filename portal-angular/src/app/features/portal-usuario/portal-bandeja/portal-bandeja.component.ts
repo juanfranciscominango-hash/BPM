@@ -67,7 +67,9 @@ export class PortalBandejaComponent implements OnInit {
         this.filtrarTareas();
         this.loading = false;
       },
-      error: () => {
+      error: (err) => {
+        console.error('Error al cargar las tareas', err);
+        alert('Ocurrió un error al intentar cargar las tareas. Verifique que el servidor backend esté en ejecución.');
         this.loading = false;
       }
     });

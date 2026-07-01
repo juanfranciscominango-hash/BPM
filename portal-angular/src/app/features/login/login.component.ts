@@ -20,7 +20,7 @@ export class LoginComponent {
   private authService = inject(AuthService);
 
   username = '';
-  dominio = 'InnovaConsulting.com';
+  dominio = 'chibuleo.com';
   autenticarContraDominio = true;
   password = '';
   showPassword = false;

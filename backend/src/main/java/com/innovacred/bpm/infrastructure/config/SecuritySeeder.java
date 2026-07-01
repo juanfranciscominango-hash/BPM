@@ -95,9 +95,9 @@ public class SecuritySeeder implements CommandLineRunner {
         ensureRole("OPERACIONES", new HashSet<>(List.of(pDoc)));
         ensureRole("GERENTE_SUCURSAL", new HashSet<>(List.of(pMon, pParam)));
 
-        if (!userRepository.findAll().stream().anyMatch(u -> "admin@innovacred.com".equals(u.getUsername()))) {
+        if (!userRepository.findAll().stream().anyMatch(u -> "admin@chibuleo.com".equals(u.getUsername()))) {
             UserAccount adminUser = UserAccount.builder()
-                    .username("admin@innovacred.com")
+                    .username("admin@chibuleo.com")
                     .password("admin123")
                     .fullName("Administrador del Sistema")
                     .active(true)
