@@ -122,6 +122,7 @@
                                 <div *ngIf="field.controlType === 'MONEY'" class="input-group input-group-sm">
                                   <span class="input-group-text">$</span>
                                   <input type="number"
+                                         appTwoDecimals
                                          [(ngModel)]="previewModel[field.name]"
                                          class="form-control rounded-1"
                                          [style.border-left]="field.required ? '3px solid #dc3545' : ''">
@@ -259,15 +260,30 @@
                               <tbody>
                                 <tr *ngFor="let row of getPaginatedGridRows(field.name); let ri = index">
                                   <td *ngFor="let col of getGridColumns(field)" class="align-middle text-center">
-           <ng-container *ngIf="col.type === 'boolean' || col.type === 'BOOLEAN'; else textCell">
-             <div class="form-check d-flex justify-content-center m-0 p-0">
-               <input class="form-check-input" type="checkbox" [(ngModel)]="row[col.name]" [disabled]="field.readOnly">
-             </div>
-           </ng-container>
-           <ng-template #textCell>
-             {{ getSimGridDisplayValue(col, row[col.name]) }}
-           </ng-template>
-         </td>
+             <ng-container *ngIf="col.type === 'RADIO' || col.type === 'radio'; else checkMultiTpl">
+               <div class="form-check d-flex justify-content-center m-0 p-0">
+                 <input class="form-check-input" type="radio" [name]="field.name + '_radio'" [value]="ri" [(ngModel)]="previewModel[field.name + '_seleccion']" [disabled]="field.readOnly">
+               </div>
+             </ng-container>
+             <ng-template #checkMultiTpl>
+               <ng-container *ngIf="col.type === 'CHECKBOX' || col.type === 'checkbox'; else boolTpl">
+                 <div class="form-check d-flex justify-content-center m-0 p-0">
+                   <!-- Initialize array if undefined in ngModelChange if needed, or component handles it -->
+                   <input class="form-check-input" type="checkbox" [checked]="previewModel[field.name + '_check']?.includes(ri)" (change)="$event.target.checked ? (previewModel[field.name + '_check'] = previewModel[field.name + '_check'] || []).push(ri) : previewModel[field.name + '_check'] = previewModel[field.name + '_check']?.filter(x => x !== ri)" [disabled]="field.readOnly">
+                 </div>
+               </ng-container>
+             </ng-template>
+             <ng-template #boolTpl>
+               <ng-container *ngIf="col.type === 'boolean' || col.type === 'BOOLEAN'; else textCell">
+                 <div class="form-check d-flex justify-content-center m-0 p-0">
+                   <input class="form-check-input" type="checkbox" [(ngModel)]="row[col.name]" [disabled]="field.readOnly">
+                 </div>
+               </ng-container>
+             </ng-template>
+             <ng-template #textCell>
+               {{ getSimGridDisplayValue(col, row[col.name]) }}
+             </ng-template>
+           </td>
                                   <td *ngIf="!field.readOnly && field.config?.allowDelete !== false" class="text-center text-nowrap">
                                     <button class="btn btn-sm btn-link text-primary p-0 me-2" data-bs-toggle="modal" data-bs-target="#gridModal" (click)="editGridRow(field, ri)" title="Editar"><i class="bi bi-pencil-fill"></i></button>
                                     <button class="btn btn-sm btn-link text-danger p-0" (click)="removeGridRow(field.name, ri)" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>

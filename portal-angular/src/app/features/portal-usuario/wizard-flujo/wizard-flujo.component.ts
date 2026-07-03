@@ -9,14 +9,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TaskService, UserTask } from '../../../core/services/task.service';
 import { ProcessService } from '../../../core/services/process.service';
 import { ScreenService } from '../../../core/services/screen.service';
+import { DocumentService } from '../../../core/services/document.service';
 import { SimulacionComponent } from '../../simulacion/simulacion.component';
 import { AnalisisCreditoComponent } from '../../analisis-credito/analisis-credito.component';
 import { FormulasUtil } from '../../../core/utils/formulas.util';
+import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.directive';
 
 @Component({
   selector: 'app-wizard-flujo',
   standalone: true,
-  imports: [CommonModule, FormsModule, SimulacionComponent, AnalisisCreditoComponent],
+  imports: [CommonModule, FormsModule, SimulacionComponent, AnalisisCreditoComponent, TwoDecimalsDirective],
   templateUrl: './wizard-flujo.component.html'
 })
 export class WizardFlujoComponent implements OnInit {
@@ -27,6 +29,7 @@ export class WizardFlujoComponent implements OnInit {
   private metaService = inject(MetaService);
   private processService = inject(ProcessService);
   private screenService = inject(ScreenService);
+  private documentService = inject(DocumentService);
   private cdr = inject(ChangeDetectorRef);
   private taskService = inject(TaskService);
   private route = inject(ActivatedRoute);
@@ -996,7 +999,7 @@ export class WizardFlujoComponent implements OnInit {
          // Buscar tasa
          let tasa = findValue(['tasa', 'interes']);
          
-         // Priorizar plazo aprobado, luego solicitado, luego meses
+          // Priorizar plazo aprobado, luego solicitado, luego meses
          let plazo = findValue(['plazo'], ['aprobado']);
          if (!plazo) plazo = findValue(['plazo'], ['solicitado']);
          if (!plazo) plazo = findValue(['plazo'], ['meses']);
@@ -1006,6 +1009,29 @@ export class WizardFlujoComponent implements OnInit {
          
          const cuota = FormulasUtil.calcularCuotaMensual(monto, tasa, plazo);
          const cuotaStr = cuota.toFixed(2);
+         
+         // Generar la tabla de amortización (Sistema Francés) automáticamente
+         const schedule = [];
+         let saldo = monto;
+         const tasaMensual = (tasa / 100) / 12;
+         const seguro = 5.00; // Valor del seguro por cuota
+         
+         for (let i = 1; i <= plazo; i++) {
+             const interesCuota = saldo * tasaMensual;
+             const capitalCuota = cuota - interesCuota;
+             const totalCuota = cuota + seguro;
+             saldo = saldo - capitalCuota;
+             
+             schedule.push({
+                 plazo: i,
+                 total: Number(totalCuota.toFixed(2)),
+                 capital: Number(capitalCuota.toFixed(2)),
+                 interes: Number(interesCuota.toFixed(2)),
+                 seguro: Number(seguro.toFixed(2)),
+                 saldo: Number(Math.max(0, saldo).toFixed(2))
+             });
+         }
+         this.gridRowsMap['bpm_credito_detalle'] = schedule;
          
          // Actualizar los campos de cuota estimada
          let updated = false;
@@ -1067,6 +1093,45 @@ export class WizardFlujoComponent implements OnInit {
          const prefix = field.name.startsWith('codeudor_') ? 'codeudor_' : '';
          this.previewModel['interviniente_int_identificacion'] = this.previewModel[prefix + 'identificacion'];
          this.previewModel['DocumentNumber'] = this.previewModel[prefix + 'identificacion'];
+      }
+
+      if (apiToExecute === 'APIPAGARE' || apiToExecute === 'APICONTRATO') {
+          const docName = apiToExecute === 'APIPAGARE' ? 'Pagare' : 'Contrato';
+          this.simNotification = `Generando documento ${docName}...`;
+          
+          const docVars = { ...this.taskVariables, ...this.previewModel };
+          Object.keys(this.gridRowsMap).forEach(key => {
+             if (this.gridRowsMap[key] && this.gridRowsMap[key].length > 0) {
+                docVars[key] = JSON.stringify(this.gridRowsMap[key]);
+             }
+          });
+
+          this.documentService.generateByName(docName, this.taskId || 'sim-instance', docVars, 'user').subscribe({
+              next: (res: any) => {
+                 if (res && res.documentBase64) {
+                    const fileName = res.fileName || `${docName}.pdf`;
+                    let mimeType = 'application/pdf';
+                    if (fileName.endsWith('.docx')) {
+                      mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                    } else if (fileName.endsWith('.xlsx')) {
+                      mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                    }
+                    const link = document.createElement('a');
+                    link.href = `data:${mimeType};base64,` + res.documentBase64;
+                    link.download = fileName;
+                    link.click();
+                    this.simNotification = 'Documento descargado exitosamente.';
+                 } else {
+                    this.simNotification = 'Documento generado en el servidor.';
+                 }
+                 setTimeout(() => this.simNotification = '', 3000);
+              },
+              error: (err) => {
+                 this.simNotification = `Error generando documento: ${err.message}`;
+                 setTimeout(() => this.simNotification = '', 3000);
+              }
+          });
+          return;
       }
 
       this.apiManagerService.testApi(apiToExecute, this.previewModel).subscribe({
@@ -1190,6 +1255,65 @@ export class WizardFlujoComponent implements OnInit {
           setTimeout(() => this.simNotification = '', 3000);
         }
       });
+    } else if (action === 'GENERATE_DOCUMENT' || (action && action.startsWith('DOC_'))) {
+      
+      let docName = '';
+      if (action.startsWith('DOC_')) {
+          const suffix = action.substring(4);
+          docName = suffix.charAt(0).toUpperCase() + suffix.slice(1).toLowerCase(); // e.g. DOC_PAGARE -> Pagare
+      }
+
+      this.simNotification = `Generando documento ${docName || '...'}...`;
+
+      const nextHandler = (res: any) => {
+           if (res && res.documentBase64) {
+              const fileName = res.fileName || 'Documento.pdf';
+              let mimeType = 'application/pdf';
+              if (fileName.endsWith('.docx')) {
+                mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+              } else if (fileName.endsWith('.xlsx')) {
+                mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+              }
+              const link = document.createElement('a');
+              link.href = `data:${mimeType};base64,` + res.documentBase64;
+              link.download = fileName;
+              link.click();
+              this.simNotification = 'Documento descargado exitosamente.';
+           } else {
+              this.simNotification = 'Documento generado en el servidor.';
+           }
+           setTimeout(() => this.simNotification = '', 3000);
+      };
+
+      const errorHandler = (err: any) => {
+           this.simNotification = `Error generando documento: ${err.message}`;
+           setTimeout(() => this.simNotification = '', 3000);
+      };
+
+      const docVars = { ...this.taskVariables, ...this.previewModel };
+      Object.keys(this.gridRowsMap).forEach(key => {
+         if (this.gridRowsMap[key] && this.gridRowsMap[key].length > 0) {
+            docVars[key] = JSON.stringify(this.gridRowsMap[key]);
+         }
+      });
+
+      if (docName) {
+          this.documentService.generateByName(docName, this.taskId || 'sim-instance', docVars, 'user').subscribe({
+              next: nextHandler,
+              error: errorHandler
+          });
+      } else {
+          const docDefId = field.config?.documentDefinitionId;
+          if (!docDefId) {
+            this.simNotification = 'Botón Generar Documento clicado (Sin plantilla configurada)';
+            setTimeout(() => this.simNotification = '', 3000);
+            return;
+          }
+          this.documentService.generate(docDefId, this.taskId || 'sim-instance', docVars, 'user').subscribe({
+            next: nextHandler,
+            error: errorHandler
+          });
+      }
     } else {
       this.simNotification = `Acción desconocida: ${action}`;
       setTimeout(() => this.simNotification = '', 3000);

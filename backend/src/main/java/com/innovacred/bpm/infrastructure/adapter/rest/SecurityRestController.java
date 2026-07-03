@@ -22,6 +22,13 @@ public class SecurityRestController {
     @PostMapping("/users")
     public UserAccount saveUser(@RequestBody UserAccount user) { return securityService.saveUser(user); }
 
+    public record UserTransferRequest(Long userId, String newAgencia, String backupUsername) {}
+
+    @PostMapping("/users/transfer")
+    public void transferUser(@RequestBody UserTransferRequest request) {
+        securityService.transferUser(request.userId(), request.newAgencia(), request.backupUsername());
+    }
+
     @GetMapping("/roles")
     public List<Role> getRoles() { return securityService.listRoles(); }
 

@@ -7,6 +7,7 @@ import com.innovacred.bpm.domain.entity.StoredDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,16 @@ public class DocumentRestController {
     @GetMapping("/definitions/{processKey}")
     public List<DocumentDefinition> getDefinitions(@PathVariable String processKey) {
         return documentService.listDefinitionsByProcess(processKey);
+    }
+
+    @GetMapping("/definitions/all")
+    public List<DocumentDefinition> getAllDefinitions() {
+        return documentService.listDefinitionsByProcess(null);
+    }
+
+    @PostMapping("/definitions/upload")
+    public String uploadTemplate(@RequestParam("file") MultipartFile file) throws Exception {
+        return documentService.uploadTemplate(file);
     }
 
     @PostMapping("/definitions")
@@ -44,12 +55,46 @@ public class DocumentRestController {
     }
 
     @PostMapping("/generate/{definitionId}")
-    public StoredDocument generate(
+    public ResponseEntity<?> generate(
             @PathVariable Long definitionId,
             @RequestParam String instanceId,
             @RequestBody Map<String, Object> variables,
             @RequestParam String user) throws Exception {
-        return documentService.generateAndStore(definitionId, instanceId, variables, user);
+        
+        try {
+            Map<String, String> result = documentService.generateFromOfficeTemplate(definitionId, instanceId, variables, user);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            StoredDocument doc = documentService.generateAndStore(definitionId, instanceId, variables, user);
+            return ResponseEntity.ok(doc);
+        }
+    }
+
+    @PostMapping("/generate-by-name/{documentName}")
+    public ResponseEntity<?> generateByName(
+            @PathVariable String documentName,
+            @RequestParam String instanceId,
+            @RequestBody Map<String, Object> variables,
+            @RequestParam String user) {
+        
+        try {
+            DocumentDefinition def = documentService.getDefinitionByName(documentName);
+            try {
+                if (def.getTemplatePath() != null && !def.getTemplatePath().isEmpty()) {
+                    Map<String, String> result = documentService.generateFromOfficeTemplate(def.getId(), instanceId, variables, user);
+                    return ResponseEntity.ok(result);
+                } else {
+                    StoredDocument doc = documentService.generateAndStore(def.getId(), instanceId, variables, user);
+                    return ResponseEntity.ok(doc);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(500).body(Map.of("message", "Error generando documento: " + e.getMessage()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("message", e.getMessage()));
+        }
     }
 
     @PostMapping("/sign/{documentId}")

@@ -9,11 +9,12 @@ import { ParametricService } from '../../../core/services/parametric.service';
 import { ScreenService, ScreenDefinition } from '../../../core/services/screen.service';
 import { DocumentService, DocumentDefinition, StoredDocument } from '../../../core/services/document.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.directive';
 
 @Component({
   selector: 'app-bandeja-tareas',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, TwoDecimalsDirective],
   template: `
     <div class="container-fluid p-4">
       <div class="mb-4 d-flex justify-content-between align-items-center">
@@ -231,6 +232,7 @@ import { AuthService } from '../../../core/services/auth.service';
                   <div *ngIf="field.controlType === 'MONEY'" class="input-group">
                     <span class="input-group-text bg-light text-success fw-bold">$</span>
                     <input type="number" 
+                           appTwoDecimals
                            [formControlName]="field.name" 
                            [readonly]="field.readOnly"
                            [placeholder]="field.defaultValue || '0.00'"

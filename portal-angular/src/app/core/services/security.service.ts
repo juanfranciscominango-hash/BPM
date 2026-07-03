@@ -19,7 +19,9 @@ export interface UserAccount {
   username: string;
   fullName: string;
   active: boolean;
+  agencia?: string;
   roles: Role[];
+  password?: string;
 }
 
 @Injectable({
@@ -31,6 +33,9 @@ export class SecurityService {
 
   getUsers(): Observable<UserAccount[]> { return this.http.get<UserAccount[]>(`${this.apiUrl}/users`); }
   saveUser(user: UserAccount): Observable<UserAccount> { return this.http.post<UserAccount>(`${this.apiUrl}/users`, user); }
+  transferUser(userId: number, newAgencia: string, backupUsername: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/users/transfer`, { userId, newAgencia, backupUsername });
+  }
   
   getRoles(): Observable<Role[]> { return this.http.get<Role[]>(`${this.apiUrl}/roles`); }
   saveRole(role: Role): Observable<Role> { return this.http.post<Role>(`${this.apiUrl}/roles`, role); }

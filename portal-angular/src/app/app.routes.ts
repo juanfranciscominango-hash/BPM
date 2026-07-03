@@ -106,7 +106,8 @@ export const routes: Routes = [
     path: 'portal',
     component: PortalCreditoLayoutComponent,
     canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard],
+    canActivateChild: [AuthGuard, permissionGuard],
+    data: { permission: 'ACCESO_PORTAL' },
     children: [
       { path: '', redirectTo: 'bandeja', pathMatch: 'full' },
       { path: 'wizard', loadComponent: () => import('./features/portal-usuario/wizard-flujo/wizard-flujo.component').then(m => m.WizardFlujoComponent) },
@@ -115,10 +116,10 @@ export const routes: Routes = [
       { path: 'simulacion', loadComponent: () => import('./features/simulacion/simulacion.component').then(m => m.SimulacionComponent) },
       { path: 'historial', loadComponent: () => import('./features/portal-usuario/portal-historial/portal-historial.component').then(m => m.PortalHistorialComponent) },
       { path: 'resumen/:id', loadComponent: () => import('./features/portal-usuario/resumen-credito/resumen-credito.component').then(m => m.ResumenCreditoComponent) },
-      { path: 'crm', loadComponent: () => import('./features/crm/components/prospectos-list.component').then(m => m.ProspectosListComponent) },
-      { path: 'crm/campanas', loadComponent: () => import('./features/crm/components/campanas-list.component').then(m => m.CampanasListComponent) },
-      { path: 'crm/nuevo', loadComponent: () => import('./features/crm/components/prospecto-form.component').then(m => m.ProspectoFormComponent) },
-      { path: 'crm/prospecto/:id', loadComponent: () => import('./features/crm/components/prospecto-detail.component').then(m => m.ProspectoDetailComponent) }
+      { path: 'crm', loadComponent: () => import('./features/crm/components/prospectos-list.component').then(m => m.ProspectosListComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_CRM' } },
+      { path: 'crm/campanas', loadComponent: () => import('./features/crm/components/campanas-list.component').then(m => m.CampanasListComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_CRM' } },
+      { path: 'crm/nuevo', loadComponent: () => import('./features/crm/components/prospecto-form.component').then(m => m.ProspectoFormComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_CRM' } },
+      { path: 'crm/prospecto/:id', loadComponent: () => import('./features/crm/components/prospecto-detail.component').then(m => m.ProspectoDetailComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_CRM' } }
     ]
   },
   { path: '**', redirectTo: '/login' }

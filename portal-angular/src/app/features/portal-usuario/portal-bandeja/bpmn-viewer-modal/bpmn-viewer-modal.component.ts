@@ -60,13 +60,17 @@ export class BpmnViewerModalComponent implements OnInit, AfterViewInit, OnDestro
           // Import XML into viewer
           await this.viewer.importXML(bpmnXml);
           
-          // Fit viewport
-          const canvas = this.viewer.get('canvas');
-          try {
-            canvas.zoom('fit-viewport');
-          } catch (e) {
-            console.warn('Could not fit viewport, possibly due to corrupted bounds in XML', e);
-          }
+          // Wait for Bootstrap modal animation to finish before calculating bounds
+          // Otherwise the container has 0 dimensions and corrupts the SVG matrix
+          setTimeout(() => {
+            const canvas = this.viewer.get('canvas');
+            try {
+              canvas.zoom('fit-viewport', 'auto');
+            } catch (e) {
+              console.warn('Could not fit viewport:', e);
+              canvas.zoom(1.0);
+            }
+          }, 400);
 
           // Highlight nodes
           this.highlightNodes(results.historyIds, results.activeIds);

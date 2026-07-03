@@ -52,8 +52,18 @@ export class DocumentService {
     return this.http.post<StoredDocument>(`${this.apiUrl}/upload`, formData);
   }
 
+  uploadTemplate(file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.apiUrl}/definitions/upload`, formData, { responseType: 'text' });
+  }
+
   generate(definitionId: number, instanceId: string, variables: any, user: string): Observable<StoredDocument> {
     return this.http.post<StoredDocument>(`${this.apiUrl}/generate/${definitionId}?instanceId=${instanceId}&user=${user}`, variables);
+  }
+
+  generateByName(documentName: string, instanceId: string, variables: any, user: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/generate-by-name/${documentName}?instanceId=${instanceId}&user=${user}`, variables);
   }
 
   signDocument(docId: number, username: string, pin: string): Observable<StoredDocument> {

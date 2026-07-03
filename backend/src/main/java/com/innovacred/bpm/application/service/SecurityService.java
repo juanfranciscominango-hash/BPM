@@ -9,6 +9,7 @@ import com.innovacred.bpm.infrastructure.adapter.persistence.UserAccountReposito
 import lombok.RequiredArgsConstructor;
 import org.flowable.idm.api.IdmIdentityService;
 import org.flowable.idm.api.User;
+import org.flowable.task.api.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +23,16 @@ public class SecurityService {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
     private final IdmIdentityService identityService;
+    private final org.flowable.engine.TaskService taskService;
 
     @Transactional
     public UserAccount saveUser(UserAccount user) {
+        if (user.getId() != null) {
+            UserAccount existing = userRepository.findById(user.getId()).orElse(null);
+            if (existing != null && (user.getPassword() == null || user.getPassword().trim().isEmpty())) {
+                user.setPassword(existing.getPassword());
+            }
+        }
         UserAccount saved = userRepository.save(user);
         syncWithFlowable(saved);
         return saved;
@@ -33,6 +41,23 @@ public class SecurityService {
     public List<Role> listRoles() { return roleRepository.findAll(); }
     public List<Permission> listPermissions() { return permissionRepository.findAll(); }
     public List<UserAccount> listUsers() { return userRepository.findAll(); }
+
+    @Transactional
+    public void transferUser(Long userId, String newAgencia, String backupUsername) {
+        UserAccount user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                
+        // Reassign active tasks in Flowable to the backup user
+        if (backupUsername != null && !backupUsername.trim().isEmpty()) {
+            List<Task> activeTasks = taskService.createTaskQuery().taskAssignee(user.getUsername()).list();
+            for (Task task : activeTasks) {
+                taskService.setAssignee(task.getId(), backupUsername);
+            }
+        }
+        
+        user.setAgencia(newAgencia);
+        userRepository.save(user);
+    }
 
     @Transactional
     public Role saveRole(Role role) { return roleRepository.save(role); }

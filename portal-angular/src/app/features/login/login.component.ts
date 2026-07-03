@@ -82,7 +82,11 @@ export class LoginComponent {
         console.log('Login result:', user);
         if (user) {
           console.log('Login successful:', user);
-          this.router.navigate(['/dashboard']);
+          if (this.authService.hasRole('ADMINISTRADOR') || this.authService.hasRole('ADMIN')) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.router.navigate(['/portal/bandeja']);
+          }
         } else {
           console.log('Login failed: user not found');
           this.errorMessage = 'Credenciales incorrectas. Por favor verifica tu correo y contraseña.';
@@ -106,8 +110,11 @@ export class LoginComponent {
 
       if (result && result.account) {
         console.log('MSAL Login successful:', result.account);
-        // Navegar al dashboard después de autenticación exitosa
-        this.router.navigate(['/dashboard']);
+        if (this.authService.hasRole('ADMINISTRADOR') || this.authService.hasRole('ADMIN')) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/portal/bandeja']);
+        }
       }
     } catch (error: any) {
       console.error('MSAL Login failed:', error);

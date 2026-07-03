@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DocumentService, DocumentDefinition } from '../../../core/services/document.service';
 import { ProcessService, ProcessDefinition } from '../../../core/services/process.service';
 import { ScreenService } from '../../../core/services/screen.service';
+import { MetaService } from '../../../core/services/meta.service';
 
 @Component({
   selector: 'app-plantillas-documentos',
@@ -93,7 +94,7 @@ import { ScreenService } from '../../../core/services/screen.service';
               <ng-container *ngIf="selectedDef.isTemplate">
                 <hr class="text-muted opacity-25 my-4">
                 <div class="d-flex justify-content-between align-items-end mb-3">
-                  <h6 class="fw-bold text-primary mb-0"><i class="bi bi-bezier2 me-2"></i>Configuración de Mapeo (Bizagi Data)</h6>
+                  <h6 class="fw-bold text-primary mb-0"><i class="bi bi-bezier2 me-2"></i>Configuración de Mapeo (Datos del Sistema)</h6>
                 </div>
 
                 <div class="row g-4">
@@ -127,7 +128,7 @@ import { ScreenService } from '../../../core/services/screen.service';
                             <tr>
                               <th class="ps-4" style="width: 45%;">Tags de Plantilla (Documento)</th>
                               <th class="text-center" style="width: 10%;"><i class="bi bi-arrow-left-right text-primary"></i></th>
-                              <th class="pe-4" style="width: 45%;">Bizagi Data (Campo de Base de Datos)</th>
+                              <th class="pe-4" style="width: 45%;">Datos del Sistema (Campo de Base de Datos)</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -143,20 +144,22 @@ import { ScreenService } from '../../../core/services/screen.service';
                                 <i class="bi bi-link" [ngClass]="mappingData[tag] ? 'text-success fw-bold' : 'opacity-25'"></i>
                               </td>
                               <td class="pe-4">
-                                <select class="form-select form-select-sm" [(ngModel)]="mappingData[tag]" [ngClass]="{'border-success bg-success bg-opacity-10': mappingData[tag]}">
-                                  <option value="">[ No Mapeado - Seleccionar Expresión ]</option>
-                                  <optgroup *ngFor="let group of objectKeys(groupedBizagiData)" [label]="'Pantalla: ' + group">
-                                    <option *ngFor="let field of groupedBizagiData[group]" [value]="field.id">
-                                      {{ field.label }} ({{ field.id }})
-                                    </option>
-                                  </optgroup>
-                                </select>
+                                <input [attr.list]="'fields-list'" 
+                                       class="form-control form-select-sm" 
+                                       [(ngModel)]="mappingData[tag]" 
+                                       [ngClass]="{'border-success bg-success bg-opacity-10': mappingData[tag]}"
+                                       placeholder="Buscar tabla o campo de base de datos...">
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
                     </div>
+                    <datalist id="fields-list">
+                      <option *ngFor="let field of bizagiData" [value]="field.id">
+                        {{ field.group }} > {{ field.label }} ({{ field.id }})
+                      </option>
+                    </datalist>
                   </div>
 
                   <!-- Fallback: si no hay tags -->
@@ -181,6 +184,7 @@ export class PlantillasDocumentosComponent implements OnInit {
   private documentService = inject(DocumentService);
   private processService = inject(ProcessService);
   private screenService = inject(ScreenService);
+  private metaService = inject(MetaService);
 
   processes: ProcessDefinition[] = [];
   selectedProcessKey: string = '';
@@ -216,38 +220,29 @@ export class PlantillasDocumentosComponent implements OnInit {
   }
 
   cargarCamposProceso() {
-    this.screenService.getScreensByProcess(this.selectedProcessKey).subscribe(screens => {
+    this.metaService.listarEntidades().subscribe(entities => {
       this.bizagiData = [];
       this.groupedBizagiData = {};
       
-      screens.forEach(screen => {
-        const groupName = screen.name || 'Sin Nombre';
-        if (!this.groupedBizagiData[groupName]) {
-          this.groupedBizagiData[groupName] = [];
-        }
-
-        if (screen.layoutJson) {
-          try {
-            const layout = JSON.parse(screen.layoutJson);
-            layout.tabs?.forEach((t: any) => {
-              t.sections?.forEach((s: any) => {
-                s.fields?.forEach((f: any) => {
-                   this.bizagiData.push({
-                      id: f.name,
-                      label: f.label || f.name,
-                      group: groupName
-                   });
-                   this.groupedBizagiData[groupName].push({
-                      id: f.name,
-                      label: f.label || f.name
-                   });
-                });
-              });
+      entities.forEach(entity => {
+        const groupName = entity.label || entity.name;
+        this.groupedBizagiData[groupName] = [];
+        
+        this.metaService.getPhysicalTableColumns(entity.id!).subscribe(cols => {
+          cols.forEach(c => {
+            const fieldId = entity.name + '.' + c.name;
+            const field = {
+              id: fieldId,
+              label: c.name
+            };
+            this.bizagiData.push({
+              id: fieldId,
+              label: c.name,
+              group: groupName
             });
-          } catch(e) {
-            console.error('Error parseando layout de pantalla', e);
-          }
-        }
+            this.groupedBizagiData[groupName].push(field);
+          });
+        });
       });
     });
   }
@@ -283,9 +278,20 @@ export class PlantillasDocumentosComponent implements OnInit {
     const file = event.target.files[0];
     if (!file) return;
     
-    // Simulate File Uploading and getting a path
+    // Upload File to backend
     if (this.selectedDef) {
-       this.selectedDef.templatePath = 'uploads/templates/' + file.name;
+       this.documentService.uploadTemplate(file).subscribe({
+         next: (path) => {
+           if (this.selectedDef) {
+             this.selectedDef.templatePath = path;
+             console.log('Archivo subido a:', path);
+           }
+         },
+         error: (err) => {
+           console.error('Error al subir archivo', err);
+           alert('Ocurrió un error al subir el archivo al servidor.');
+         }
+       });
     }
 
     if (file.name.endsWith('.docx')) {

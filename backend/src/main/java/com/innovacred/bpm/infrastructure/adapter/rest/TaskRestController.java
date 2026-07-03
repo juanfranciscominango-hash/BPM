@@ -34,8 +34,18 @@ public class TaskRestController {
     }
 
     @PostMapping("/{taskId}/complete")
-    public void completeTask(@PathVariable String taskId, @RequestBody(required = false) Map<String, Object> variables) {
-        bpmTaskService.completeTask(taskId, variables);
+    public org.springframework.http.ResponseEntity<?> completeTask(@PathVariable String taskId, @RequestBody(required = false) Map<String, Object> variables) {
+        try {
+            bpmTaskService.completeTask(taskId, variables);
+            return org.springframework.http.ResponseEntity.ok().build();
+        } catch (Exception e) {
+            try {
+                java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter("c:/ProyectosJava/BMP/backend/error.txt", true));
+                e.printStackTrace(pw);
+                pw.close();
+            } catch (Exception ex) {}
+            return org.springframework.http.ResponseEntity.status(500).body(java.util.Collections.singletonMap("error", e.getMessage()));
+        }
     }
 
     @PostMapping("/{taskId}/evaluate-rule/{ruleKey}")

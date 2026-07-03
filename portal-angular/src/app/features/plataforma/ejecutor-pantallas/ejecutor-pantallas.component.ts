@@ -7,6 +7,7 @@ import { ParametricService } from '../../../core/services/parametric.service';
 import { MetaService } from '../../../core/services/meta.service';
 import { ProcessService } from '../../../core/services/process.service';
 import { ScreenService } from '../../../core/services/screen.service';
+import { DocumentService } from '../../../core/services/document.service';
 
 @Component({
   selector: 'innova-ejecutor-pantallas',
@@ -21,6 +22,7 @@ export class EjecutorPantallasComponent implements OnInit, DoCheck {
   private metaService = inject(MetaService);
   private processService = inject(ProcessService);
   private screenService = inject(ScreenService);
+  private documentService = inject(DocumentService);
   private cdr = inject(ChangeDetectorRef);
 
   
@@ -494,6 +496,17 @@ export class EjecutorPantallasComponent implements OnInit, DoCheck {
       this.apiManagerService.testApi(apiToExecute, this.previewModel).subscribe({
         next: (res) => {
           this.simNotification = `Éxito API: ${JSON.stringify(res).substring(0, 50)}...`;
+
+          if (res && res.documentBase64 && res.fileName) {
+              const link = document.createElement('a');
+              link.href = 'data:application/pdf;base64,' + res.documentBase64;
+              link.download = res.fileName;
+              link.click();
+              this.simNotification = `Descargando documento: ${res.fileName}`;
+              setTimeout(() => this.simNotification = '', 4000);
+              return;
+          }
+
           if (res && typeof res === 'object') {
             let prefix = '';
             if (field.name.startsWith('codeudor_')) prefix = 'codeudor_';
@@ -587,6 +600,36 @@ export class EjecutorPantallasComponent implements OnInit, DoCheck {
         error: (err) => {
           this.simNotification = `Error API: ${err.message}`;
           setTimeout(() => this.simNotification = '', 3000);
+        }
+      });
+    } else if (action === 'GENERATE_DOCUMENT') {
+      const docDefId = field.config?.documentDefinitionId;
+      if (!docDefId) {
+        this.simNotification = 'Botón Generar Documento clicado (Sin plantilla configurada)';
+        setTimeout(() => this.simNotification = '', 3000);
+        return;
+      }
+      this.simNotification = 'Generando documento...';
+      // Asumimos que documentService.generate podría devolver el base64 si el backend se actualiza
+      // o invocamos el endpoint genérico si existiera. 
+      // Por ahora, para plantillas maestras que usan JasperReports/HTML, usamos testApi si está mapeado como API,
+      // o usamos documentService.
+      this.documentService.generate(docDefId, 'sim-instance', this.previewModel, 'sim-user').subscribe({
+        next: (res: any) => {
+           if (res && res.documentBase64) {
+              const link = document.createElement('a');
+              link.href = 'data:application/pdf;base64,' + res.documentBase64;
+              link.download = res.fileName || 'Documento.pdf';
+              link.click();
+              this.simNotification = 'Documento descargado';
+           } else {
+              this.simNotification = 'Documento generado en el servidor (sin base64 retornado)';
+           }
+           setTimeout(() => this.simNotification = '', 3000);
+        },
+        error: (err) => {
+           this.simNotification = `Error generando documento: ${err.message}`;
+           setTimeout(() => this.simNotification = '', 3000);
         }
       });
     } else {

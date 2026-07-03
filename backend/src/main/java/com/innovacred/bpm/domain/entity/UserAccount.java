@@ -18,6 +18,7 @@ public class UserAccount {
     private String password;
     private String fullName;
     private boolean active;
+    private String agencia;
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

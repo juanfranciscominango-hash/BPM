@@ -18,5 +18,7 @@ public class AmortizationInstallmentDto {
     private BigDecimal cuota;
     private BigDecimal capital;
     private BigDecimal interes;
+    private BigDecimal seguroDesgravamen;
+    private BigDecimal cuotaTotal;
     private BigDecimal saldoDeudor;
 }

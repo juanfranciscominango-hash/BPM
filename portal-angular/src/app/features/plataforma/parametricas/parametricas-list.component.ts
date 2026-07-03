@@ -470,8 +470,8 @@ export class ParametricasListComponent implements OnInit {
       return;
     }
     this.filteredTables = this.tables.filter(t =>
-      t.label.toLowerCase().includes(q) ||
-      t.name.toLowerCase().includes(q) ||
+      (t.label || '').toLowerCase().includes(q) ||
+      (t.name || '').toLowerCase().includes(q) ||
       (t.description || '').toLowerCase().includes(q)
     );
   }

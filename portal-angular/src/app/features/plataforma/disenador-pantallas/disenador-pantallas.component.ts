@@ -6,6 +6,7 @@ import { ProcessService, ProcessDefinition } from '../../../core/services/proces
 import { MetaService, MetaAttribute, MetaEntity } from '../../../core/services/meta.service';
 import { ParametricService } from '../../../core/services/parametric.service';
 import { ApiManagerService, ApiDefinition } from '../../../core/services/api-manager.service';
+import { DocumentService, DocumentDefinition } from '../../../core/services/document.service';
 import { catchError, of } from 'rxjs';
 
 @Component({
@@ -734,7 +735,17 @@ import { catchError, of } from 'rxjs';
                                     </thead>
                                     <tbody>
                                       <tr *ngIf="getGridColumns(field).length > 0">
-                                        <td *ngFor="let col of getGridColumns(field)">...</td>
+                                        <td *ngFor="let col of getGridColumns(field)" class="text-center align-middle">
+                                          <ng-container *ngIf="col.type === 'RADIO' || col.type === 'radio'">
+                                            <input class="form-check-input m-0" type="radio" disabled>
+                                          </ng-container>
+                                          <ng-container *ngIf="col.type === 'CHECKBOX' || col.type === 'checkbox' || col.type === 'BOOLEAN' || col.type === 'boolean'">
+                                            <input class="form-check-input m-0" type="checkbox" disabled>
+                                          </ng-container>
+                                          <ng-container *ngIf="col.type !== 'RADIO' && col.type !== 'radio' && col.type !== 'CHECKBOX' && col.type !== 'checkbox' && col.type !== 'BOOLEAN' && col.type !== 'boolean'">
+                                            ...
+                                          </ng-container>
+                                        </td>
                                       </tr>
                                       <tr *ngIf="getGridColumns(field).length === 0">
                                         <td>...</td><td>...</td><td>...</td>
@@ -1021,12 +1032,12 @@ import { catchError, of } from 'rxjs';
                                           style="font-size: 0.65rem; height: 22px; flex: 1;"
                                           [(ngModel)]="col.type"
                                           (ngModelChange)="updateSelectedColumns(draftField)">
-                                    <option [value]="'string'">Texto</option>
-                                    <option [value]="'number'">Número</option>
-                                    <option [value]="'date'">Fecha</option>
-                                    <option [value]="'boolean'">Booleano</option>
-                                    <option [value]="'RADIO'">Radio (Selección)</option>
-                                    <option [value]="'CHECKBOX'">Checkbox (Múltiple)</option>
+                                    <option value="string">Texto</option>
+                                    <option value="number">Número</option>
+                                    <option value="date">Fecha</option>
+                                    <option value="boolean">Booleano</option>
+                                    <option value="RADIO">Radio (Selección)</option>
+                                    <option value="CHECKBOX">Checkbox (Múltiple)</option>
                                   </select>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
@@ -1160,6 +1171,15 @@ import { catchError, of } from 'rxjs';
                           <option value="NEXT_TASK">➡️ Avanzar Tarea</option>
                           <option value="CANCEL">❌ Cancelar</option>
                           <option value="CUSTOM">⚡ Ejecutar Regla/API</option>
+                          <option value="GENERATE_DOCUMENT">📄 Generar Documento</option>
+                        </select>
+                      </div>
+
+                      <div class="mb-2" *ngIf="draftField.config.buttonAction === 'GENERATE_DOCUMENT'">
+                        <label class="form-label small text-muted mb-1" style="font-size: 0.75rem;">Plantilla de Documento</label>
+                        <select class="form-select form-select-sm shadow-none custom-select border-primary-subtle" [(ngModel)]="draftField.config.documentDefinitionId">
+                          <option [ngValue]="undefined" disabled>-- Seleccionar Plantilla --</option>
+                          <option *ngFor="let doc of documentDefinitions" [value]="doc.id">{{ doc.name }}</option>
                         </select>
                       </div>
 
@@ -2153,9 +2173,11 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
   private metaService = inject(MetaService);
   private parametricService = inject(ParametricService);
   private apiManagerService = inject(ApiManagerService);
+  private documentService = inject(DocumentService);
   private cdr = inject(ChangeDetectorRef);
   
   apisConfiguradas: ApiDefinition[] = [];
+  documentDefinitions: DocumentDefinition[] = [];
 
   processes: ProcessDefinition[] = [];
   processesLoading = false;
@@ -2386,7 +2408,7 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
     field.config.selectedColumns.push({
       name: 'columna_' + idx,
       label: 'Columna ' + idx,
-      type: 'TEXT',
+      type: 'string',
       visible: true
     });
     this.updateSelectedColumns(field);
@@ -2734,6 +2756,8 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
     const process = this.processes.find(p => p.key === this.selectedProcessKey);
     if (process) {
       this.cargarPantallasGuardadas();
+      
+      this.documentService.getDefinitions(this.selectedProcessKey).pipe(catchError(() => of([]))).subscribe(data => this.documentDefinitions = data);
       
       if (process.metaEntityId) {
         this.metaService.listarAtributos(process.metaEntityId).subscribe(attrs => {
@@ -3668,6 +3692,16 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
         this.apiManagerService.testApi(apiToExecute, this.previewModel).subscribe({
           next: (res) => {
             this.simFlashNotification(`✅ [${label}] API ejecutada exitosamente.`, 'success');
+
+            if (res && res.documentBase64 && res.fileName) {
+              const link = document.createElement('a');
+              link.href = 'data:application/pdf;base64,' + res.documentBase64;
+              link.download = res.fileName;
+              link.click();
+              this.simFlashNotification(`📄 [${label}] Descargando documento: ${res.fileName}`, 'success');
+              return;
+            }
+
             // Populate previewModel with response data
             Object.assign(this.previewModel, res);
             
@@ -3699,8 +3733,39 @@ export class DisenadorPantallasComponent implements OnInit, DoCheck, OnDestroy {
       } else {
         this.simFlashNotification(`⚡ [${label}] Acción personalizada ejecutada (sin API vinculada).`, 'info');
       }
+    } else if (action === 'GENERATE_DOCUMENT') {
+      const docDefId = field.config?.documentDefinitionId;
+      if (!docDefId) {
+        this.simFlashNotification(`⚠️ [${label}] Botón Generar Documento clicado (Sin plantilla configurada)`, 'warning');
+        return;
+      }
+      this.simFlashNotification(`📄 [${label}] Generando documento...`, 'info');
+      
+      this.documentService.generate(docDefId, 'sim-instance', this.previewModel, 'sim-user').subscribe({
+        next: (res: any) => {
+           if (res && res.documentBase64) {
+              const fileName = res.fileName || 'Documento.pdf';
+              let mimeType = 'application/pdf';
+              if (fileName.endsWith('.docx')) {
+                mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+              } else if (fileName.endsWith('.xlsx')) {
+                mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+              }
+              const link = document.createElement('a');
+              link.href = `data:${mimeType};base64,` + res.documentBase64;
+              link.download = fileName;
+              link.click();
+              this.simFlashNotification(`✅ [${label}] Documento descargado`, 'success');
+           } else {
+              this.simFlashNotification(`✅ [${label}] Documento generado en el servidor`, 'success');
+           }
+        },
+        error: (err) => {
+           this.simFlashNotification(`❌ [${label}] Error generando documento: ${err.message}`, 'warning');
+        }
+      });
     } else {
-      this.simFlashNotification(`⚡ [${label}] Acción personalizada ejecutada (simulación).`, 'info');
+      this.simFlashNotification(`❌ Acción desconocida: ${action}`, 'warning');
     }
   }
 

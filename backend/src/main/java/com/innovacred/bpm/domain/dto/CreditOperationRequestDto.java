@@ -17,4 +17,6 @@ public class CreditOperationRequestDto {
     private Integer plazoMeses;
     private BigDecimal tasaInteres;
     private LocalDate fechaDesembolso;
+    private BigDecimal tasaSeguroDesgravamen;
+    private Integer diaPago;
 }

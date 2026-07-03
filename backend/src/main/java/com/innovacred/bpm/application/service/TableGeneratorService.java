@@ -63,6 +63,18 @@ public class TableGeneratorService {
                     val = val.toString();
                 }
             }
+            
+            // Handle empty strings for numbers
+            if (val != null && val.toString().trim().isEmpty() && "NUMBER".equalsIgnoreCase(attr.getType())) {
+                val = null;
+            } else if (val != null && "NUMBER".equalsIgnoreCase(attr.getType())) {
+                try {
+                    val = new java.math.BigDecimal(val.toString());
+                } catch (Exception e) {
+                    val = null;
+                }
+            }
+
             args[i++] = val;
         }
         
