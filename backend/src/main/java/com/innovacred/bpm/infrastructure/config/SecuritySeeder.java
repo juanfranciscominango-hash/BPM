@@ -43,11 +43,23 @@ public class SecuritySeeder implements CommandLineRunner {
         // Asegurar que el nuevo ejecutor de pantallas exista (para actualizaciones)
         ensureEjecutorPantallas();
         ensureDisenadorMenu();
+        ensureAuditoria();
         
         System.out.println("✅ Seguridad y Menú validados.");
-    }
-
-    private void ensureDisenadorMenu() {
+     }
+ 
+     private void ensureAuditoria() {
+         boolean exists = menuRepository.findAll().stream().anyMatch(m -> "/plataforma/auditoria".equals(m.getRoute()));
+         if (!exists) {
+             Menu plataforma = menuRepository.findAll().stream().filter(m -> "Plataforma".equals(m.getTitle())).findFirst().orElse(null);
+             if (plataforma != null) {
+                 createMenuItem("Auditoría de Sistema", "bi bi-shield-check", "/plataforma/auditoria", "ACCESO_MONITOREO", 14, plataforma);
+                 System.out.println("✅ Menú Auditoría de Sistema insertado dinámicamente.");
+             }
+         }
+     }
+ 
+     private void ensureDisenadorMenu() {
         boolean exists = menuRepository.findAll().stream().anyMatch(m -> "/plataforma/disenador-menu".equals(m.getRoute()));
         if (!exists) {
             Menu plataforma = menuRepository.findAll().stream().filter(m -> "Plataforma".equals(m.getTitle())).findFirst().orElse(null);

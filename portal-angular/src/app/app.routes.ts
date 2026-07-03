@@ -74,6 +74,7 @@ export const routes: Routes = [
           { path: 'disenador-menu', loadComponent: () => import('./features/plataforma/disenador-menu/disenador-menu.component').then(m => m.DisenadorMenuComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_SEGURIDAD' } },
           { path: 'plantillas-documentos', loadComponent: () => import('./features/plataforma/plantillas-documentos/plantillas-documentos.component').then(m => m.PlantillasDocumentosComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_PLANTILLAS' } },
           { path: 'seguridad', loadComponent: () => import('./features/plataforma/seguridad/administracion-seguridad.component').then(m => m.AdministracionSeguridadComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_SEGURIDAD' } },
+          { path: 'auditoria', loadComponent: () => import('./features/plataforma/auditoria/auditoria.component').then(m => m.AuditoriaComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_MONITOREO' } },
           { path: 'monitoreo/:id', loadComponent: () => import('./features/plataforma/monitoreo/instancia-monitor.component').then(m => m.InstanciaMonitorComponent), canActivate: [permissionGuard], data: { permission: 'ACCESO_MONITOREO' } }
         ]
       },
