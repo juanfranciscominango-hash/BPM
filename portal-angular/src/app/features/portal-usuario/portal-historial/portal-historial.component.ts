@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { InstanceService } from '../../../core/services/instance.service';
 
 @Component({
   selector: 'app-portal-historial',
@@ -9,12 +10,22 @@ import { RouterModule } from '@angular/router';
   templateUrl: './portal-historial.component.html'
 })
 export class PortalHistorialComponent implements OnInit {
-  historial: any[] = [
-    { id: '1234', proceso: 'flujo_credito', fecha: new Date('2023-10-01'), estado: 'Aprobado' },
-    { id: '1220', proceso: 'flujo_credito', fecha: new Date('2023-08-15'), estado: 'Rechazado' }
-  ];
+  private instanceService = inject(InstanceService);
+  historial: any[] = [];
 
   ngOnInit() {
-    // Aquí se llamará al InstanceService.getHistoryInstances()
+    this.instanceService.getHistoryInstances().subscribe({
+      next: (data) => {
+        this.historial = data.map(item => ({
+          id: item.id,
+          proceso: item.processDefinitionName || item.processDefinitionKey,
+          fecha: item.startTime ? new Date(item.startTime) : new Date(),
+          estado: item.status === 'COMPLETED' ? 'Aprobado' : 'Rechazado'
+        }));
+      },
+      error: (err) => {
+        console.error('Error cargando historial:', err);
+      }
+    });
   }
 }

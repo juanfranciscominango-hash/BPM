@@ -137,8 +137,12 @@ public class ProcessService {
                 log.info("Process instance name set to: {}", caseName);
             } catch (Exception ex) {
                 log.warn("Could not set process instance name from parametrics: {}", ex.getMessage());
-                String dateSuffix = new SimpleDateFormat("ddMMyyHHmmss").format(new Date());
-                runtimeService.setProcessInstanceName(finalInstance.getId(), "CASO" + dateSuffix);
+                try {
+                    String dateSuffix = new SimpleDateFormat("ddMMyyHHmmss").format(new Date());
+                    runtimeService.setProcessInstanceName(finalInstance.getId(), "CASO" + dateSuffix);
+                } catch (Exception ex2) {
+                    log.warn("Could not set fallback process instance name: {}", ex2.getMessage());
+                }
             }
 
             if (procDef.getMetaEntityId() != null) {
@@ -159,10 +163,14 @@ public class ProcessService {
             // Cuando la key de Flowable no coincide con la de nuestra BD (ej: Flujo_Credito_Completo vs flujo_de_credito_completo)
             // Aseguramos que de igual manera se asigne el nombre por defecto
             log.warn("Process definition not found for key: {}. Applying generic CASO name.", processKey);
-            String dateSuffix = new SimpleDateFormat("ddMMyyHHmmss").format(new Date());
-            String fallbackName = "CASO" + dateSuffix;
-            runtimeService.setProcessInstanceName(finalInstance.getId(), fallbackName);
-            log.info("Process instance name set to fallback: {}", fallbackName);
+            try {
+                String dateSuffix = new SimpleDateFormat("ddMMyyHHmmss").format(new Date());
+                String fallbackName = "CASO" + dateSuffix;
+                runtimeService.setProcessInstanceName(finalInstance.getId(), fallbackName);
+                log.info("Process instance name set to fallback: {}", fallbackName);
+            } catch (Exception ex) {
+                log.warn("Could not set fallback process instance name for unknown key: {}", ex.getMessage());
+            }
         }
     }
 
