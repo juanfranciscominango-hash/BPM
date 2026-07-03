@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.innovacred.bpm.infrastructure.aspect.Auditable;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class AuthController {
     private final UserAccountRepository userRepository;
 
     @PostMapping("/login")
+    @Auditable(accion = "INICIO_SESION", entidad = "Seguridad")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
         String username = credentials.get("email");
         String password = credentials.get("password");
