@@ -1095,8 +1095,8 @@ export class WizardFlujoComponent implements OnInit {
          this.previewModel['DocumentNumber'] = this.previewModel[prefix + 'identificacion'];
       }
 
-      if (apiToExecute === 'APIPAGARE' || apiToExecute === 'APICONTRATO') {
-          const docName = apiToExecute === 'APIPAGARE' ? 'Pagare' : 'Contrato';
+      if (apiToExecute === 'APIPAGARE' || apiToExecute === 'APICONTRATO' || apiToExecute.startsWith('API_DOC_')) {
+          const docName = apiToExecute.startsWith('API_DOC_') ? apiToExecute.substring(8) : (apiToExecute === 'APIPAGARE' ? 'Pagare' : 'Contrato');
           this.simNotification = `Generando documento ${docName}...`;
           
           const docVars = { ...this.taskVariables, ...this.previewModel };

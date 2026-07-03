@@ -3,8 +3,8 @@
   <aside class="sidebar bg-white text-dark shadow-sm" [class.collapsed]="sidebarCollapsed">
     <div class="sidebar-header d-flex align-items-center justify-content-between p-3 border-bottom border-light" style="background: var(--gradient-bgr);">
       <div class="logo-area d-flex align-items-center" *ngIf="!sidebarCollapsed">
-        <i class="bi bi-bank2 fs-4 text-white me-2"></i>
-        <span class="fs-5 fw-bold text-white">Mi Crédito</span>
+        <i class="bi bi-cpu-fill fs-4 text-white me-2"></i>
+        <span class="fs-5 fw-bold text-white">BPM Flow</span>
       </div>
       <button class="btn btn-sm text-white border-0" (click)="toggleSidebar()">
         <i class="bi" [ngClass]="sidebarCollapsed ? 'bi-list' : 'bi-chevron-left'"></i>
@@ -27,9 +27,9 @@
       <!-- Opción de Iniciar: Solo visible para Cliente (simulado) -->
       <li class="nav-item px-3 mb-2" *ngIf="currentUser?.roles?.includes('CLIENTE') || true">
         <button class="btn btn-primary w-100 text-start shadow-sm d-flex align-items-center" [routerLink]="['/portal/wizard']" *ngIf="!sidebarCollapsed">
-          <i class="bi bi-play-circle-fill me-2"></i> Iniciar Solicitud
+          <i class="bi bi-play-circle-fill me-2"></i> Iniciar Trámite
         </button>
-        <button class="btn btn-primary w-100 text-center shadow-sm" [routerLink]="['/portal/wizard']" *ngIf="sidebarCollapsed" title="Iniciar Solicitud">
+        <button class="btn btn-primary w-100 text-center shadow-sm" [routerLink]="['/portal/wizard']" *ngIf="sidebarCollapsed" title="Iniciar Trámite">
           <i class="bi bi-play-circle-fill"></i>
         </button>
       </li>
@@ -37,7 +37,7 @@
       <li class="nav-item">
         <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/bandeja" routerLinkActive="active">
           <i class="bi bi-inbox fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
-          <span *ngIf="!sidebarCollapsed">Mis procesos activos</span>
+          <span *ngIf="!sidebarCollapsed">Trámites Activos</span>
         </a>
       </li>
 
@@ -51,14 +51,14 @@
       <li class="nav-item">
         <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/simulacion" routerLinkActive="active">
           <i class="bi bi-calculator fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
-          <span *ngIf="!sidebarCollapsed">Simulación de Crédito</span>
+          <span *ngIf="!sidebarCollapsed">Simulación / Utilidades</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/historial" routerLinkActive="active">
           <i class="bi bi-clock-history fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
-          <span *ngIf="!sidebarCollapsed">Historial de solicitudes</span>
+          <span *ngIf="!sidebarCollapsed">Historial de Casos</span>
         </a>
       </li>
 
