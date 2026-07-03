@@ -94,6 +94,9 @@ public class ProcessService {
     @Transactional
     public void startInstance(String processKey, Map<String, Object> variables) {
         log.info("Iniciando instancia de proceso: {}", processKey);
+        if (variables == null) {
+            variables = new java.util.HashMap<>();
+        }
         
         // 1. Obtener la definición de proceso personalizada
         var procDefOpt = processDefinitionRepository.findByKey(processKey);
