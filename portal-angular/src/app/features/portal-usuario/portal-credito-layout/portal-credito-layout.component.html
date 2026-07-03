@@ -25,13 +25,23 @@
 
     <ul class="nav flex-column py-3 sidebar-nav">
       <!-- Opción de Iniciar: Solo visible para Cliente (simulado) -->
-      <li class="nav-item px-3 mb-2" *ngIf="currentUser?.roles?.includes('CLIENTE') || true">
-        <button class="btn btn-primary w-100 text-start shadow-sm d-flex align-items-center" [routerLink]="['/portal/wizard']" *ngIf="!sidebarCollapsed">
+      <!-- Opción de Iniciar: Listado dinámico de procesos -->
+      <li class="nav-item dropdown px-3 mb-2" *ngIf="processes.length > 0">
+        <button class="btn btn-primary w-100 text-start shadow-sm d-flex align-items-center dropdown-toggle" 
+                type="button" id="startProcessDropdown" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="!sidebarCollapsed">
           <i class="bi bi-play-circle-fill me-2"></i> Iniciar Trámite
         </button>
-        <button class="btn btn-primary w-100 text-center shadow-sm" [routerLink]="['/portal/wizard']" *ngIf="sidebarCollapsed" title="Iniciar Trámite">
+        <button class="btn btn-primary w-100 text-center shadow-sm dropdown-toggle" 
+                type="button" id="startProcessDropdownCollapsed" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="sidebarCollapsed" title="Iniciar Trámite">
           <i class="bi bi-play-circle-fill"></i>
         </button>
+        <ul class="dropdown-menu w-100 shadow border-0 mt-1" aria-labelledby="startProcessDropdown" style="max-height: 250px; overflow-y: auto;">
+          <li *ngFor="let proc of processes">
+            <a class="dropdown-item py-2 small cursor-pointer" (click)="iniciarProcesoDirecto(proc.key)">
+              <i class="bi bi-gear-wide-connected me-2 text-primary"></i> {{ proc.name }}
+            </a>
+          </li>
+        </ul>
       </li>
 
       <li class="nav-item">
