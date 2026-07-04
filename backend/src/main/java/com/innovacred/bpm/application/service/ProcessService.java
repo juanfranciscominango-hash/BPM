@@ -107,10 +107,10 @@ public class ProcessService {
                 variables.put("asesorAsignado", username);
                 variables.put("asesor", username);
                 variables.put("initiator", username);
-                org.flowable.engine.impl.identity.Authentication.setAuthenticatedUserId(username);
+                org.flowable.common.engine.impl.identity.Authentication.setAuthenticatedUserId(username);
             }
-        } catch (Exception e) {
-            log.warn("No se pudo establecer el usuario autenticado para la instancia: {}", e.getMessage());
+        } catch (Throwable t) {
+            log.warn("No se pudo establecer el usuario autenticado para la instancia: {}", t.getMessage());
         }
         
         // 1. Obtener la definición de proceso personalizada
