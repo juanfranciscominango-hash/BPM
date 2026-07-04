@@ -21,6 +21,12 @@ public class TaskRestController {
     private final RuntimeService runtimeService;
     private final com.innovacred.bpm.application.service.BpmTaskService bpmTaskService;
     private final com.innovacred.bpm.infrastructure.adapter.persistence.UserAccountRepository userRepository;
+    private final com.innovacred.bpm.infrastructure.adapter.persistence.DynamicColumnDefinitionRepository dynamicColumnRepository;
+
+    @GetMapping("/columns")
+    public List<com.innovacred.bpm.domain.entity.DynamicColumnDefinition> getColumns() {
+        return dynamicColumnRepository.findAll();
+    }
 
     @GetMapping
     public List<TaskResponse> listTasks(@RequestParam(required = false) String assignee) {
@@ -221,6 +227,17 @@ public class TaskRestController {
             }
         } catch (Exception e) {}
 
+        java.util.Map<String, Object> additionalVars = new java.util.HashMap<>();
+        try {
+            List<com.innovacred.bpm.domain.entity.DynamicColumnDefinition> dynCols = dynamicColumnRepository.findAll();
+            for (com.innovacred.bpm.domain.entity.DynamicColumnDefinition col : dynCols) {
+                String varName = col.getVariableName();
+                if (processVariables.containsKey(varName)) {
+                    additionalVars.put(col.getKeyName(), processVariables.get(varName));
+                }
+            }
+        } catch (Exception e) {}
+
         return new TaskResponse(
                 task.getId(),
                 task.getName(),
@@ -236,7 +253,8 @@ public class TaskRestController {
                 monto,
                 plazo,
                 producto,
-                resolveFullName(creator)
+                resolveFullName(creator),
+                additionalVars
         );
     }
 
@@ -255,6 +273,7 @@ public class TaskRestController {
             Double monto,
             Integer plazo,
             String producto,
-            String asesor
+            String asesor,
+            java.util.Map<String, Object> additionalVariables
     ) {}
 }

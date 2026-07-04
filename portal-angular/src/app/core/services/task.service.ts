@@ -18,6 +18,7 @@ export interface UserTask {
   plazo?: number;
   producto?: string;
   asesor?: string;
+  additionalVariables?: { [key: string]: any };
 }
 
 @Injectable({
@@ -26,6 +27,10 @@ export interface UserTask {
 export class TaskService {
   private http = inject(HttpClient);
   private apiUrl = '/api/v1/tasks';
+
+  getDynamicColumns(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/columns`);
+  }
 
   getTasks(assignee?: string): Observable<UserTask[]> {
     const url = assignee ? `${this.apiUrl}?assignee=${assignee}` : this.apiUrl;

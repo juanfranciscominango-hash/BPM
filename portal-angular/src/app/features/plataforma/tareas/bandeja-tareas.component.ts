@@ -53,46 +53,15 @@ import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.di
                 <table class="table table-hover align-middle mb-0">
                   <thead class="bg-light text-muted small text-uppercase">
                     <tr>
-                      <th class="ps-4" *ngIf="isColumnVisible('task')">Tarea</th>
-                      <th *ngIf="isColumnVisible('caseNumber')">Número Caso</th>
-                      <th *ngIf="isColumnVisible('client')">Cliente / Identificación</th>
-                      <th *ngIf="isColumnVisible('creditDetails')">Detalles Crédito</th>
-                      <th *ngIf="isColumnVisible('assignee')">Asignado a</th>
-                      <th *ngIf="isColumnVisible('advisor')">Asesor</th>
-                      <th *ngIf="isColumnVisible('createTime')">Fecha de Creación</th>
-                      <th class="text-end pe-4">Acciones</th>
+                      <th class="ps-4">Acciones</th>
+                      <ng-container *ngFor="let col of columns">
+                        <th *ngIf="col.visible">{{ col.label }}</th>
+                      </ng-container>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let task of tasks">
-                      <td class="ps-4" *ngIf="isColumnVisible('task')">
-                        <div class="fw-bold text-dark">{{ task.name }}</div>
-                        <small class="text-muted">ID: {{ task.id }}</small>
-                      </td>
-                      <td *ngIf="isColumnVisible('caseNumber')">
-                        <span class="fw-bold text-dark">{{ task.numeroCaso || task.processInstanceId }}</span>
-                        <div class="small text-muted mt-1">{{ task.processName || task.processDefinitionId.split(':')[0] }}</div>
-                      </td>
-                      <td *ngIf="isColumnVisible('client')">
-                        <div class="fw-semibold text-dark">{{ task.nombreCompleto || 'Sin Cliente' }}</div>
-                        <small class="text-muted"><i class="bi bi-card-text me-1"></i>{{ task.identificacion || '-' }}</small>
-                      </td>
-                      <td *ngIf="isColumnVisible('creditDetails')">
-                        <div *ngIf="task.producto" class="fw-semibold text-primary small">{{ task.producto }}</div>
-                        <div class="small text-dark fw-bold">
-                          <span *ngIf="task.monto">{{ task.monto | currency:'USD':'symbol':'1.2-2' }}</span>
-                          <span *ngIf="task.plazo" class="text-muted font-normal"> / {{ task.plazo }} meses</span>
-                        </div>
-                        <div *ngIf="!task.producto && !task.monto" class="text-muted small">-</div>
-                      </td>
-                      <td *ngIf="isColumnVisible('assignee')">
-                        <span class="badge bg-light text-dark border">{{ task.assignee || 'Sin asignar' }}</span>
-                      </td>
-                      <td *ngIf="isColumnVisible('advisor')">
-                        <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-person-badge-fill text-muted me-1"></i>{{ task.asesor || 'Desconocido' }}</span>
-                      </td>
-                      <td *ngIf="isColumnVisible('createTime')">{{ task.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-                      <td class="text-end pe-4">
+                      <td class="ps-4">
                         <button class="btn btn-sm btn-outline-info me-2 rounded-pill px-3" [routerLink]="['/plataforma/monitoreo', task.processInstanceId]">
                           <i class="bi bi-eye me-1"></i>Ver Progreso
                         </button>
@@ -100,6 +69,56 @@ import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.di
                           <i class="bi bi-pencil-square me-1"></i>Completar
                         </button>
                       </td>
+                      <ng-container *ngFor="let col of columns">
+                        <td *ngIf="col.visible">
+                          <ng-container [ngSwitch]="col.key">
+                            <div *ngSwitchCase="'task'">
+                              <div class="fw-bold text-dark">{{ task.name }}</div>
+                              <small class="text-muted">ID: {{ task.id }}</small>
+                            </div>
+                            <div *ngSwitchCase="'caseNumber'">
+                              <span class="fw-bold text-dark">{{ task.numeroCaso || task.processInstanceId }}</span>
+                              <div class="small text-muted mt-1">{{ task.processName || task.processDefinitionId.split(':')[0] }}</div>
+                            </div>
+                            <div *ngSwitchCase="'client'">
+                              <div class="fw-semibold text-dark">{{ task.nombreCompleto || 'Sin Cliente' }}</div>
+                              <small class="text-muted"><i class="bi bi-card-text me-1"></i>{{ task.identificacion || '-' }}</small>
+                            </div>
+                            <div *ngSwitchCase="'creditDetails'">
+                              <div *ngIf="task.producto" class="fw-semibold text-primary small">{{ task.producto }}</div>
+                              <div class="small text-dark fw-bold">
+                                <span *ngIf="task.monto">{{ task.monto | currency:'USD':'symbol':'1.2-2' }}</span>
+                                <span *ngIf="task.plazo" class="text-muted font-normal"> / {{ task.plazo }} meses</span>
+                              </div>
+                            </div>
+                            <span *ngSwitchCase="'assignee'" class="badge bg-light text-dark border">
+                              {{ task.assignee || 'Sin asignar' }}
+                            </span>
+                            <span *ngSwitchCase="'advisor'" class="badge bg-light text-dark border px-2 py-1">
+                              <i class="bi bi-person-badge-fill text-muted me-1"></i>{{ task.asesor || 'Desconocido' }}
+                            </span>
+                            <span *ngSwitchCase="'createTime'">
+                              {{ task.createTime | date:'yyyy-MM-dd HH:mm:ss' }}
+                            </span>
+                            <ng-container *ngSwitchDefault>
+                              <span [ngSwitch]="col.type">
+                                <span *ngSwitchCase="'currency'" class="fw-bold text-dark">
+                                  {{ getAdditionalVar(task, col.key) | currency:'USD':'symbol':'1.2-2' }}
+                                </span>
+                                <span *ngSwitchCase="'date'">
+                                  {{ getAdditionalVar(task, col.key) | date:'yyyy-MM-dd HH:mm:ss' }}
+                                </span>
+                                <span *ngSwitchCase="'number'" class="fw-semibold">
+                                  {{ getAdditionalVar(task, col.key) }}
+                                </span>
+                                <span *ngSwitchDefault>
+                                  {{ getAdditionalVar(task, col.key) || '-' }}
+                                </span>
+                              </span>
+                            </ng-container>
+                          </ng-container>
+                        </td>
+                      </ng-container>
                     </tr>
                   </tbody>
                 </table>
@@ -507,22 +526,40 @@ export class BandejaTareasComponent implements OnInit {
   }
 
   cargarPreferenciasColumnas() {
-    const cached = localStorage.getItem('preferencias_columnas_tareas_admin');
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        this.columns.forEach(c => {
-          const match = parsed.find((p: any) => p.key === c.key);
-          if (match) {
-            c.visible = match.visible;
+    this.taskService.getDynamicColumns().subscribe({
+      next: (dbCols) => {
+        if (dbCols && dbCols.length > 0) {
+          const cached = localStorage.getItem('preferencias_columnas_tareas_admin');
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              this.columns = dbCols.map(c => {
+                const match = parsed.find((p: any) => p.key === c.keyName);
+                return {
+                  key: c.keyName,
+                  label: c.labelName,
+                  visible: match ? match.visible : c.visible,
+                  type: c.columnType
+                };
+              });
+            } catch (e) {
+              this.columns = dbCols.map(c => ({ key: c.keyName, label: c.labelName, visible: c.visible, type: c.columnType }));
+            }
+          } else {
+            this.columns = dbCols.map(c => ({ key: c.keyName, label: c.labelName, visible: c.visible, type: c.columnType }));
           }
-        });
-      } catch (e) {}
-    }
+        }
+      },
+      error: (err) => console.error('Error fetching dynamic columns from DB:', err)
+    });
   }
 
   isColumnVisible(key: string): boolean {
     return this.columns.find(c => c.key === key)?.visible ?? false;
+  }
+
+  getAdditionalVar(task: UserTask, key: string): any {
+    return task.additionalVariables ? task.additionalVariables[key] : null;
   }
 
   ngOnInit() {
