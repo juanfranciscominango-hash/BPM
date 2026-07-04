@@ -134,6 +134,21 @@ public class TaskRestController {
         }
     }
 
+    private String resolveFullName(String username) {
+        if (username == null || username.trim().isEmpty() || username.equalsIgnoreCase("Desconocido") || username.equalsIgnoreCase("anonymousUser")) {
+            return "Desconocido";
+        }
+        try {
+            var userOpt = userRepository.findByUsername(username);
+            if (userOpt.isPresent() && userOpt.get().getFullName() != null && !userOpt.get().getFullName().trim().isEmpty()) {
+                return userOpt.get().getFullName();
+            }
+        } catch (Exception e) {
+            // Ignore
+        }
+        return username;
+    }
+
     private TaskResponse mapToResponse(Task task) {
         Map<String, Object> processVariables = task.getProcessVariables();
         
@@ -149,6 +164,46 @@ public class TaskRestController {
             nombres = String.valueOf(processVariables.get("nombres"));
         } else if (processVariables.containsKey("interviniente_int_nombres_completos")) {
             nombres = String.valueOf(processVariables.get("interviniente_int_nombres_completos"));
+        }
+
+        Double monto = 0.0;
+        if (processVariables.containsKey("monto")) {
+            try {
+                monto = Double.valueOf(String.valueOf(processVariables.get("monto")));
+            } catch (Exception e) {}
+        } else if (processVariables.containsKey("monto_solicitado")) {
+            try {
+                monto = Double.valueOf(String.valueOf(processVariables.get("monto_solicitado")));
+            } catch (Exception e) {}
+        }
+
+        Integer plazo = 0;
+        if (processVariables.containsKey("plazo")) {
+            try {
+                plazo = Integer.valueOf(String.valueOf(processVariables.get("plazo")));
+            } catch (Exception e) {}
+        } else if (processVariables.containsKey("plazo_meses")) {
+            try {
+                plazo = Integer.valueOf(String.valueOf(processVariables.get("plazo_meses")));
+            } catch (Exception e) {}
+        }
+
+        String producto = "";
+        if (processVariables.containsKey("producto")) {
+            producto = String.valueOf(processVariables.get("producto"));
+        } else if (processVariables.containsKey("producto_desc")) {
+            producto = String.valueOf(processVariables.get("producto_desc"));
+        }
+
+        String creator = "";
+        if (processVariables.containsKey("usuarioCreacion")) {
+            creator = String.valueOf(processVariables.get("usuarioCreacion"));
+        } else if (processVariables.containsKey("asesor")) {
+            creator = String.valueOf(processVariables.get("asesor"));
+        } else if (processVariables.containsKey("asesorAsignado")) {
+            creator = String.valueOf(processVariables.get("asesorAsignado"));
+        } else if (processVariables.containsKey("initiator")) {
+            creator = String.valueOf(processVariables.get("initiator"));
         }
 
         String processName = task.getProcessDefinitionId();
@@ -177,7 +232,11 @@ public class TaskRestController {
                 processName,
                 ident,
                 nombres,
-                numeroCaso
+                numeroCaso,
+                monto,
+                plazo,
+                producto,
+                resolveFullName(creator)
         );
     }
 
@@ -192,6 +251,10 @@ public class TaskRestController {
             String processName,
             String identificacion,
             String nombreCompleto,
-            String numeroCaso
+            String numeroCaso,
+            Double monto,
+            Integer plazo,
+            String producto,
+            String asesor
     ) {}
 }

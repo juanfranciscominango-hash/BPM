@@ -1,69 +1,105 @@
 <div class="container-fluid p-0">
-  <div class="d-flex justify-content-between align-items-center mb-2 px-2 py-1 bg-light rounded shadow-sm border">
-    <div class="text-secondary fw-semibold small">Todos los casos</div>
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+      <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-inbox-fill me-2"></i>Bandeja de Tareas</h2>
+      <p class="text-muted mb-0">Gestiona y realiza seguimiento a las actividades y trámites en curso.</p>
+    </div>
     <div class="d-flex align-items-center gap-3">
       <div class="d-flex align-items-center gap-2">
-        <label class="text-secondary small mb-0">Resultados por página</label>
-        <select class="form-select form-select-sm w-auto" [(ngModel)]="pageSize">
+        <label class="text-secondary small mb-0 fw-semibold">Mostrar</label>
+        <select class="form-select form-select-sm w-auto rounded-3 shadow-sm" [(ngModel)]="pageSize">
           <option [ngValue]="10">10</option>
           <option [ngValue]="20">20</option>
           <option [ngValue]="50">50</option>
         </select>
       </div>
-      <div class="d-flex align-items-center gap-2">
-        <input type="text" class="form-control form-control-sm" placeholder="Buscar por ID o Caso..." [(ngModel)]="searchText" (input)="filtrarTareas()">
+      <div class="input-group shadow-sm" style="max-width: 300px;">
+        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+        <input type="text" class="form-control border-start-0 ps-0" placeholder="Buscar caso, cliente, asesor..." [(ngModel)]="searchText" (input)="filtrarTareas()">
       </div>
-      <button class="btn btn-sm btn-light border text-secondary"><i class="bi bi-funnel"></i></button>
-      <button class="btn btn-sm btn-primary" (click)="cargarTareas()"><i class="bi bi-arrow-clockwise"></i></button>
+      <button class="btn btn-sm btn-light border rounded-3 shadow-sm px-3" (click)="cargarTareas()"><i class="bi bi-arrow-clockwise"></i> Refrescar</button>
     </div>
   </div>
 
-  <div class="table-responsive shadow-sm rounded border bg-white">
-    <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
-      <thead class="bg-secondary bg-opacity-10 text-secondary text-center">
-        <tr>
-          <th style="width: 100px;"></th>
-          <th>Número Caso</th>
-          <th>Proceso</th>
-          <th class="text-start">Actividad</th>
-          <th>Fecha Creación</th>
-          <th>Identificación</th>
-          <th>Nombre del Iniciador</th>
-        </tr>
-      </thead>
-      <tbody class="text-center text-secondary">
-        <tr *ngIf="loading">
-          <td colspan="7" class="py-4">Cargando tareas...</td>
-        </tr>
-        <tr *ngIf="!loading && filteredTasks.length === 0">
-          <td colspan="7" class="py-4">No hay tareas pendientes.</td>
-        </tr>
-        <tr *ngFor="let task of filteredTasks" class="cursor-pointer task-row" style="height: 50px;">
-          <td class="text-nowrap">
-            <i class="bi bi-star me-2 text-muted" role="button" title="Favorito"></i>
-            <i class="bi bi-zoom-in me-2 text-muted" role="button" title="Consulta Gráfica del Flujo" (click)="abrirConsultaGrafica(task, $event)"></i>
-            <i class="bi bi-diagram-3 me-2 text-muted" role="button" title="Línea de tiempo" (click)="abrirLineaDeTiempo(task, $event)"></i>
-            <i class="bi bi-signpost-split me-2 text-muted" role="button" title="Tracking" (click)="abrirTracking(task, $event)"></i>
-            <i class="bi bi-search text-muted" role="button" title="Ver / Continuar" (click)="abrirTarea(task)"></i>
-            <i class="bi bi-x-circle text-danger ms-2" role="button" title="Cancelar Caso" (click)="cancelarProceso(task, $event)"></i>
-          </td>
-          <td>{{ task.numeroCaso || task.processInstanceId }}</td>
-          <td>{{ task.processName || task.processDefinitionId.split(':')[0] }}</td>
-          <td class="text-start text-dark fw-medium" (click)="abrirTarea(task)">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <span class="d-inline-block rounded-circle bg-danger me-2" style="width: 8px; height: 8px;"></span>
-                {{ task.name }}
-              </div>
-              <i class="bi bi-box-arrow-in-right text-primary fs-5 enter-icon" title="Ingresar a la actividad"></i>
-            </div>
-          </td>
-          <td>{{ task.createTime | date:'yyyy/MM/dd HH:mm:ss' }}</td>
-          <td>{{ task.identificacion || '-' }}</td>
-          <td>{{ task.nombreCompleto || '-' }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light text-muted small text-uppercase">
+            <tr>
+              <th class="ps-4" style="width: 140px;">Acciones</th>
+              <th>Número Caso</th>
+              <th>Cliente / Identificación</th>
+              <th>Detalles Crédito</th>
+              <th>Asesor</th>
+              <th class="text-start">Actividad</th>
+              <th>Fecha Creación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="loading">
+              <td colspan="7" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+                <div class="mt-2 text-muted">Cargando bandeja de tareas...</div>
+              </td>
+            </tr>
+            <tr *ngIf="!loading && filteredTasks.length === 0">
+              <td colspan="7" class="text-center py-5 text-muted">
+                <i class="bi bi-inbox fs-2"></i>
+                <div class="mt-2">No hay tareas pendientes en tu bandeja.</div>
+              </td>
+            </tr>
+            <tr *ngFor="let task of filteredTasks" class="cursor-pointer task-row">
+              <td class="ps-4 text-nowrap">
+                <button class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm me-2" (click)="abrirTarea(task)">
+                  <i class="bi bi-play-fill me-1"></i>Ingresar
+                </button>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-light border rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" (click)="$event.stopPropagation()">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3">
+                    <li><a class="dropdown-item py-2 cursor-pointer" (click)="abrirConsultaGrafica(task, $event)"><i class="bi bi-zoom-in me-2 text-muted"></i> Consulta Gráfica</a></li>
+                    <li><a class="dropdown-item py-2 cursor-pointer" (click)="abrirLineaDeTiempo(task, $event)"><i class="bi bi-diagram-3 me-2 text-muted"></i> Línea de tiempo</a></li>
+                    <li><a class="dropdown-item py-2 cursor-pointer" (click)="abrirTracking(task, $event)"><i class="bi bi-signpost-split me-2 text-muted"></i> Tracking</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item py-2 text-danger cursor-pointer" (click)="cancelarProceso(task, $event)"><i class="bi bi-x-circle me-2"></i> Cancelar Caso</a></li>
+                  </ul>
+                </div>
+              </td>
+              <td>
+                <span class="fw-bold text-dark">{{ task.numeroCaso || task.processInstanceId }}</span>
+                <div class="small text-muted">{{ task.processName || task.processDefinitionId.split(':')[0] }}</div>
+              </td>
+              <td>
+                <div class="fw-semibold text-dark">{{ task.nombreCompleto || 'Sin Cliente' }}</div>
+                <small class="text-muted"><i class="bi bi-card-text me-1"></i>{{ task.identificacion || '-' }}</small>
+              </td>
+              <td>
+                <div *ngIf="task.producto" class="fw-semibold text-primary small">{{ task.producto }}</div>
+                <div class="small text-dark fw-bold">
+                  <span *ngIf="task.monto">{{ task.monto | currency:'USD':'symbol':'1.2-2' }}</span>
+                  <span *ngIf="task.plazo" class="text-muted font-normal"> / {{ task.plazo }} meses</span>
+                </div>
+                <div *ngIf="!task.producto && !task.monto" class="text-muted small">-</div>
+              </td>
+              <td>
+                <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-person-badge-fill text-muted me-1"></i>{{ task.asesor || 'Desconocido' }}</span>
+              </td>
+              <td class="text-start">
+                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-3 py-2 rounded-pill fw-semibold">
+                  <span class="d-inline-block rounded-circle bg-danger me-2" style="width: 8px; height: 8px;"></span>
+                  {{ task.name }}
+                </span>
+              </td>
+              <td class="text-muted small">{{ task.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 

@@ -14,6 +14,10 @@ export interface UserTask {
   identificacion?: string;
   nombreCompleto?: string;
   numeroCaso?: string;
+  monto?: number;
+  plazo?: number;
+  producto?: string;
+  asesor?: string;
 }
 
 @Injectable({
