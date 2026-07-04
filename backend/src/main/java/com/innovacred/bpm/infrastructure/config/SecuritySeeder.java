@@ -135,26 +135,43 @@ public class SecuritySeeder implements CommandLineRunner {
     }
 
     private void initializeMenu() {
-        if (menuRepository.count() > 0) return;
+        if (menuRepository.count() == 0) {
+            createMenuItem("Dashboard", "bi bi-grid", "/dashboard", null, 0, null);
+            
+            Menu plataforma = createMenuItem("Plataforma", "bi bi-stack", null, null, 1, null);
+            createMenuItem("Entidades", "bi bi-database", "/plataforma/entidades", null, 0, plataforma);
+            createMenuItem("Gestión de Procesos", "bi bi-gear", "/plataforma/procesos", null, 1, plataforma);
+            createMenuItem("Bandeja de Tareas", "bi bi-inbox", "/plataforma/tareas", null, 2, plataforma);
+            createMenuItem("Monitoreo de Instancias", "bi bi-activity", "/plataforma/monitoreo", "ACCESO_MONITOREO", 3, plataforma);
+            createMenuItem("Explorador de Datos", "bi bi-search", "/plataforma/datos", null, 4, plataforma);
+            createMenuItem("Diseñador de Flujos", "bi bi-diagram-2", "/plataforma/disenador", null, 5, plataforma);
+            
+            // Módulos avanzados (con permisos)
+            createMenuItem("Gestión de Reglas", "bi bi-diagram-3", "/plataforma/reglas", "ACCESO_REGLAS", 6, plataforma);
+            createMenuItem("Tablas Paramétricas", "bi bi-table", "/plataforma/parametricas", "ACCESO_PARAMETRICAS", 7, plataforma);
+            createMenuItem("Conectores de API", "bi bi-plug", "/plataforma/api-manager", "ACCESO_APIS", 8, plataforma);
+            createMenuItem("Diseñador Pantallas", "bi bi-window", "/plataforma/disenador-pantallas", "ACCESO_PANTALLAS", 9, plataforma);
+            createMenuItem("Ejecutor Pantallas", "bi bi-play-circle", "/plataforma/ejecutor-pantallas", "ACCESO_PANTALLAS", 10, plataforma);
+            createMenuItem("Plantillas Documentos", "bi bi-file-earmark", "/plataforma/plantillas-documentos", "ACCESO_PLANTILLAS", 11, plataforma);
+            createMenuItem("Seguridad y Roles", "bi bi-shield-lock", "/plataforma/seguridad", "ACCESO_SEGURIDAD", 12, plataforma);
+        }
 
-        createMenuItem("Dashboard", "bi bi-grid", "/dashboard", null, 0, null);
-        
-        Menu plataforma = createMenuItem("Plataforma", "bi bi-stack", null, null, 1, null);
-        createMenuItem("Entidades", "bi bi-database", "/plataforma/entidades", null, 0, plataforma);
-        createMenuItem("Gestión de Procesos", "bi bi-gear", "/plataforma/procesos", null, 1, plataforma);
-        createMenuItem("Bandeja de Tareas", "bi bi-inbox", "/plataforma/tareas", null, 2, plataforma);
-        createMenuItem("Monitoreo de Instancias", "bi bi-activity", "/plataforma/monitoreo", "ACCESO_MONITOREO", 3, plataforma);
-        createMenuItem("Explorador de Datos", "bi bi-search", "/plataforma/datos", null, 4, plataforma);
-        createMenuItem("Diseñador de Flujos", "bi bi-diagram-2", "/plataforma/disenador", null, 5, plataforma);
-        
-        // Módulos avanzados (con permisos)
-        createMenuItem("Gestión de Reglas", "bi bi-diagram-3", "/plataforma/reglas", "ACCESO_REGLAS", 6, plataforma);
-        createMenuItem("Tablas Paramétricas", "bi bi-table", "/plataforma/parametricas", "ACCESO_PARAMETRICAS", 7, plataforma);
-        createMenuItem("Conectores de API", "bi bi-plug", "/plataforma/api-manager", "ACCESO_APIS", 8, plataforma);
-        createMenuItem("Diseñador Pantallas", "bi bi-window", "/plataforma/disenador-pantallas", "ACCESO_PANTALLAS", 9, plataforma);
-        createMenuItem("Ejecutor Pantallas", "bi bi-play-circle", "/plataforma/ejecutor-pantallas", "ACCESO_PANTALLAS", 10, plataforma);
-        createMenuItem("Plantillas Documentos", "bi bi-file-earmark", "/plataforma/plantillas-documentos", "ACCESO_PLANTILLAS", 11, plataforma);
-        createMenuItem("Seguridad y Roles", "bi bi-shield-lock", "/plataforma/seguridad", "ACCESO_SEGURIDAD", 12, plataforma);
+        // Add dynamically if missing
+        menuRepository.findAll().stream()
+                .filter(m -> m.getParent() == null && "Plataforma".equalsIgnoreCase(m.getTitle()))
+                .findFirst().ifPresent(plataforma -> {
+                    boolean hasColumnas = menuRepository.findAll().stream()
+                            .anyMatch(m -> "/plataforma/columnas".equalsIgnoreCase(m.getRoute()));
+                    if (!hasColumnas) {
+                        createMenuItem("Configuración de Columnas", "bi bi-grid-3x3-gap", "/plataforma/columnas", null, 13, plataforma);
+                    }
+
+                    boolean hasConexion = menuRepository.findAll().stream()
+                            .anyMatch(m -> "/plataforma/conexion".equalsIgnoreCase(m.getRoute()));
+                    if (!hasConexion) {
+                        createMenuItem("Conexión de Base de Datos", "bi bi-database-fill-gear", "/plataforma/conexion", "ACCESO_SEGURIDAD", 14, plataforma);
+                    }
+                });
     }
 
     private Menu createMenuItem(String title, String icon, String route, String perm, int order, Menu parent) {
