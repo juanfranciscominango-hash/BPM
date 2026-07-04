@@ -36,6 +36,12 @@ import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.di
                   <label class="form-check-label small" [for]="'col-' + col.key">{{ col.label }}</label>
                 </div>
               </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <button class="btn btn-sm btn-primary w-100 mt-1 rounded-pill" (click)="abrirGestionColumnas()">
+                  <i class="bi bi-gear me-1"></i>Gestionar DB Cols
+                </button>
+              </li>
             </ul>
           </div>
           
@@ -123,6 +129,65 @@ import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.di
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Gestionar Columnas de DB -->
+    <div class="modal fade show d-block" *ngIf="mostrarModalCols" tabindex="-1" style="background: rgba(0,0,0,0.5); z-index: 1050; overflow-y: auto;">
+      <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+          <div class="modal-header bg-dark text-white rounded-top-4">
+            <h5 class="modal-title fw-bold"><i class="bi bi-grid-3x3-gap me-2"></i>Gestionar Columnas DB</h5>
+            <button type="button" class="btn-close btn-close-white" (click)="cerrarGestionColumnas()"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="mb-4">
+              <label class="fw-bold text-secondary small text-uppercase mb-2">Columnas en Base de Datos</label>
+              <div class="list-group list-group-flush border rounded-3 overflow-hidden" style="max-height: 180px; overflow-y: auto;">
+                <div *ngFor="let col of columnsFromDb" class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
+                  <div>
+                    <span class="fw-semibold text-dark">{{ col.labelName }}</span>
+                    <div class="small text-muted">BPM Var: {{ col.variableName }} ({{ col.columnType }})</div>
+                  </div>
+                  <button *ngIf="!esColumnaFija(col.keyName)" class="btn btn-sm btn-outline-danger border-0 rounded-circle" (click)="eliminarColumnaDb(col.id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                  <span *ngIf="esColumnaFija(col.keyName)" class="badge bg-light text-muted border">Sistema</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="fw-bold text-secondary small text-uppercase mb-3">Agregar Nueva Columna</label>
+              <form [formGroup]="colForm" (ngSubmit)="agregarColumnaDb()">
+                <div class="mb-2">
+                  <label class="form-label small mb-1 text-muted">Título Columna</label>
+                  <input type="text" class="form-control form-control-sm" formControlName="labelName" placeholder="Ej: Score de Riesgo" required>
+                </div>
+                <div class="mb-2">
+                  <label class="form-label small mb-1 text-muted">ID Columna (Key)</label>
+                  <input type="text" class="form-control form-control-sm" formControlName="keyName" placeholder="Ej: score" required>
+                </div>
+                <div class="mb-2">
+                  <label class="form-label small mb-1 text-muted">Variable en Flowable</label>
+                  <input type="text" class="form-control form-control-sm" formControlName="variableName" placeholder="Ej: score_riesgo" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small mb-1 text-muted">Tipo de Dato</label>
+                  <select class="form-select form-select-sm" formControlName="columnType" required>
+                    <option value="text">Texto</option>
+                    <option value="currency">Moneda (USD)</option>
+                    <option value="number">Número</option>
+                    <option value="date">Fecha</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary w-100 rounded-pill py-2" [disabled]="colForm.invalid">
+                  <i class="bi bi-plus-circle me-1"></i>Crear en DB
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -562,7 +627,64 @@ export class BandejaTareasComponent implements OnInit {
     return task.additionalVariables ? task.additionalVariables[key] : null;
   }
 
+  mostrarModalCols = false;
+  columnsFromDb: any[] = [];
+  colForm!: FormGroup;
+
+  abrirGestionColumnas() {
+    this.mostrarModalCols = true;
+    this.taskService.getDynamicColumns().subscribe({
+      next: (data) => this.columnsFromDb = data
+    });
+  }
+
+  cerrarGestionColumnas() {
+    this.mostrarModalCols = false;
+  }
+
+  esColumnaFija(key: string): boolean {
+    return ['task', 'caseNumber', 'client', 'creditDetails', 'assignee', 'advisor', 'createTime'].includes(key);
+  }
+
+  agregarColumnaDb() {
+    if (this.colForm.invalid) return;
+    this.taskService.addColumn(this.colForm.value).subscribe({
+      next: () => {
+        alert('Columna agregada exitosamente en la Base de Datos.');
+        this.colForm.reset({ columnType: 'text' });
+        this.cargarPreferenciasColumnas();
+        this.abrirGestionColumnas();
+      },
+      error: (err) => {
+        console.error('Error al agregar columna:', err);
+        alert('Error al intentar agregar la columna. Verifique que el identificador no esté duplicado.');
+      }
+    });
+  }
+
+  eliminarColumnaDb(id: number) {
+    if (confirm('¿Estás seguro que deseas eliminar esta columna de la base de datos?')) {
+      this.taskService.deleteColumn(id).subscribe({
+        next: () => {
+          alert('Columna eliminada correctamente.');
+          this.cargarPreferenciasColumnas();
+          this.abrirGestionColumnas();
+        },
+        error: (err) => {
+          console.error('Error al eliminar columna:', err);
+          alert('Error al intentar eliminar la columna.');
+        }
+      });
+    }
+  }
+
   ngOnInit() {
+    this.colForm = this.fb.group({
+      keyName: ['', Validators.required],
+      labelName: ['', Validators.required],
+      variableName: ['', Validators.required],
+      columnType: ['text', Validators.required]
+    });
     this.cargarPreferenciasColumnas();
     this.cargarTareas();
   }

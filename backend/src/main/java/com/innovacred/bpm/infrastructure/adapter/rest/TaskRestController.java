@@ -28,6 +28,16 @@ public class TaskRestController {
         return dynamicColumnRepository.findAll();
     }
 
+    @PostMapping("/columns")
+    public com.innovacred.bpm.domain.entity.DynamicColumnDefinition createColumn(@RequestBody com.innovacred.bpm.domain.entity.DynamicColumnDefinition col) {
+        return dynamicColumnRepository.save(col);
+    }
+
+    @DeleteMapping("/columns/{id}")
+    public void deleteColumn(@PathVariable Long id) {
+        dynamicColumnRepository.deleteById(id);
+    }
+
     @GetMapping
     public List<TaskResponse> listTasks(@RequestParam(required = false) String assignee) {
         System.out.println("DEBUG: listTasks called with assignee = " + assignee);

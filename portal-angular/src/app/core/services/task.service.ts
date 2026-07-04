@@ -32,6 +32,14 @@ export class TaskService {
     return this.http.get<any[]>(`${this.apiUrl}/columns`);
   }
 
+  addColumn(col: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/columns`, col);
+  }
+
+  deleteColumn(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/columns/${id}`);
+  }
+
   getTasks(assignee?: string): Observable<UserTask[]> {
     const url = assignee ? `${this.apiUrl}?assignee=${assignee}` : this.apiUrl;
     return this.http.get<UserTask[]>(url);
