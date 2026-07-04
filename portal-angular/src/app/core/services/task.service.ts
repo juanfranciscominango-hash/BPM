@@ -40,6 +40,14 @@ export class TaskService {
     return this.http.delete<void>(`${this.apiUrl}/columns/${id}`);
   }
 
+  getDbConfig(): Observable<any> {
+    return this.http.get<any>('/api/v1/db-config');
+  }
+
+  updateDbConfig(config: any): Observable<any> {
+    return this.http.post<any>('/api/v1/db-config', config);
+  }
+
   getTasks(assignee?: string): Observable<UserTask[]> {
     const url = assignee ? `${this.apiUrl}?assignee=${assignee}` : this.apiUrl;
     return this.http.get<UserTask[]>(url);

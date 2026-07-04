@@ -61,6 +61,7 @@ export const routes: Routes = [
           { path: 'procesos', component: ProcesosListComponent },
           { path: 'tareas', loadComponent: () => import('./features/plataforma/tareas/bandeja-tareas.component').then(m => m.BandejaTareasComponent) },
           { path: 'columnas', loadComponent: () => import('./features/plataforma/columnas/columnas.component').then(m => m.ColumnasComponent) },
+          { path: 'conexion', loadComponent: () => import('./features/plataforma/conexion/conexion.component').then(m => m.ConexionComponent) },
           { path: 'monitoreo', loadComponent: () => import('./features/plataforma/monitoreo/monitoreo.component').then(m => m.MonitoreoComponent) },
           { path: 'datos', loadComponent: () => import('./features/plataforma/datos/explorador-datos.component').then(m => m.ExploradorDatosComponent) },
           { path: 'disenador', component: DisenadorComponent },
