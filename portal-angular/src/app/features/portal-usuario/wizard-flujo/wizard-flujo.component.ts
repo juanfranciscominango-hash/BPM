@@ -1428,7 +1428,32 @@ export class WizardFlujoComponent implements OnInit {
     setTimeout(() => this.simNotification = '', 3000);
   }
 
+  isCancellationDecision(): boolean {
+    const cancelKeys = ['desea_continuar', 'deseacontinuar', 'decision_flujo', 'decision', 'continuar', 'continua', 'desea_continua'];
+    for (const key of cancelKeys) {
+      if (this.previewModel[key] !== undefined && this.previewModel[key] !== null) {
+        const val = String(this.previewModel[key]).toUpperCase().trim();
+        if (val === 'NO' || val === 'N' || val === 'FALSE') {
+          return true;
+        }
+      }
+    }
+    for (const key in this.previewModel) {
+      const keyLower = key.toLowerCase();
+      if (keyLower.includes('continuar') || keyLower.includes('decision') || keyLower.includes('continua')) {
+        const val = String(this.previewModel[key]).toUpperCase().trim();
+        if (val === 'NO' || val === 'N' || val === 'FALSE') {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   simGetValidationErrors(): string[] {
+    if (this.isCancellationDecision()) {
+      return [];
+    }
     const errors: string[] = [];
     if (!this.layout || !this.layout.tabs) return errors;
     this.layout.tabs.forEach((tab: any) => {
