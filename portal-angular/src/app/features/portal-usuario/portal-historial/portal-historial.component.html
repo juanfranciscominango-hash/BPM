@@ -1,7 +1,15 @@
 <div class="container-fluid p-0">
-  <div class="mb-4">
-    <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-clock-history me-2"></i>Historial de Casos</h2>
-    <p class="text-muted">Revisa el estado de tus procesos finalizados.</p>
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+      <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-clock-history me-2"></i>Historial de Casos</h2>
+      <p class="text-muted mb-0">Revisa el estado de todos tus procesos (activos y finalizados).</p>
+    </div>
+    <div class="d-flex align-items-center" style="max-width: 350px; width: 100%;">
+      <div class="input-group shadow-sm">
+        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+        <input type="text" class="form-control border-start-0 ps-0" placeholder="Buscar por ID, proceso, usuario..." [(ngModel)]="searchText">
+      </div>
+    </div>
   </div>
 
   <div class="card border-0 shadow-sm rounded-4">
@@ -12,26 +20,47 @@
             <tr>
               <th class="ps-4">Proceso / Instancia</th>
               <th>Fecha de Inicio</th>
-              <th>Estado Final</th>
+              <th>Usuario Iniciador</th>
+              <th>Actividad Actual</th>
+              <th>Estado</th>
               <th class="text-end pe-4">Acción</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let h of historial">
+            <tr *ngFor="let h of filteredHistorial">
               <td class="ps-4">
                 <div class="fw-bold text-dark">{{ h.proceso }}</div>
                 <small class="text-muted">Instancia: {{ h.id }}</small>
               </td>
-              <td>{{ h.fecha }}</td>
+              <td>{{ h.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</td>
               <td>
-                <span class="badge rounded-pill px-3 py-2" [ngClass]="h.estado === 'Aprobado' ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'">
-                  <i class="bi" [ngClass]="h.estado === 'Aprobado' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> {{ h.estado }}
+                <span class="fw-semibold text-secondary">{{ h.usuarioIniciador }}</span>
+              </td>
+              <td>
+                <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-gear-fill text-primary me-1 spin-icon"></i>{{ h.actividadActual }}</span>
+              </td>
+              <td>
+                <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+                  'bg-success-subtle text-success border border-success-subtle': h.estado === 'Completado',
+                  'bg-primary-subtle text-primary border border-primary-subtle': h.estado === 'Activo',
+                  'bg-warning-subtle text-warning border border-warning-subtle': h.estado === 'Cancelado'
+                }">
+                  <i class="bi" [ngClass]="{
+                    'bi-check-circle-fill': h.estado === 'Completado',
+                    'bi-play-circle-fill': h.estado === 'Activo',
+                    'bi-x-circle-fill': h.estado === 'Cancelado'
+                  }"></i> {{ h.estado }}
                 </span>
               </td>
               <td class="text-end pe-4">
                 <button class="btn btn-sm btn-light border shadow-sm px-3 rounded-pill me-2" routerLink="/portal/resumen/{{h.id}}">
                   <i class="bi bi-eye"></i> Ver
                 </button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredHistorial.length === 0">
+              <td colspan="6" class="text-center py-4 text-muted">
+                No se encontraron casos correspondientes a la búsqueda.
               </td>
             </tr>
           </tbody>

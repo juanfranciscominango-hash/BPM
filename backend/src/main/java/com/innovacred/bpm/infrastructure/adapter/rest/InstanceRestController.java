@@ -17,6 +17,7 @@ public class InstanceRestController {
 
     private final RuntimeService runtimeService;
     private final HistoryService historyService;
+    private final TaskService taskService;
 
     @GetMapping("/active")
     public List<InstanceResponse> listActive() {
@@ -29,7 +30,7 @@ public class InstanceRestController {
     @GetMapping("/history")
     public List<InstanceResponse> listHistory() {
         return historyService.createHistoricProcessInstanceQuery()
-                .finished()
+                .orderByProcessInstanceStartTime().desc()
                 .list().stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
@@ -121,6 +122,13 @@ public class InstanceRestController {
     }
 
     private InstanceResponse mapToResponse(ProcessInstance instance) {
+        String currentActivity = "En proceso";
+        var activeTasks = taskService.createTaskQuery().processInstanceId(instance.getId()).list();
+        if (activeTasks != null && !activeTasks.isEmpty()) {
+            currentActivity = activeTasks.stream()
+                    .map(org.flowable.task.api.Task::getName)
+                    .collect(Collectors.joining(", "));
+        }
         return new InstanceResponse(
                 instance.getId(),
                 instance.getProcessDefinitionId(),
@@ -128,11 +136,24 @@ public class InstanceRestController {
                 instance.getProcessDefinitionName(),
                 "ACTIVE",
                 instance.getStartTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getStartTime()) : null,
-                null
+                null,
+                instance.getStartUserId(),
+                currentActivity
         );
     }
 
     private InstanceResponse mapToResponse(HistoricProcessInstance instance) {
+        String currentActivity = "Finalizado";
+        if (instance.getEndTime() == null) {
+            var activeTasks = taskService.createTaskQuery().processInstanceId(instance.getId()).list();
+            if (activeTasks != null && !activeTasks.isEmpty()) {
+                currentActivity = activeTasks.stream()
+                        .map(org.flowable.task.api.Task::getName)
+                        .collect(Collectors.joining(", "));
+            } else {
+                currentActivity = "En proceso";
+            }
+        }
         return new InstanceResponse(
                 instance.getId(),
                 instance.getProcessDefinitionId(),
@@ -140,7 +161,9 @@ public class InstanceRestController {
                 instance.getProcessDefinitionName(),
                 instance.getEndTime() != null ? "COMPLETED" : "ACTIVE",
                 instance.getStartTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getStartTime()) : null,
-                instance.getEndTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getEndTime()) : null
+                instance.getEndTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getEndTime()) : null,
+                instance.getStartUserId(),
+                currentActivity
         );
     }
 
@@ -151,7 +174,9 @@ public class InstanceRestController {
             String processDefinitionName,
             String status,
             String startTime,
-            String endTime
+            String endTime,
+            String startUserId,
+            String currentActivity
     ) {}
 
     public record TimelineItemResponse(
