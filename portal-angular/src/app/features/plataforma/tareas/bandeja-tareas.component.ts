@@ -17,52 +17,86 @@ import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.di
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, TwoDecimalsDirective],
   template: `
     <div class="container-fluid p-4">
-      <div class="mb-4 d-flex justify-content-between align-items-center">
+      <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h2 class="h3 mb-0 text-primary fw-bold"><i class="bi bi-inbox-fill me-2"></i>Bandeja de Tareas</h2>
           <p class="text-muted mb-0">Tareas pendientes asignadas a tu usuario en los procesos activos.</p>
         </div>
-        <button class="btn btn-outline-primary btn-sm" (click)="cargarTareas()">
-          <i class="bi bi-arrow-clockwise me-1"></i>Actualizar
-        </button>
+        <div class="d-flex align-items-center gap-2">
+          <!-- Column Selector Dropdown -->
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle shadow-sm" type="button" id="dropdownColumns" data-bs-toggle="dropdown" aria-expanded="false" (click)="$event.stopPropagation()">
+              <i class="bi bi-grid-3x3-gap me-1"></i>Columnas
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end p-3 shadow border-0 rounded-3" aria-labelledby="dropdownColumns" style="min-width: 220px;" (click)="$event.stopPropagation()">
+              <li class="mb-2 fw-semibold text-secondary small text-uppercase">Configurar Columnas</li>
+              <li *ngFor="let col of columns">
+                <div class="form-check py-1">
+                  <input class="form-check-input" type="checkbox" [id]="'col-' + col.key" [(ngModel)]="col.visible" (change)="guardarPreferenciasColumnas()">
+                  <label class="form-check-label small" [for]="'col-' + col.key">{{ col.label }}</label>
+                </div>
+              </li>
+            </ul>
+          </div>
+          
+          <button class="btn btn-outline-primary btn-sm shadow-sm px-3" (click)="cargarTareas()">
+            <i class="bi bi-arrow-clockwise me-1"></i>Actualizar
+          </button>
+        </div>
       </div>
-
+ 
       <div class="row">
         <div class="col-12">
-          <div class="card border-0 shadow-sm">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
             <div class="card-body p-0">
               <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
                   <thead class="bg-light text-muted small text-uppercase">
                     <tr>
-                      <th class="ps-4">Tarea</th>
-                      <th>Proceso (Flowable ID)</th>
-                      <th>Fecha de Creación</th>
-                      <th>Asignado a</th>
+                      <th class="ps-4" *ngIf="isColumnVisible('task')">Tarea</th>
+                      <th *ngIf="isColumnVisible('caseNumber')">Número Caso</th>
+                      <th *ngIf="isColumnVisible('client')">Cliente / Identificación</th>
+                      <th *ngIf="isColumnVisible('creditDetails')">Detalles Crédito</th>
+                      <th *ngIf="isColumnVisible('assignee')">Asignado a</th>
+                      <th *ngIf="isColumnVisible('advisor')">Asesor</th>
+                      <th *ngIf="isColumnVisible('createTime')">Fecha de Creación</th>
                       <th class="text-end pe-4">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let task of tasks">
-                      <td class="ps-4">
+                      <td class="ps-4" *ngIf="isColumnVisible('task')">
                         <div class="fw-bold text-dark">{{ task.name }}</div>
                         <small class="text-muted">ID: {{ task.id }}</small>
                       </td>
-                      <td>
-                        <span class="badge bg-info-subtle text-info border border-info-subtle">
-                          {{ task.processDefinitionId.split(':')[0] }}
-                        </span>
-                        <div class="small text-muted mt-1">Instancia: {{ task.processInstanceId }}</div>
+                      <td *ngIf="isColumnVisible('caseNumber')">
+                        <span class="fw-bold text-dark">{{ task.numeroCaso || task.processInstanceId }}</span>
+                        <div class="small text-muted mt-1">{{ task.processName || task.processDefinitionId.split(':')[0] }}</div>
                       </td>
-                      <td>{{ task.createTime | date:'medium' }}</td>
-                      <td>
+                      <td *ngIf="isColumnVisible('client')">
+                        <div class="fw-semibold text-dark">{{ task.nombreCompleto || 'Sin Cliente' }}</div>
+                        <small class="text-muted"><i class="bi bi-card-text me-1"></i>{{ task.identificacion || '-' }}</small>
+                      </td>
+                      <td *ngIf="isColumnVisible('creditDetails')">
+                        <div *ngIf="task.producto" class="fw-semibold text-primary small">{{ task.producto }}</div>
+                        <div class="small text-dark fw-bold">
+                          <span *ngIf="task.monto">{{ task.monto | currency:'USD':'symbol':'1.2-2' }}</span>
+                          <span *ngIf="task.plazo" class="text-muted font-normal"> / {{ task.plazo }} meses</span>
+                        </div>
+                        <div *ngIf="!task.producto && !task.monto" class="text-muted small">-</div>
+                      </td>
+                      <td *ngIf="isColumnVisible('assignee')">
                         <span class="badge bg-light text-dark border">{{ task.assignee || 'Sin asignar' }}</span>
                       </td>
+                      <td *ngIf="isColumnVisible('advisor')">
+                        <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-person-badge-fill text-muted me-1"></i>{{ task.asesor || 'Desconocido' }}</span>
+                      </td>
+                      <td *ngIf="isColumnVisible('createTime')">{{ task.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                       <td class="text-end pe-4">
-                        <button class="btn btn-sm btn-outline-info me-2" [routerLink]="['/plataforma/monitoreo', task.processInstanceId]">
+                        <button class="btn btn-sm btn-outline-info me-2 rounded-pill px-3" [routerLink]="['/plataforma/monitoreo', task.processInstanceId]">
                           <i class="bi bi-eye me-1"></i>Ver Progreso
                         </button>
-                        <button class="btn btn-sm btn-primary px-3 shadow-sm" (click)="abrirFormulario(task)">
+                        <button class="btn btn-sm btn-primary px-3 shadow-sm rounded-pill" (click)="abrirFormulario(task)">
                           <i class="bi bi-pencil-square me-1"></i>Completar
                         </button>
                       </td>
@@ -458,7 +492,41 @@ export class BandejaTareasComponent implements OnInit {
   gridForm: FormGroup | null = null;
   gridFormAttributes: MetaAttribute[] = [];
 
+  columns = [
+    { key: 'task', label: 'Tarea', visible: true },
+    { key: 'caseNumber', label: 'Número Caso', visible: true },
+    { key: 'client', label: 'Cliente / ID', visible: true },
+    { key: 'creditDetails', label: 'Detalles Crédito', visible: true },
+    { key: 'assignee', label: 'Asignado a', visible: true },
+    { key: 'advisor', label: 'Asesor', visible: true },
+    { key: 'createTime', label: 'Fecha Creación', visible: true }
+  ];
+
+  guardarPreferenciasColumnas() {
+    localStorage.setItem('preferencias_columnas_tareas_admin', JSON.stringify(this.columns.map(c => ({ key: c.key, visible: c.visible }))));
+  }
+
+  cargarPreferenciasColumnas() {
+    const cached = localStorage.getItem('preferencias_columnas_tareas_admin');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        this.columns.forEach(c => {
+          const match = parsed.find((p: any) => p.key === c.key);
+          if (match) {
+            c.visible = match.visible;
+          }
+        });
+      } catch (e) {}
+    }
+  }
+
+  isColumnVisible(key: string): boolean {
+    return this.columns.find(c => c.key === key)?.visible ?? false;
+  }
+
   ngOnInit() {
+    this.cargarPreferenciasColumnas();
     this.cargarTareas();
   }
 
