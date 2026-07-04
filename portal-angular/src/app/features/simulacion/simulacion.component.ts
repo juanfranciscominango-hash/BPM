@@ -30,23 +30,23 @@ declare var google: any;
 })
 export class SimulacionComponent implements OnInit, AfterViewInit {
   @ViewChild('direccionInput') direccionInput!: ElementRef;
-  
+
   private _initialData: any = null;
-  
-  @Input() 
+
+  @Input()
   set initialData(val: any) {
     this._initialData = val;
     if (val && this.simulacionForm) {
       this.cargarDatosIniciales();
     }
   }
-  
+
   get initialData() {
     return this._initialData;
   }
-  
+
   @Output() simulacionDataChange = new EventEmitter<any>();
-  
+
   private http = inject(HttpClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -89,7 +89,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
       alert("Por favor ingresa una identificaciÃ³n primero.");
       return;
     }
-    
+
     this.buscandoCliente = true;
     this.apiManagerService.testApi('APICLI', { interviniente_int_identificacion: ident, DocumentNumber: ident }).subscribe({
       next: (res) => {
@@ -97,12 +97,12 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         let estadoCivilDb = res?.interviniente_int_estado_civil || res?.estado_civil_solicitante;
         let estadoCivilMapped = '';
         if (estadoCivilDb) {
-            estadoCivilDb = String(estadoCivilDb).trim().toUpperCase();
-            if (estadoCivilDb === 'SOLTERO') estadoCivilMapped = 'Soltero/a';
-            else if (estadoCivilDb === 'CASADO') estadoCivilMapped = 'Casado/a';
-            else if (estadoCivilDb === 'DIVORCIADO') estadoCivilMapped = 'Divorciado/a';
-            else if (estadoCivilDb === 'VIUDO') estadoCivilMapped = 'Viudo/a';
-            else if (estadoCivilDb.includes('HECHO')) estadoCivilMapped = 'UniÃ³n de Hecho';
+          estadoCivilDb = String(estadoCivilDb).trim().toUpperCase();
+          if (estadoCivilDb === 'SOLTERO') estadoCivilMapped = 'Soltero/a';
+          else if (estadoCivilDb === 'CASADO') estadoCivilMapped = 'Casado/a';
+          else if (estadoCivilDb === 'DIVORCIADO') estadoCivilMapped = 'Divorciado/a';
+          else if (estadoCivilDb === 'VIUDO') estadoCivilMapped = 'Viudo/a';
+          else if (estadoCivilDb.includes('HECHO')) estadoCivilMapped = 'UniÃ³n de Hecho';
         }
 
         console.log("=== APICLI RESPONSE ===", res);
@@ -115,8 +115,8 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           console.log("=== PATCHING ROOT ===", updates);
           this.simulacionForm.patchValue(updates);
           if (estadoCivilMapped) {
-             this.simulacionForm.get('estadoCivil')?.setValue(estadoCivilMapped);
-             this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
+            this.simulacionForm.get('estadoCivil')?.setValue(estadoCivilMapped);
+            this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
           }
         } else if (res && res.nombres_completos) {
           const updates: any = { nombres: res.nombres_completos.trim() };
@@ -125,8 +125,8 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           console.log("=== PATCHING ROOT 2 ===", updates);
           this.simulacionForm.patchValue(updates);
           if (estadoCivilMapped) {
-             this.simulacionForm.get('estadoCivil')?.setValue(estadoCivilMapped);
-             this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
+            this.simulacionForm.get('estadoCivil')?.setValue(estadoCivilMapped);
+            this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
           }
         } else if (res && (res.primer_nombre || res.primer_apellido)) {
           const fullName = `${res.primer_nombre || ''} ${res.segundo_nombre || ''} ${res.primer_apellido || ''} ${res.segundo_apellido || ''}`.replace(/\s+/g, ' ').trim();
@@ -135,8 +135,8 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           console.log("=== PATCHING ROOT 3 ===", updates);
           this.simulacionForm.patchValue(updates);
           if (estadoCivilMapped) {
-             this.simulacionForm.get('estadoCivil')?.setValue(estadoCivilMapped);
-             this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
+            this.simulacionForm.get('estadoCivil')?.setValue(estadoCivilMapped);
+            this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
           }
         } else {
           // Si el API retorna un arreglo o datos anidados (como se vio en testApi genÃ©rico)
@@ -145,19 +145,19 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           else if (res && res.data && Array.isArray(res.data) && res.data.length > 0) dataObj = res.data[0];
           else if (res && res.value && Array.isArray(res.value) && res.value.length > 0) dataObj = res.value[0];
           else if (res && res.data && !Array.isArray(res.data)) dataObj = res.data; // Fallback for single object inside data
-          
+
           if (dataObj && (dataObj.primer_nombre || dataObj.primer_apellido || dataObj.nombres_completos || dataObj.interviniente_int_nombres_completos)) {
             const fullName = dataObj.interviniente_int_nombres_completos || dataObj.nombres_completos || `${dataObj.primer_nombre || ''} ${dataObj.segundo_nombre || ''} ${dataObj.primer_apellido || ''} ${dataObj.segundo_apellido || ''}`.replace(/\s+/g, ' ').trim();
-            
+
             let nestedEstadoCivilDb = dataObj.interviniente_int_estado_civil || dataObj.estado_civil_solicitante || dataObj.estado_civil;
             let nestedEstadoCivilMapped = '';
             if (nestedEstadoCivilDb) {
-                nestedEstadoCivilDb = String(nestedEstadoCivilDb).trim().toUpperCase();
-                if (nestedEstadoCivilDb === 'SOLTERO') nestedEstadoCivilMapped = 'Soltero/a';
-                else if (nestedEstadoCivilDb === 'CASADO') nestedEstadoCivilMapped = 'Casado/a';
-                else if (nestedEstadoCivilDb === 'DIVORCIADO') nestedEstadoCivilMapped = 'Divorciado/a';
-                else if (nestedEstadoCivilDb === 'VIUDO') nestedEstadoCivilMapped = 'Viudo/a';
-                else if (nestedEstadoCivilDb.includes('HECHO')) nestedEstadoCivilMapped = 'UniÃ³n de Hecho';
+              nestedEstadoCivilDb = String(nestedEstadoCivilDb).trim().toUpperCase();
+              if (nestedEstadoCivilDb === 'SOLTERO') nestedEstadoCivilMapped = 'Soltero/a';
+              else if (nestedEstadoCivilDb === 'CASADO') nestedEstadoCivilMapped = 'Casado/a';
+              else if (nestedEstadoCivilDb === 'DIVORCIADO') nestedEstadoCivilMapped = 'Divorciado/a';
+              else if (nestedEstadoCivilDb === 'VIUDO') nestedEstadoCivilMapped = 'Viudo/a';
+              else if (nestedEstadoCivilDb.includes('HECHO')) nestedEstadoCivilMapped = 'UniÃ³n de Hecho';
             }
 
             console.log("=== NESTED ESTADO CIVIL DB ===", nestedEstadoCivilDb, "MAPPED ===", nestedEstadoCivilMapped);
@@ -166,7 +166,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
             if (nestedEstadoCivilMapped) updates.estadoCivil = nestedEstadoCivilMapped;
             console.log("=== PATCHING NESTED ===", updates);
             this.simulacionForm.patchValue(updates);
-            
+
             // Forzar el control especÃ­fico para asegurarnos que Angular lo tome
             if (nestedEstadoCivilMapped) {
               this.simulacionForm.get('estadoCivil')?.setValue(nestedEstadoCivilMapped);
@@ -244,7 +244,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
       scoreCrediticio: [750, [Validators.required, Validators.min(0), Validators.max(1000)]],
       ingresos: this.fb.array([]),
       deudas: this.fb.array([]),
-      
+
       // 04 SituaciÃ³n Financiera y Patrimonial
       sueldoLiquidoDeudor: [0],
       sueldoLiquidoConyuge: [0],
@@ -285,21 +285,21 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     // LÃ³gica para actualizar parÃ¡metros de crÃ©dito cuando cambia el producto
     this.simulacionForm.get('producto')?.valueChanges.subscribe(codigoProducto => {
       if (!codigoProducto) return;
-      const prod = this.productosCredito.find(p => 
-          p.codigo === codigoProducto || 
-          p.id == codigoProducto || 
-          p.descripcion === codigoProducto || 
-          p.nombre === codigoProducto
+      const prod = this.productosCredito.find(p =>
+        p.codigo === codigoProducto ||
+        p.id == codigoProducto ||
+        p.descripcion === codigoProducto ||
+        p.nombre === codigoProducto
       );
       if (!prod) {
-          return;
+        return;
       }
-      
+
       if (prod) {
         this.selectedProducto = prod;
         // Asignar tasa sin emitir evento para evitar ciclos de cambios
         this.simulacionForm.patchValue({ tasa: prod.pro_cre_tasa || prod.tasa || 10 }, { emitEvent: false });
-        
+
         this.simulacionForm.get('monto')?.setValidators([
           Validators.required,
           Validators.min(prod.pro_cre_monto_minimo || 1000),
@@ -313,10 +313,10 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           Validators.max(prod.pro_cre_plazo_maximo || 360)
         ]);
         this.simulacionForm.get('plazo')?.updateValueAndValidity({ emitEvent: false });
-        
+
         // Ejecutar anÃ¡lisis automÃ¡ticamente de forma silenciosa al cambiar producto
         this.ejecutarAnalisis(true);
-        
+
         // Forzar actualizaciÃ³n de UI para que se reflejen los cambios en Rango y Tasa
         this.cdr.detectChanges();
       }
@@ -347,22 +347,22 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
 
   cargarDatosIniciales() {
     if (!this.simulacionForm || !this.initialData) return;
-    
+
     // Clonamos initialData para no afectar la referencia original
     const dataToPatch = { ...this.initialData };
-    
+
     // Mapeo de estado civil inicial por si viene de DB
     let initEstadoCivilDb = dataToPatch.estadoCivil || dataToPatch.interviniente_int_estado_civil || dataToPatch.estado_civil_solicitante;
-    
+
     console.log("=== INIT DATA ROOT ESTADO CIVIL DB ===", initEstadoCivilDb);
 
     if (initEstadoCivilDb) {
-        initEstadoCivilDb = String(initEstadoCivilDb).trim().toUpperCase();
-        if (initEstadoCivilDb === 'SOLTERO') dataToPatch.estadoCivil = 'Soltero/a';
-        else if (initEstadoCivilDb === 'CASADO') dataToPatch.estadoCivil = 'Casado/a';
-        else if (initEstadoCivilDb === 'DIVORCIADO') dataToPatch.estadoCivil = 'Divorciado/a';
-        else if (initEstadoCivilDb === 'VIUDO') dataToPatch.estadoCivil = 'Viudo/a';
-        else if (initEstadoCivilDb.includes('HECHO')) dataToPatch.estadoCivil = 'UniÃ³n de Hecho';
+      initEstadoCivilDb = String(initEstadoCivilDb).trim().toUpperCase();
+      if (initEstadoCivilDb === 'SOLTERO') dataToPatch.estadoCivil = 'Soltero/a';
+      else if (initEstadoCivilDb === 'CASADO') dataToPatch.estadoCivil = 'Casado/a';
+      else if (initEstadoCivilDb === 'DIVORCIADO') dataToPatch.estadoCivil = 'Divorciado/a';
+      else if (initEstadoCivilDb === 'VIUDO') dataToPatch.estadoCivil = 'Viudo/a';
+      else if (initEstadoCivilDb.includes('HECHO')) dataToPatch.estadoCivil = 'UniÃ³n de Hecho';
     }
 
     console.log("=== INIT DATA PATCHING ===", dataToPatch);
@@ -374,13 +374,13 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
 
     // Solo procedemos si ya tenemos los tipos cargados
     this.simulacionForm.patchValue(dataToPatch);
-    
+
     // Forzar el estado civil por separado para evitar que sea sobreescrito
     if (dataToPatch.estadoCivil) {
-       this.simulacionForm.get('estadoCivil')?.setValue(dataToPatch.estadoCivil);
-       this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
+      this.simulacionForm.get('estadoCivil')?.setValue(dataToPatch.estadoCivil);
+      this.simulacionForm.get('estadoCivil')?.updateValueAndValidity();
     }
-    
+
     const ingresosSrc = this.initialData.ingresos_array || (Array.isArray(this.initialData.ingresos) ? this.initialData.ingresos : null);
     if (ingresosSrc && Array.isArray(ingresosSrc)) {
       this.ingresosFormArray.clear();
@@ -388,7 +388,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         this.ingresosFormArray.push(this.fb.group({ ...ing }));
       });
     }
-    
+
     const deudasSrc = this.initialData.deudas_array || (Array.isArray(this.initialData.deudas) ? this.initialData.deudas : null);
     if (deudasSrc && Array.isArray(deudasSrc)) {
       this.deudasFormArray.clear();
@@ -396,7 +396,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         this.deudasFormArray.push(this.fb.group({ ...deu }));
       });
     }
-    
+
     // Forzar actualizaciÃ³n si producto estÃ¡ seteado para que ValueChanges se entere
     if (this.initialData.producto || this.initialData.producto_credito) {
       const prod = this.initialData.producto || this.initialData.producto_credito;
@@ -406,33 +406,33 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
 
     // Auto ejecutar el anÃ¡lisis para que el panel derecho se muestre calculado
     setTimeout(() => {
-        this.ejecutarAnalisis(true);
-        this.cdr.detectChanges();
+      this.ejecutarAnalisis(true);
+      this.cdr.detectChanges();
     }, 100);
   }
 
-    // --- MÃ‰TODOS DE FORM ARRAY (INGRESOS) ---
-    get ingresosFormArray(): FormArray {
-      return this.simulacionForm.get('ingresos') as FormArray;
-    }
+  // --- MÃ‰TODOS DE FORM ARRAY (INGRESOS) ---
+  get ingresosFormArray(): FormArray {
+    return this.simulacionForm.get('ingresos') as FormArray;
+  }
 
-    get tieneConyuge(): boolean {
-      const ec = String(this.simulacionForm.get('estadoCivil')?.value || '').toUpperCase();
-      return ec === 'CASADO' || ec === 'UNION LIBRE' || ec === 'CASADO/A' || ec === 'UNI\u00D3N DE HECHO';
-    }
+  get tieneConyuge(): boolean {
+    const ec = String(this.simulacionForm.get('estadoCivil')?.value || '').toUpperCase();
+    return ec === 'CASADO' || ec === 'UNION LIBRE' || ec === 'CASADO/A' || ec === 'UNI\u00D3N DE HECHO';
+  }
 
-    get requiereCodeudor(): boolean {
-      const val = this.simulacionForm.get('requiereCodeudor')?.value;
-      return val === true || val === 'true' || val === 'SI' || val === 'S';
-    }
-  
-    get propietariosDisponibles(): string[] {
+  get requiereCodeudor(): boolean {
+    const val = this.simulacionForm.get('requiereCodeudor')?.value;
+    return val === true || val === 'true' || val === 'SI' || val === 'S';
+  }
+
+  get propietariosDisponibles(): string[] {
     const opciones = ['Deudor'];
     const estadoCivil = this.simulacionForm.get('estadoCivil')?.value;
     const requiereCodeudor = this.simulacionForm.get('requiereCodeudor')?.value;
 
-    if (estadoCivil === 'Casado/a' || estadoCivil === 'UniÃ³n de Hecho') {
-      opciones.push('CÃ³nyuge');
+    if (estadoCivil === 'Casado/a' || estadoCivil === 'Unión de Hecho') {
+      opciones.push('Cónyuge');
     }
     if (requiereCodeudor) {
       opciones.push('Codeudor');
@@ -479,7 +479,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         let arr = Array.isArray(res) ? res : (res.value || []);
         this.tiposCredito = arr;
         if (this.initialData?.tipo) {
-            setTimeout(() => this.simulacionForm.get('tipo')?.setValue(this.initialData.tipo));
+          setTimeout(() => this.simulacionForm.get('tipo')?.setValue(this.initialData.tipo));
         }
       }
     });
@@ -489,9 +489,9 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         let arr = Array.isArray(res) ? res : (res.value || []);
         this.productosCredito = arr;
         if (this.initialData?.producto) {
-            setTimeout(() => this.simulacionForm.get('producto')?.setValue(this.initialData.producto));
+          setTimeout(() => this.simulacionForm.get('producto')?.setValue(this.initialData.producto));
         } else {
-            this.simulacionForm.get('producto')?.updateValueAndValidity();
+          this.simulacionForm.get('producto')?.updateValueAndValidity();
         }
       }
     });
@@ -536,9 +536,9 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     let ingresosValidos = true;
     for (let i = 0; i < ingresosArray.length; i++) {
       const val = ingresosArray.at(i).value;
-      const sum = (Number(val.valorDeudor) || 0) + 
-                  (incluyeConyuge ? (Number(val.valorConyuge) || 0) : 0) + 
-                  (requiereCodeudor ? (Number(val.valorCodeudor) || 0) : 0);
+      const sum = (Number(val.valorDeudor) || 0) +
+        (incluyeConyuge ? (Number(val.valorConyuge) || 0) : 0) +
+        (requiereCodeudor ? (Number(val.valorCodeudor) || 0) : 0);
       if (sum <= 0) {
         ingresosValidos = false;
         break;
@@ -570,7 +570,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     }
 
     const scoreCrediticio = Number(vals.scoreCrediticio) || 0;
-    
+
     // 1. Cuota Mensual
     const cuotaMensual = FormulasUtil.calcularCuotaMensual(
       Number(vals.monto),
@@ -585,35 +585,35 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     let sumCodeudor = 0;
     const ingresos = vals.ingresos;
     if (ingresos && ingresos.length > 0) {
-        let sum = ingresos.reduce((acc: number, curr: any) => {
-          const vd = Number(curr.valorDeudor) || 0;
-          const vc = incluyeConyuge ? (Number(curr.valorConyuge) || 0) : 0;
-          const vco = requiereCodeudor ? (Number(curr.valorCodeudor) || 0) : 0;
-          sumDeudor += vd;
-          sumConyuge += vc;
-          sumCodeudor += vco;
-          return acc + vd + vc + vco;
-        }, 0);
-        totalIngresos = sum / ingresos.length;
-        this.resultadosCalculados.promedioIngresosDeudor = sumDeudor / ingresos.length;
-        this.resultadosCalculados.promedioIngresosConyuge = sumConyuge / ingresos.length;
-        this.resultadosCalculados.promedioIngresosCodeudor = sumCodeudor / ingresos.length;
+      let sum = ingresos.reduce((acc: number, curr: any) => {
+        const vd = Number(curr.valorDeudor) || 0;
+        const vc = incluyeConyuge ? (Number(curr.valorConyuge) || 0) : 0;
+        const vco = requiereCodeudor ? (Number(curr.valorCodeudor) || 0) : 0;
+        sumDeudor += vd;
+        sumConyuge += vc;
+        sumCodeudor += vco;
+        return acc + vd + vc + vco;
+      }, 0);
+      totalIngresos = sum / ingresos.length;
+      this.resultadosCalculados.promedioIngresosDeudor = sumDeudor / ingresos.length;
+      this.resultadosCalculados.promedioIngresosConyuge = sumConyuge / ingresos.length;
+      this.resultadosCalculados.promedioIngresosCodeudor = sumCodeudor / ingresos.length;
     } else {
-        this.resultadosCalculados.promedioIngresosDeudor = 0;
-        this.resultadosCalculados.promedioIngresosConyuge = 0;
-        this.resultadosCalculados.promedioIngresosCodeudor = 0;
+      this.resultadosCalculados.promedioIngresosDeudor = 0;
+      this.resultadosCalculados.promedioIngresosConyuge = 0;
+      this.resultadosCalculados.promedioIngresosCodeudor = 0;
     }
 
     // 3. Deudas
     let totalDeudas = 0;
     const deudas = vals.deudas;
     if (deudas && deudas.length > 0) {
-        totalDeudas = deudas.reduce((acc: number, curr: any) => {
-            const prop = curr.propietario;
-            if (prop === 'CÃ³nyuge' && !incluyeConyuge) return acc;
-            if (prop === 'Codeudor' && !requiereCodeudor) return acc;
-            return acc + (Number(curr.cuota) || 0);
-        }, 0);
+      totalDeudas = deudas.reduce((acc: number, curr: any) => {
+        const prop = curr.propietario;
+        if (prop === 'CÃ³nyuge' && !incluyeConyuge) return acc;
+        if (prop === 'Codeudor' && !requiereCodeudor) return acc;
+        return acc + (Number(curr.cuota) || 0);
+      }, 0);
     }
 
     // 4. Indicadores y Scoring via Backend
@@ -637,7 +637,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
       next: (res) => {
         const montoValido = this.simulacionForm.get('monto')?.valid ?? false;
         const plazoValido = this.simulacionForm.get('plazo')?.valid ?? false;
-        
+
         const calificaPorScore = scoreCrediticio >= 650;
         const calificaPorCapacidad = (res.cuotaMensual || 0) <= capacidadPago;
 
@@ -650,9 +650,9 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
 
         const cinValido = cinValue >= cinParams.valor_minimo && cinValue <= cinParams.valor_maximo;
         const dinValido = dinValue >= dinParams.valor_minimo && dinValue <= dinParams.valor_maximo;
-          
+
         const cuotaValidar = res.cuotaMensual || 0;
-        const ahorroNeto = totalIngresos 
+        const ahorroNeto = totalIngresos
           + (this.simulacionForm.get('comisiones')?.value || 0)
           + (this.simulacionForm.get('ingresoNegocio')?.value || 0)
           + (this.simulacionForm.get('otrosIngresos')?.value || 0)
@@ -663,7 +663,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           - (this.simulacionForm.get('serviciosBasicos')?.value || 0)
           - totalDeudas
           - (this.simulacionForm.get('cuotaTarjeta')?.value || 0);
-          
+
         const flujoCajaPositivo = ahorroNeto > 0 && ahorroNeto >= cuotaValidar;
 
         // Se califica si el Backend dice APROBADO o PRE_APROBADO, y se cumplen los indicadores + flujo de caja
@@ -687,7 +687,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           flujoCajaPositivo: flujoCajaPositivo,
           ahorroNeto: ahorroNeto
         };
-        
+
         // Auto-poblar SituaciÃ³n Financiera
         this.simulacionForm.patchValue({
           sueldoLiquidoDeudor: this.resultadosCalculados.promedioIngresosDeudor || 0,
@@ -701,7 +701,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         if (res.decision === 'RECHAZADO' && !silent) {
           alert("El motor de reglas de riesgo ha RECHAZADO esta solicitud: " + res.justificacion);
         } else if (res.decision === 'PRE_APROBADO' && !silent) {
-           console.log("Pre-aprobado: " + res.justificacion);
+          console.log("Pre-aprobado: " + res.justificacion);
         }
       },
       error: (err) => {
@@ -719,8 +719,8 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         const dinParamsFB = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
         const cinValidoFB = cinValueFallback >= cinParamsFB.valor_minimo && cinValueFallback <= cinParamsFB.valor_maximo;
         const dinValidoFB = dinValueFallback >= dinParamsFB.valor_minimo && dinValueFallback <= dinParamsFB.valor_maximo;
-        
-        const ahorroNetoFB = totalIngresos 
+
+        const ahorroNetoFB = totalIngresos
           + (this.simulacionForm.get('comisiones')?.value || 0)
           + (this.simulacionForm.get('ingresoNegocio')?.value || 0)
           + (this.simulacionForm.get('otrosIngresos')?.value || 0)
@@ -731,13 +731,13 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           - (this.simulacionForm.get('serviciosBasicos')?.value || 0)
           - totalDeudas
           - (this.simulacionForm.get('cuotaTarjeta')?.value || 0);
-          
+
         const flujoCajaPositivoFB = ahorroNetoFB > 0 && ahorroNetoFB >= fallbackCuota;
-  
+
         const calificaFallback = fallbackDti <= 45 && calificaPorScore && calificaPorCapacidad && cinValidoFB && dinValidoFB && flujoCajaPositivoFB;
 
         this.resultadosCalculados = {
-          cuotaMensual: fallbackCuota, totalIngresos, 
+          cuotaMensual: fallbackCuota, totalIngresos,
           promedioIngresosDeudor: this.resultadosCalculados.promedioIngresosDeudor,
           promedioIngresosConyuge: this.resultadosCalculados.promedioIngresosConyuge,
           promedioIngresosCodeudor: this.resultadosCalculados.promedioIngresosCodeudor,
@@ -745,7 +745,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           flujoCajaPositivo: flujoCajaPositivoFB,
           ahorroNeto: ahorroNetoFB
         };
-        
+
         // Auto-poblar SituaciAA3n Financiera
         this.simulacionForm.patchValue({
           sueldoLiquidoDeudor: this.resultadosCalculados.promedioIngresosDeudor || 0,
@@ -776,63 +776,63 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     const productoId = productoSeleccionado ? productoSeleccionado.id : formData.producto;
 
     const processVariables = {
-        ...restFormData,
-        ingresos_array: ingresos,
-        deudas_array: deudas,
-        
-        tipoCredito: tipoMapped,
-        tipo_credito: tipoMapped,
-        tipo_credito_id: tipoSeleccionado ? tipoSeleccionado.id : null,
-        producto_credito: productoId,
-        monto_solicitado: Number(formData.monto) || 0,
-        plazo_meses: Number(formData.plazo) || 0,
-        tasa_interes: Number(formData.tasa) || 0,
-        cuota_estimada: Number(this.resultadosCalculados.cuotaMensual) || 0,
-        ingresos: Number(this.resultadosCalculados.totalIngresos) || 0,
-        ingreso_bruto: Number(this.resultadosCalculados.totalIngresos) || 0,
-        interviniente_int_identificacion: formData.identificacion,
-        interviniente_int_nombres_completos: formData.nombres,
-        interviniente_int_estado_civil: formData.estadoCivil,
-        identificacion: formData.identificacion,
-        nombres: formData.nombres,
-        estado_civil: formData.estadoCivil,
-        requiere_codeudor: formData.requiereCodeudor,
-        producto: productoSeleccionado ? productoSeleccionado.pro_cre_nombre : null,
-        monto: Number(formData.monto) || 0,
-        plazo: Number(formData.plazo) || 0,
-        cuota: Number(this.resultadosCalculados.cuotaMensual) || 0,
-        ingresos_totales: Number(this.resultadosCalculados.totalIngresos) || 0,
-        gastos_financieros: Number(this.resultadosCalculados.totalDeudas) || 0,
-        din: Number(this.resultadosCalculados.din) || 0,
-        cin: Number(this.resultadosCalculados.cin) || 0,
-        capacidad_pago: Number(this.resultadosCalculados.capacidadPago) || 0,
-        dti: Number(this.resultadosCalculados.dti) || 0,
-        score_crediticio: 750,
-        din_valido: this.resultadosCalculados.dinValido,
-        cin_valido: this.resultadosCalculados.cinValido,
+      ...restFormData,
+      ingresos_array: ingresos,
+      deudas_array: deudas,
 
-        producto_desc: productoSeleccionado ? (productoSeleccionado.descripcion || productoSeleccionado.nombre || '') : '',
-        fecha_caso: new Date().toISOString().split('T')[0],
-        fecha_solicitud: new Date().toLocaleString(),
+      tipoCredito: tipoMapped,
+      tipo_credito: tipoMapped,
+      tipo_credito_id: tipoSeleccionado ? tipoSeleccionado.id : null,
+      producto_credito: productoId,
+      monto_solicitado: Number(formData.monto) || 0,
+      plazo_meses: Number(formData.plazo) || 0,
+      tasa_interes: Number(formData.tasa) || 0,
+      cuota_estimada: Number(this.resultadosCalculados.cuotaMensual) || 0,
+      ingresos: Number(this.resultadosCalculados.totalIngresos) || 0,
+      ingreso_bruto: Number(this.resultadosCalculados.totalIngresos) || 0,
+      interviniente_int_identificacion: formData.identificacion,
+      interviniente_int_nombres_completos: formData.nombres,
+      interviniente_int_estado_civil: formData.estadoCivil,
+      identificacion: formData.identificacion,
+      nombres: formData.nombres,
+      estado_civil: formData.estadoCivil,
+      requiere_codeudor: formData.requiereCodeudor,
+      producto: productoSeleccionado ? productoSeleccionado.pro_cre_nombre : null,
+      monto: Number(formData.monto) || 0,
+      plazo: Number(formData.plazo) || 0,
+      cuota: Number(this.resultadosCalculados.cuotaMensual) || 0,
+      ingresos_totales: Number(this.resultadosCalculados.totalIngresos) || 0,
+      gastos_financieros: Number(this.resultadosCalculados.totalDeudas) || 0,
+      din: Number(this.resultadosCalculados.din) || 0,
+      cin: Number(this.resultadosCalculados.cin) || 0,
+      capacidad_pago: Number(this.resultadosCalculados.capacidadPago) || 0,
+      dti: Number(this.resultadosCalculados.dti) || 0,
+      score_crediticio: 750,
+      din_valido: this.resultadosCalculados.dinValido,
+      cin_valido: this.resultadosCalculados.cinValido,
 
-        monto_minimo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_monto_minimo) : null,
-        monto_maximo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_monto_maximo) : null,
-        plazo_minimo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_plazo_minimo) : null,
-        plazo_maximo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_plazo_maximo) : null,
-        plazo_solicitado_1: Number(formData.plazo) || 0,
-        plazo_solicitado_2: Number(formData.plazo) || 0
+      producto_desc: productoSeleccionado ? (productoSeleccionado.descripcion || productoSeleccionado.nombre || '') : '',
+      fecha_caso: new Date().toISOString().split('T')[0],
+      fecha_solicitud: new Date().toLocaleString(),
+
+      monto_minimo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_monto_minimo) : null,
+      monto_maximo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_monto_maximo) : null,
+      plazo_minimo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_plazo_minimo) : null,
+      plazo_maximo: productoSeleccionado ? Number(productoSeleccionado.pro_cre_plazo_maximo) : null,
+      plazo_solicitado_1: Number(formData.plazo) || 0,
+      plazo_solicitado_2: Number(formData.plazo) || 0
     };
     return processVariables;
   }
 
   emitirDataActualizada() {
-      this.simulacionDataChange.emit(this.buildProcessVariables());
+    this.simulacionDataChange.emit(this.buildProcessVariables());
   }
 
   iniciarSolicitud() {
     if (!this.resultadosCalculados.califica) return;
     this.loading = true;
-    
+
     const processVariables = this.buildProcessVariables();
 
     console.log('DEBUG - Variables enviadas a BPM:', processVariables);
@@ -848,9 +848,9 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
                 if (!dateStr) return 0;
                 const parts = dateStr.split(' ');
                 if (parts.length >= 6) {
-                   // Formato reconstruido: "12 Jun 2026 11:22:52 GMT-0500"
-                   const timeStr = `${parts[2]} ${parts[1]} ${parts[5]} ${parts[3]} GMT-0500`;
-                   return new Date(timeStr).getTime();
+                  // Formato reconstruido: "12 Jun 2026 11:22:52 GMT-0500"
+                  const timeStr = `${parts[2]} ${parts[1]} ${parts[5]} ${parts[3]} GMT-0500`;
+                  return new Date(timeStr).getTime();
                 }
                 return new Date(dateStr).getTime() || 0;
               };

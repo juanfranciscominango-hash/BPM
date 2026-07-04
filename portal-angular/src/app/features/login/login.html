@@ -56,18 +56,26 @@
 
           <div class="form-group mb-4">
             <label for="password" class="form-label">CONTRASEÑA</label>
-            <input 
-              [type]="showPassword ? 'text' : 'password'" 
-              class="form-control" 
-              [ngClass]="{'is-invalid': passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)}"
-              id="password" 
-              [(ngModel)]="password"
-              name="password"
-              placeholder="Contraseña"
-              #passwordInput="ngModel"
-              required>
-            <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="invalid-feedback">
-              La contraseña es requerida.
+            <div class="input-group">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)}"
+                id="password" 
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Contraseña"
+                #passwordInput="ngModel"
+                required>
+              <button 
+                class="btn btn-outline-secondary" 
+                type="button" 
+                (click)="showPassword = !showPassword">
+                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+              </button>
+              <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="invalid-feedback">
+                La contraseña es requerida.
+              </div>
             </div>
           </div>
 
