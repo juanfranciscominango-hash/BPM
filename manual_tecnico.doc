@@ -1,0 +1,116 @@
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 40px; }
+h1 { color: #0d6efd; border-bottom: 2px solid #0d6efd; padding-bottom: 8px; font-size: 24pt; font-weight: bold; }
+h2 { color: #198754; font-size: 16pt; margin-top: 30px; font-weight: bold; }
+h3 { color: #495057; font-size: 13pt; font-weight: bold; }
+p { font-size: 11pt; margin-bottom: 12px; }
+ul { margin-bottom: 12px; }
+li { font-size: 11pt; margin-bottom: 4px; }
+code { font-family: Consolas, monospace; background-color: #f8f9fa; padding: 2px 4px; border: 1px solid #dee2e6; border-radius: 4px; color: #d63384; font-size: 10pt; }
+pre { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 6px; overflow-x: auto; }
+pre code { color: #212529; background-color: transparent; border: none; padding: 0; }
+strong { font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Manual Técnico de la Plataforma BPM</h1>
+<p>Este manual técnico describe la arquitectura, instalación, configuración, modelos de base de datos y despliegue del Sistema de Gestión de Procesos de Negocio (BPM).</p>
+<p>---</p>
+<h2>1. Stack Tecnológico</h2>
+<p>El sistema está construido bajo tecnologías modernas de código abierto que garantizan alta escalabilidad y fácil mantenimiento:</p>
+<ul>
+<li><strong>Backend:</strong> Java 21 (JDK 21), Spring Boot 3.3.4, JPA (Hibernate), Maven 3.x.</li>
+<li><strong>Motor BPM:</strong> Flowable Engine 7.0.1 (motores BPMN y DMN integrados directamente).</li>
+<li><strong>Frontend:</strong> Angular 17.x / 18.x (SPA en formato Standalone Components), Bootstrap 5.3 (interfaz responsiva), Bootstrap Icons.</li>
+<li><strong>Base de Datos:</strong> PostgreSQL 18.x (motor relacional y almacenamiento de esquemas de auditoría y negocio).</li>
+</ul>
+<p>---</p>
+<h2>2. Arquitectura de Módulos y Código Fuente</h2>
+<p>El repositorio del proyecto se divide en dos grandes subproyectos:</p>
+<h3>2.1 Backend (<code>/backend</code>)</h3>
+Sigue un diseño modular estructurado de la siguiente forma:
+<ul>
+<li><strong><code>infrastructure.adapter.rest</code></strong>: Controladores que exponen endpoints HTTP (ej: <code>TaskRestController</code>, <code>DatabaseConfigController</code>).</li>
+<li><strong><code>application.service</code></strong>: Lógica de aplicación que interactúa con las APIs del motor Flowable (ej: <code>BpmTaskService</code>, <code>ProcessService</code>).</li>
+<li><strong><code>domain.entity</code></strong>: Definiciones de entidades mapeadas mediante JPA (ej: <code>Menu</code>, <code>ProcessDefinition</code>, <code>DynamicColumnDefinition</code>).</li>
+<li><strong><code>infrastructure.config</code></strong>: Configuración de seguridad, seeders de datos iniciales (<code>SecuritySeeder</code>) y beans del motor Flowable.</li>
+</ul>
+<h3>2.2 Frontend (<code>/portal-angular</code>)</h3>
+Implementado con componentes independientes (Standalone Components) organizados en:
+<ul>
+<li><strong><code>core/services</code></strong>: Clientes HTTP para consumir la API del backend (ej: <code>task.service.ts</code>, <code>menu.service.ts</code>).</li>
+<li><strong><code>features/portal-usuario/portal-bandeja</code></strong>: Bandeja de tareas para el portal del asesor de crédito.</li>
+<li><strong><code>features/plataforma/tareas</code></strong>: Bandeja de administración general de tareas pendientes.</li>
+<li><strong><code>features/plataforma/columnas</code></strong>: Vista de administración de columnas dinámicas en la base de datos.</li>
+<li><strong><code>features/plataforma/conexion</code></strong>: Panel para configurar y actualizar las credenciales de base de datos en caliente.</li>
+</ul>
+<p>---</p>
+<h2>3. Instalación y Configuración del Entorno</h2>
+<h3>Paso 1: Configurar PostgreSQL</h3>
+<ol>
+<li>Crea una base de datos PostgreSQL llamada <code>INC_BPM_PLATFORM</code>.</li>
+<li>Restaura la estructura inicial y datos del seed utilizando el respaldo:</li>
+</ol>
+   <pre><code>   psql -U postgres -d INC_BPM_PLATFORM -f backup_inc_bpm.sql
+   ```
+<h3>Paso 2: Configuración del Backend</h3>
+Edita las credenciales del servidor PostgreSQL en el archivo de propiedades:
+📂 <strong>Ruta:</strong> [application.yml](file:///C:/ProyectosJava/BMP/backend/src/main/resources/application.yml)</code></pre>yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/INC_BPM_PLATFORM
+    username: postgres
+    password: Desarrollo
+<pre><code>Para compilar y empaquetar el backend en un archivo <code>.jar</code> ejecutable:</code></pre>bash
+cd backend
+mvn clean package -DskipTests
+<pre><code>Esto genera el compilado en: <code>backend/target/bpm-platform-0.0.1-SNAPSHOT.jar</code>.
+Para ejecutar:</code></pre>bash
+java -jar target/bpm-platform-0.0.1-SNAPSHOT.jar
+```
+<h3>Paso 3: Configuración del Frontend</h3>
+<ol>
+<li>Entra a la carpeta <code>/portal-angular</code>.</li>
+<li>Instala las dependencias necesarias de npm:</li>
+</ol>
+   ```bash
+   npm install
+   ```
+<ol>
+<li>Levanta el servidor local de desarrollo:</li>
+</ol>
+   ```bash
+   npm run start
+   ```
+   La aplicación se abrirá en <code>http://localhost:4201</code>.
+<p>---</p>
+<h2>4. Funcionamiento de Formularios y Columnas Dinámicas</h2>
+<p>La plataforma está diseñada para que puedas agregar campos y columnas dinámicamente sin tocar código:</p>
+<h3>4.1 Campos Dinámicos en Tareas</h3>
+<ul>
+<li>Las pantallas se diseñan mapeando atributos de negocio a una definición de pantalla (<code>screen_definition</code>).</li>
+<li>Cuando un usuario completa un formulario de tarea, el frontend envía un mapa de clave/valor al endpoint <code>POST /tasks/{taskId}/complete</code>.</li>
+<li>El backend valida estos datos y completa el paso en Flowable, el cual almacena los datos ingresados como variables del proceso (<code>ACT_RU_VARIABLE</code>).</li>
+</ul>
+<h3>4.2 Columnas Dinámicas en Bandejas</h3>
+<ul>
+<li>Las columnas mostradas se configuran en la tabla <code>dynamic_column_definition</code>.</li>
+<li>Cada columna dinámica tiene un título, clave, tipo (texto, moneda, número, fecha) y el nombre de la variable asociada en Flowable (<code>variableName</code>).</li>
+<li>Cuando la bandeja se renderiza, el backend realiza un cruce entre las tareas activas y las variables almacenadas en el motor. Si la variable asociada a la columna existe para una instancia del proceso, su valor se inyecta en el campo dinámico de la grilla en el frontend en tiempo real.</li>
+</ul>
+<p>---</p>
+<h2>5. Mantenimientos Especiales Implementados</h2>
+<h3>5.1 Gestión de Columnas</h3>
+<ul>
+<li><strong>Ruta Frontend:</strong> <code>/plataforma/columnas</code></li>
+<li><strong>Acciones soportadas:</strong> Crear nuevas columnas dinámicas (especificando título, clave interna, nombre de variable Flowable y tipo) y eliminar columnas creadas a medida. Las columnas por defecto están bloqueadas como elementos de sistema para prevenir fallos en la bandeja.</li>
+</ul>
+<h3>5.2 Edición de Conexión de Base de Datos</h3>
+<ul>
+<li><strong>Ruta Frontend:</strong> <code>/plataforma/conexion</code></li>
+<li><strong>Funcionamiento:</strong> Lee en tiempo real el archivo <code>application.yml</code> en el servidor y te permite reescribir los campos <code>url</code>, <code>username</code> y <code>password</code> desde una interfaz segura. Escribe de vuelta los datos sobreescribiendo el archivo fuente y el compilado. Se requiere un reinicio posterior del servicio de backend para levantar el pool de conexiones con las nuevas credenciales.</li>
+</ul>
+</body></html>
