@@ -34,15 +34,16 @@ export class PortalHistorialComponent implements OnInit {
   }
 
   get filteredHistorial() {
-    if (!this.searchText.trim()) {
-      return this.historial;
+    let list = [...this.historial];
+    if (this.searchText.trim()) {
+      const search = this.searchText.toLowerCase();
+      list = list.filter(item => 
+        item.id.toLowerCase().includes(search) ||
+        item.proceso.toLowerCase().includes(search) ||
+        item.usuarioIniciador.toLowerCase().includes(search) ||
+        item.actividadActual.toLowerCase().includes(search)
+      );
     }
-    const search = this.searchText.toLowerCase();
-    return this.historial.filter(item => 
-      item.id.toLowerCase().includes(search) ||
-      item.proceso.toLowerCase().includes(search) ||
-      item.usuarioIniciador.toLowerCase().includes(search) ||
-      item.actividadActual.toLowerCase().includes(search)
-    );
+    return list.sort((a, b) => b.fecha.getTime() - a.fecha.getTime());
   }
 }
