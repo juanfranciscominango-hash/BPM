@@ -1,5 +1,6 @@
 package com.innovacred.bpm.infrastructure.adapter.rest;
 
+import com.innovacred.bpm.infrastructure.adapter.persistence.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.RuntimeService;
@@ -19,6 +20,7 @@ public class InstanceRestController {
     private final RuntimeService runtimeService;
     private final HistoryService historyService;
     private final TaskService taskService;
+    private final UserAccountRepository userRepository;
 
     @GetMapping("/active")
     public List<InstanceResponse> listActive() {
@@ -133,6 +135,21 @@ public class InstanceRestController {
         runtimeService.deleteProcessInstance(instanceId, reason);
     }
 
+    private String resolveFullName(String startUserId) {
+        if (startUserId == null || startUserId.trim().isEmpty() || startUserId.equalsIgnoreCase("Desconocido")) {
+            return "Desconocido";
+        }
+        try {
+            var userOpt = userRepository.findByUsername(startUserId);
+            if (userOpt.isPresent() && userOpt.get().getFullName() != null && !userOpt.get().getFullName().trim().isEmpty()) {
+                return userOpt.get().getFullName();
+            }
+        } catch (Exception e) {
+            // Ignore
+        }
+        return startUserId;
+    }
+
     private InstanceResponse mapToResponse(ProcessInstance instance) {
         String currentActivity = "En proceso";
         var activeTasks = taskService.createTaskQuery().processInstanceId(instance.getId()).list();
@@ -158,9 +175,6 @@ public class InstanceRestController {
                 // Ignore
             }
         }
-        if (startUserId == null || startUserId.trim().isEmpty()) {
-            startUserId = "Desconocido";
-        }
 
         return new InstanceResponse(
                 instance.getId(),
@@ -170,7 +184,7 @@ public class InstanceRestController {
                 "ACTIVE",
                 instance.getStartTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getStartTime()) : null,
                 null,
-                startUserId,
+                resolveFullName(startUserId),
                 currentActivity
         );
     }
@@ -210,9 +224,6 @@ public class InstanceRestController {
                 // Ignore
             }
         }
-        if (startUserId == null || startUserId.trim().isEmpty()) {
-            startUserId = "Desconocido";
-        }
 
         return new InstanceResponse(
                 instance.getId(),
@@ -222,7 +233,7 @@ public class InstanceRestController {
                 instance.getEndTime() != null ? "COMPLETED" : "ACTIVE",
                 instance.getStartTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getStartTime()) : null,
                 instance.getEndTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getEndTime()) : null,
-                startUserId,
+                resolveFullName(startUserId),
                 currentActivity
         );
     }
