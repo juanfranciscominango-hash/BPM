@@ -49,7 +49,7 @@ import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.di
         <div class="col-12">
           <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
             <div class="card-body p-0">
-              <div class="table-responsive" style="min-height: 280px;">
+              <div class="table-responsive" style="min-height: 380px;">
                 <table class="table table-hover align-middle mb-0">
                   <thead class="bg-light text-muted small text-uppercase">
                     <tr>
