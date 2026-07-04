@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -42,6 +42,9 @@ export class PortalBandejaComponent implements OnInit {
   pageSize = 10;
   searchText = '';
 
+  // Dropdown tracking
+  activeDropdownTaskId: string | null = null;
+
   // Variables for the graphic query modal
   selectedInstanceId: string = '';
   selectedProcDefId: string = '';
@@ -53,6 +56,16 @@ export class PortalBandejaComponent implements OnInit {
 
   // Variables for the tracking modal
   showTracking: boolean = false;
+
+  toggleDropdown(taskId: string, event: Event) {
+    event.stopPropagation();
+    this.activeDropdownTaskId = this.activeDropdownTaskId === taskId ? null : taskId;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    this.activeDropdownTaskId = null;
+  }
 
   ngOnInit() {
     this.cargarTareas();
