@@ -10,6 +10,8 @@ services:
       POSTGRES_PASSWORD: Desarrollo
     ports:
       - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -40,3 +42,6 @@ services:
       - "80:80"
     depends_on:
       - bmp-backend
+
+volumes:
+  pgdata:
