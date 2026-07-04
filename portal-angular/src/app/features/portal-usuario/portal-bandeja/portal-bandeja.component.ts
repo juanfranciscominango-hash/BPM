@@ -60,7 +60,7 @@ export class PortalBandejaComponent implements OnInit {
 
   cargarTareas() {
     this.loading = true;
-    this.taskService.getTasks().subscribe({
+    this.taskService.getTasks(this.currentUser?.username).subscribe({
       next: (data) => {
         // Ocultar las tareas de prueba 'Simulacion' para no ensuciar la bandeja
         this.tasks = (data || []).filter(t => t.name !== 'Simulacion');
