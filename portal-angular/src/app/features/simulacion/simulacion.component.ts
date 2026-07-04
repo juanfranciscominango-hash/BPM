@@ -640,8 +640,8 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     const tasa = this.simulacionForm.get('tasa')?.value || 0;
 
     const reqVariables = {
-      ingresos: totalIngresos,
-      deudas: totalDeudas,
+      ingresos: ingresosNetos,
+      deudas: gastosMensuales,
       monto: monto,
       plazo: plazo,
       tasa: tasa
@@ -656,10 +656,10 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         const calificaPorScore = scoreCrediticio >= 650;
         const calificaPorCapacidad = (res.cuotaMensual || 0) <= capacidadPago;
 
-        const cinValue = totalIngresos > 0 ? ((res.cuotaMensual || 0) / totalIngresos) * 100 : 0;
-        const dinValue = totalIngresos > 0 ? ((totalIngresos - totalDeudas - (res.cuotaMensual || 0)) / totalIngresos) * 100 : 0;
+        const cinValue = ingresosNetos > 0 ? ((res.cuotaMensual || 0) / ingresosNetos) * 100 : 0;
+        const dinValue = ingresosNetos > 0 ? ((ingresosNetos - gastosMensuales - (res.cuotaMensual || 0)) / ingresosNetos) * 100 : 0;
 
-        // Obtener parÃ¡metros de validaciÃ³n
+        // Obtener parámetros de validación
         const cinParams = this.indicadoresFinancieros.find(i => i.indicador === 'CIN') || { valor_minimo: 0, valor_maximo: 45 };
         const dinParams = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
 
@@ -667,17 +667,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         const dinValido = dinValue >= dinParams.valor_minimo && dinValue <= dinParams.valor_maximo;
 
         const cuotaValidar = res.cuotaMensual || 0;
-        const ahorroNeto = totalIngresos
-          + (this.simulacionForm.get('comisiones')?.value || 0)
-          + (this.simulacionForm.get('ingresoNegocio')?.value || 0)
-          + (this.simulacionForm.get('otrosIngresos')?.value || 0)
-          - (this.simulacionForm.get('alquilerDomicilio')?.value || 0)
-          - (this.simulacionForm.get('alquilerLocal')?.value || 0)
-          - (this.simulacionForm.get('alimentacion')?.value || 0)
-          - (this.simulacionForm.get('educacion')?.value || 0)
-          - (this.simulacionForm.get('serviciosBasicos')?.value || 0)
-          - totalDeudas
-          - (this.simulacionForm.get('cuotaTarjeta')?.value || 0);
+        const ahorroNeto = ingresosNetos - gastosMensuales;
 
         const flujoCajaPositivo = ahorroNeto > 0 && ahorroNeto >= cuotaValidar;
 
@@ -686,11 +676,11 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
 
         this.resultadosCalculados = {
           cuotaMensual: res.cuotaMensual || 0,
-          totalIngresos,
+          totalIngresos: ingresosNetos,
           promedioIngresosDeudor: this.resultadosCalculados.promedioIngresosDeudor,
           promedioIngresosConyuge: this.resultadosCalculados.promedioIngresosConyuge,
           promedioIngresosCodeudor: this.resultadosCalculados.promedioIngresosCodeudor,
-          totalDeudas,
+          totalDeudas: gastosMensuales,
           dti: res.dti || 0,
           din: dinValue,
           cin: cinValue,
@@ -703,7 +693,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
           ahorroNeto: ahorroNeto
         };
 
-        // Auto-poblar SituaciÃ³n Financiera
+        // Auto-poblar Situación Financiera
         this.simulacionForm.patchValue({
           sueldoLiquidoDeudor: this.resultadosCalculados.promedioIngresosDeudor || 0,
           sueldoLiquidoConyuge: this.resultadosCalculados.promedioIngresosConyuge || 0,
@@ -721,42 +711,32 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error("Error evaluando reglas en backend", err);
-        // Fallback bÃ¡sico
+        // Fallback básico
         const calificaPorScore = scoreCrediticio >= 650;
         const fallbackCuota = cuotaMensual;
         const calificaPorCapacidad = fallbackCuota <= capacidadPago;
         // Para el fallback asumiremos DTI < 45%
-        const fallbackDti = totalIngresos > 0 ? ((totalDeudas + fallbackCuota) / totalIngresos) * 100 : 100;
-        const cinValueFallback = totalIngresos > 0 ? (fallbackCuota / totalIngresos) * 100 : 0;
-        const dinValueFallback = totalIngresos > 0 ? ((totalIngresos - totalDeudas - fallbackCuota) / totalIngresos) * 100 : 0;
+        const fallbackDti = ingresosNetos > 0 ? ((gastosMensuales + fallbackCuota) / ingresosNetos) * 100 : 100;
+        const cinValueFallback = ingresosNetos > 0 ? (fallbackCuota / ingresosNetos) * 100 : 0;
+        const dinValueFallback = ingresosNetos > 0 ? ((ingresosNetos - gastosMensuales - fallbackCuota) / ingresosNetos) * 100 : 0;
 
         const cinParamsFB = this.indicadoresFinancieros.find(i => i.indicador === 'CIN') || { valor_minimo: 0, valor_maximo: 45 };
         const dinParamsFB = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
         const cinValidoFB = cinValueFallback >= cinParamsFB.valor_minimo && cinValueFallback <= cinParamsFB.valor_maximo;
         const dinValidoFB = dinValueFallback >= dinParamsFB.valor_minimo && dinValueFallback <= dinParamsFB.valor_maximo;
 
-        const ahorroNetoFB = totalIngresos
-          + (this.simulacionForm.get('comisiones')?.value || 0)
-          + (this.simulacionForm.get('ingresoNegocio')?.value || 0)
-          + (this.simulacionForm.get('otrosIngresos')?.value || 0)
-          - (this.simulacionForm.get('alquilerDomicilio')?.value || 0)
-          - (this.simulacionForm.get('alquilerLocal')?.value || 0)
-          - (this.simulacionForm.get('alimentacion')?.value || 0)
-          - (this.simulacionForm.get('educacion')?.value || 0)
-          - (this.simulacionForm.get('serviciosBasicos')?.value || 0)
-          - totalDeudas
-          - (this.simulacionForm.get('cuotaTarjeta')?.value || 0);
+        const ahorroNetoFB = ingresosNetos - gastosMensuales;
 
         const flujoCajaPositivoFB = ahorroNetoFB > 0 && ahorroNetoFB >= fallbackCuota;
 
         const calificaFallback = fallbackDti <= 45 && calificaPorScore && calificaPorCapacidad && cinValidoFB && dinValidoFB && flujoCajaPositivoFB;
 
         this.resultadosCalculados = {
-          cuotaMensual: fallbackCuota, totalIngresos,
+          cuotaMensual: fallbackCuota, totalIngresos: ingresosNetos,
           promedioIngresosDeudor: this.resultadosCalculados.promedioIngresosDeudor,
           promedioIngresosConyuge: this.resultadosCalculados.promedioIngresosConyuge,
           promedioIngresosCodeudor: this.resultadosCalculados.promedioIngresosCodeudor,
-          totalDeudas, dti: fallbackDti, din: dinValueFallback, cin: cinValueFallback, dinValido: dinValidoFB, cinValido: cinValidoFB, capacidadPago, califica: calificaFallback, calculado: true,
+          totalDeudas: gastosMensuales, dti: fallbackDti, din: dinValueFallback, cin: cinValueFallback, dinValido: dinValidoFB, cinValido: cinValidoFB, capacidadPago, califica: calificaFallback, calculado: true,
           flujoCajaPositivo: flujoCajaPositivoFB,
           ahorroNeto: ahorroNetoFB
         };
