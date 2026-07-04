@@ -616,9 +616,24 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
       }, 0);
     }
 
-    // 4. Indicadores y Scoring via Backend
-    // Capacidad de pago local: Ingresos * 0.45 - Deudas
-    const capacidadPago = Math.max(0, (totalIngresos * 0.45) - totalDeudas);
+    // Capacidad de pago local: (Ingresos Netos - Gastos Mensuales) * Porcentaje Máximo de Endeudamiento
+    const cinParamsLocal = this.indicadoresFinancieros.find(i => i.indicador === 'CIN') || { valor_minimo: 0, valor_maximo: 35 };
+    const maxEndeudaPct = (cinParamsLocal.valor_maximo || 35) / 100;
+    
+    const ingresosNetos = totalIngresos 
+      + Number(this.simulacionForm.get('comisiones')?.value || 0)
+      + Number(this.simulacionForm.get('ingresoNegocio')?.value || 0)
+      + Number(this.simulacionForm.get('otrosIngresos')?.value || 0);
+      
+    const gastosMensuales = Number(this.simulacionForm.get('alquilerDomicilio')?.value || 0)
+      + Number(this.simulacionForm.get('alquilerLocal')?.value || 0)
+      + Number(this.simulacionForm.get('alimentacion')?.value || 0)
+      + Number(this.simulacionForm.get('educacion')?.value || 0)
+      + Number(this.simulacionForm.get('serviciosBasicos')?.value || 0)
+      + totalDeudas
+      + Number(this.simulacionForm.get('cuotaTarjeta')?.value || 0);
+      
+    const capacidadPago = Math.max(0, (ingresosNetos - gastosMensuales) * maxEndeudaPct);
 
     const monto = this.simulacionForm.get('monto')?.value || 0;
     const plazo = this.simulacionForm.get('plazo')?.value || 0;
