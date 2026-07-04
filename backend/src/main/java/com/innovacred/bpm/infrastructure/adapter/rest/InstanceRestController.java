@@ -140,6 +140,27 @@ public class InstanceRestController {
                     .map(org.flowable.task.api.Task::getName)
                     .collect(Collectors.joining(", "));
         }
+        
+        String startUserId = instance.getStartUserId();
+        if (startUserId == null || startUserId.trim().isEmpty()) {
+            try {
+                Object val = runtimeService.getVariable(instance.getId(), "usuarioCreacion");
+                if (val != null) {
+                    startUserId = String.valueOf(val);
+                } else {
+                    val = runtimeService.getVariable(instance.getId(), "initiator");
+                    if (val != null) {
+                        startUserId = String.valueOf(val);
+                    }
+                }
+            } catch (Exception e) {
+                // Ignore
+            }
+        }
+        if (startUserId == null || startUserId.trim().isEmpty()) {
+            startUserId = "Desconocido";
+        }
+
         return new InstanceResponse(
                 instance.getId(),
                 instance.getProcessDefinitionId(),
@@ -148,7 +169,7 @@ public class InstanceRestController {
                 "ACTIVE",
                 instance.getStartTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getStartTime()) : null,
                 null,
-                instance.getStartUserId(),
+                startUserId,
                 currentActivity
         );
     }
@@ -165,6 +186,33 @@ public class InstanceRestController {
                 currentActivity = "En proceso";
             }
         }
+
+        String startUserId = instance.getStartUserId();
+        if (startUserId == null || startUserId.trim().isEmpty()) {
+            try {
+                var varInstance = historyService.createHistoricVariableInstanceQuery()
+                        .processInstanceId(instance.getId())
+                        .variableName("usuarioCreacion")
+                        .singleResult();
+                if (varInstance != null && varInstance.getValue() != null) {
+                    startUserId = String.valueOf(varInstance.getValue());
+                } else {
+                    varInstance = historyService.createHistoricVariableInstanceQuery()
+                            .processInstanceId(instance.getId())
+                            .variableName("initiator")
+                            .singleResult();
+                    if (varInstance != null && varInstance.getValue() != null) {
+                        startUserId = String.valueOf(varInstance.getValue());
+                    }
+                }
+            } catch (Exception e) {
+                // Ignore
+            }
+        }
+        if (startUserId == null || startUserId.trim().isEmpty()) {
+            startUserId = "Desconocido";
+        }
+
         return new InstanceResponse(
                 instance.getId(),
                 instance.getProcessDefinitionId(),
@@ -173,7 +221,7 @@ public class InstanceRestController {
                 instance.getEndTime() != null ? "COMPLETED" : "ACTIVE",
                 instance.getStartTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getStartTime()) : null,
                 instance.getEndTime() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(instance.getEndTime()) : null,
-                instance.getStartUserId(),
+                startUserId,
                 currentActivity
         );
     }
