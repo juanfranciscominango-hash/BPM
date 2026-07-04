@@ -71,7 +71,7 @@
                 class="btn btn-outline-secondary" 
                 type="button" 
                 (click)="showPassword = !showPassword">
-                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                <i class="bi" [ngClass]="showPassword ? 'bi-eye' : 'bi-eye-slash'"></i>
               </button>
               <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="invalid-feedback">
                 La contraseña es requerida.
