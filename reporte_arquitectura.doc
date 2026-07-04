@@ -1,0 +1,125 @@
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 40px; }
+h1 { color: #0d6efd; border-bottom: 2px solid #0d6efd; padding-bottom: 8px; font-size: 24pt; font-weight: bold; }
+h2 { color: #198754; font-size: 16pt; margin-top: 30px; font-weight: bold; }
+h3 { color: #495057; font-size: 13pt; font-weight: bold; }
+p { font-size: 11pt; margin-bottom: 12px; }
+ul { margin-bottom: 12px; }
+li { font-size: 11pt; margin-bottom: 4px; }
+code { font-family: Consolas, monospace; background-color: #f8f9fa; padding: 2px 4px; border: 1px solid #dee2e6; border-radius: 4px; color: #d63384; font-size: 10pt; }
+pre { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 6px; overflow-x: auto; }
+pre code { color: #212529; background-color: transparent; border: none; padding: 0; }
+.alert { background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px; }
+.alert strong { color: #664d03; }
+</style>
+</head>
+<body>
+<h1>Reporte de Arquitectura de Software - Plataforma BPM</h1>
+<p>Este documento describe la arquitectura técnica, la distribución de componentes y los flujos de datos principales de la plataforma BPM.</p>
+<p>---</p>
+<h2>1. Arquitectura General y Despliegue (3-Capas)</h2>
+<p>La plataforma está diseñada bajo un modelo de arquitectura de tres capas (Cliente, Servidor de Aplicaciones y Servidor de Base de Datos).</p>
+<pre><code>graph TD
+    subgraph Capa_Cliente ["Capa Cliente (Frontend)"]
+        Browser["Navegador Web (Usuario / Asesor)"]
+        AngularApp["Angular SPA (Portal Usuario)"]
+        Browser --> AngularApp
+    end
+<p>subgraph Capa_Aplicacion ["Capa Aplicación (Backend - Spring Boot)"]
+        Nginx["Servidor Nginx / Servidor Web (Proxy Reverso)"]
+        SpringBoot["Spring Boot API Service (Port: 9091)"]
+        FlowableEngine["Motor Embebido Flowable (BPMN / DMN)"]
+        
+        AngularApp -- "HTTPS API Requests" --> Nginx
+        Nginx -- "Proxy a /api/v1" --> SpringBoot
+        SpringBoot --> FlowableEngine
+    end</p>
+<p>subgraph Capa_Datos ["Capa Datos (Persistencia)"]
+        PostgreSQL[("PostgreSQL DB (Port: 5432)")]
+        SpringBoot -- "JPA / Hibernate" --> PostgreSQL
+        FlowableEngine -- "JDBC DataSource" --> PostgreSQL
+    end
+    
+    style Capa_Cliente fill:#f5faff,stroke:#0d6efd,stroke-width:2px;
+    style Capa_Aplicacion fill:#f9fff5,stroke:#198754,stroke-width:2px;
+    style Capa_Datos fill:#fffcf5,stroke:#ffc107,stroke-width:2px;</code></pre></p>
+<p>---</p>
+<h2>2. Arquitectura Interna del Backend (Arquitectura Hexagonal / Capas)</h2>
+<p>El backend de Spring Boot implementa una arquitectura desacoplada para separar el negocio del framework y los adaptadores externos.</p>
+<pre><code>graph LR
+    subgraph REST_Adapters ["Adaptadores de Entrada (REST)"]
+        TaskCtrl["TaskRestController"]
+        ProcCtrl["ProcessRestController"]
+        DbConfigCtrl["DatabaseConfigController"]
+    end
+<p>subgraph Application_Services ["Servicios de Aplicación"]
+        BpmTaskService["BpmTaskService"]
+        ProcessService["ProcessService"]
+        MetaService["MetaService"]
+    end</p>
+<p>subgraph Domain_Core ["Dominio y Entidades"]
+        TaskEntity["TaskResponse (Record)"]
+        MenuEntity["Menu (Entidad)"]
+        ColumnEntity["DynamicColumnDefinition"]
+    end</p>
+<p>subgraph Infrastructure_Adapters ["Adaptadores de Salida (Persistencia / Motor)"]
+        FlowableAPI["Flowable Engine API"]
+        JPARepos["Spring Data JPA Repositories"]
+        PostgresDB[("PostgreSQL")]
+    end</p>
+<p>%% Relaciones
+    REST_Adapters --> Application_Services
+    Application_Services --> Domain_Core
+    Application_Services --> FlowableAPI
+    Application_Services --> JPARepos
+    JPARepos --> PostgresDB
+    FlowableAPI --> PostgresDB</code></pre></p>
+<p>---</p>
+<h2>3. Flujo de Datos para Pantallas y Columnas Dinámicas</h2>
+<p>Este diagrama muestra cómo interactúan el frontend de Angular, el backend de Spring Boot y Flowable para servir pantallas estructuradas y renderizar columnas dinámicas basadas en variables del proceso en tiempo real.</p>
+<pre><code>sequenceDiagram
+    autonumber
+    actor Usuario as Asesor / Administrador
+    participant Portal as Angular Frontend
+    participant API as Spring Boot Backend
+    participant Flowable as Motor Flowable (DB)
+<p>%% Carga de Columnas Dinámicas
+    Note over Usuario, Flowable: Flujo 1: Renderizado de Columnas en Bandeja de Tareas
+    Usuario->>Portal: Abre Bandeja de Tareas
+    Portal->>API: GET /api/v1/tasks/columns
+    API->>Flowable: Consulta tabla 'dynamic_column_definition'
+    Flowable-->>API: Retorna metadatos de columnas
+    API-->>Portal: Array de columnas (label, key, variableName)
+    Portal->>API: GET /api/v1/tasks?assignee=usuario
+    API->>Flowable: Query tareas activas + Process Variables
+    Flowable-->>API: Lista de tareas y variables
+    API-->>Portal: Listado de Tareas (con additionalVariables mapeadas)
+    Portal-->>Usuario: Renderiza la grilla con columnas y datos dinámicos</p>
+<p>%% Completado de Tarea con Formulario
+    Note over Usuario, Flowable: Flujo 2: Guardado de Variables desde Formulario
+    Usuario->>Portal: Completa formulario de tarea y presiona Enviar
+    Portal->>API: POST /api/v1/tasks/{taskId}/complete (JSON con variables)
+    API->>API: Valida variables del negocio (MetaService)
+    API->>Flowable: completa la tarea en Flowable enviando las variables
+    Flowable->>Flowable: Avanza el proceso e incrementa variables en ACT_RU_VARIABLE
+    API-->>Portal: HTTP 200 OK
+    Portal-->>Usuario: Muestra mensaje de éxito y refresca la bandeja</code></pre></p>
+<p>---</p>
+<h2>4. Estructura de Paquetes del Proyecto (Código Fuente)</h2>
+<p>El código fuente del proyecto está organizado de la siguiente manera:</p>
+<ul>
+<li><strong><code>backend/</code></strong>:</li>
+<li><code>com.innovacred.bpm.infrastructure.adapter.rest</code>: Controladores REST expuestos al frontend (ej: [DatabaseConfigController](file:///C:/ProyectosJava/BMP/backend/src/main/java/com/innovacred/bpm/infrastructure/adapter/rest/DatabaseConfigController.java)).</li>
+<li><code>com.innovacred.bpm.application.service</code>: Lógica de negocio y orquestación (ej: [BpmTaskService](file:///C:/ProyectosJava/BMP/backend/src/main/java/com/innovacred/bpm/application/service/BpmTaskService.java)).</li>
+<li><code>com.innovacred.bpm.domain.entity</code>: Entidades del dominio persistidas por JPA (ej: <code>Menu.java</code>, <code>ProcessDefinition.java</code>).</li>
+<li><code>com.innovacred.bpm.infrastructure.config</code>: Sembradores de datos y configuraciones del motor (ej: [SecuritySeeder](file:///C:/ProyectosJava/BMP/backend/src/main/java/com/innovacred/bpm/infrastructure/config/SecuritySeeder.java)).</li>
+<li><strong><code>portal-angular/</code></strong>:</li>
+<li><code>src/app/core/services</code>: Servicios de comunicación API (ej: [task.service.ts](file:///C:/ProyectosJava/BMP/portal-angular/src/app/core/services/task.service.ts)).</li>
+<li><code>src/app/features/plataforma/tareas</code>: Bandeja principal de trámites activos (ej: [bandeja-tareas.component.ts](file:///C:/ProyectosJava/BMP/portal-angular/src/app/features/plataforma/tareas/bandeja-tareas.component.ts)).</li>
+<li><code>src/app/features/plataforma/columnas</code>: CRUD de columnas dinámicas (ej: [columnas.component.ts](file:///C:/ProyectosJava/BMP/portal-angular/src/app/features/plataforma/columnas/columnas.component.ts)).</li>
+<li><code>src/app/features/plataforma/conexion</code>: Editor de credenciales de base de datos (ej: [conexion.component.ts](file:///C:/ProyectosJava/BMP/portal-angular/src/app/features/plataforma/conexion/conexion.component.ts)).</li>
+</ul>
+</body></html>

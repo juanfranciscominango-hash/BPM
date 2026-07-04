@@ -1,0 +1,10425 @@
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333333; margin: 40px; }
+h1 { color: #0d6efd; border-bottom: 2px solid #0d6efd; padding-bottom: 8px; font-size: 24pt; font-weight: bold; }
+h2 { color: #198754; font-size: 16pt; margin-top: 30px; font-weight: bold; }
+h3 { color: #0d6efd; font-size: 13pt; font-weight: bold; border-bottom: 1px solid #dee2e6; padding-bottom: 4px; }
+p { font-size: 11pt; margin-bottom: 12px; }
+ul { margin-bottom: 12px; }
+li { font-size: 11pt; margin-bottom: 4px; }
+code { font-family: Consolas, monospace; background-color: #f8f9fa; padding: 2px 4px; border: 1px solid #dee2e6; border-radius: 4px; color: #d63384; font-size: 10pt; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+th { background-color: #f8f9fa; color: #495057; font-weight: bold; border: 1px solid #dee2e6; padding: 8px; text-align: left; }
+td { border: 1px solid #dee2e6; padding: 8px; }
+strong { font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Diccionario de Datos - Base de Datos INC_BPM_PLATFORM</h1>
+<p>Este diccionario contiene las tablas y columnas detectadas automáticamente en el esquema público de la base de datos.</p>
+<h2>Índice de Tablas</h2>
+<ul>
+<li><a href="#act_app_appdef">act_app_appdef</a></li>
+<li><a href="#act_app_databasechangelog">act_app_databasechangelog</a></li>
+<li><a href="#act_app_databasechangeloglock">act_app_databasechangeloglock</a></li>
+<li><a href="#act_app_deployment">act_app_deployment</a></li>
+<li><a href="#act_app_deployment_resource">act_app_deployment_resource</a></li>
+<li><a href="#act_cmmn_casedef">act_cmmn_casedef</a></li>
+<li><a href="#act_cmmn_databasechangelog">act_cmmn_databasechangelog</a></li>
+<li><a href="#act_cmmn_databasechangeloglock">act_cmmn_databasechangeloglock</a></li>
+<li><a href="#act_cmmn_deployment">act_cmmn_deployment</a></li>
+<li><a href="#act_cmmn_deployment_resource">act_cmmn_deployment_resource</a></li>
+<li><a href="#act_cmmn_hi_case_inst">act_cmmn_hi_case_inst</a></li>
+<li><a href="#act_cmmn_hi_mil_inst">act_cmmn_hi_mil_inst</a></li>
+<li><a href="#act_cmmn_hi_plan_item_inst">act_cmmn_hi_plan_item_inst</a></li>
+<li><a href="#act_cmmn_ru_case_inst">act_cmmn_ru_case_inst</a></li>
+<li><a href="#act_cmmn_ru_mil_inst">act_cmmn_ru_mil_inst</a></li>
+<li><a href="#act_cmmn_ru_plan_item_inst">act_cmmn_ru_plan_item_inst</a></li>
+<li><a href="#act_cmmn_ru_sentry_part_inst">act_cmmn_ru_sentry_part_inst</a></li>
+<li><a href="#act_dmn_databasechangelog">act_dmn_databasechangelog</a></li>
+<li><a href="#act_dmn_databasechangeloglock">act_dmn_databasechangeloglock</a></li>
+<li><a href="#act_dmn_decision">act_dmn_decision</a></li>
+<li><a href="#act_dmn_deployment">act_dmn_deployment</a></li>
+<li><a href="#act_dmn_deployment_resource">act_dmn_deployment_resource</a></li>
+<li><a href="#act_dmn_hi_decision_execution">act_dmn_hi_decision_execution</a></li>
+<li><a href="#act_evt_log">act_evt_log</a></li>
+<li><a href="#act_ge_bytearray">act_ge_bytearray</a></li>
+<li><a href="#act_ge_property">act_ge_property</a></li>
+<li><a href="#act_hi_actinst">act_hi_actinst</a></li>
+<li><a href="#act_hi_attachment">act_hi_attachment</a></li>
+<li><a href="#act_hi_comment">act_hi_comment</a></li>
+<li><a href="#act_hi_detail">act_hi_detail</a></li>
+<li><a href="#act_hi_entitylink">act_hi_entitylink</a></li>
+<li><a href="#act_hi_identitylink">act_hi_identitylink</a></li>
+<li><a href="#act_hi_procinst">act_hi_procinst</a></li>
+<li><a href="#act_hi_taskinst">act_hi_taskinst</a></li>
+<li><a href="#act_hi_tsk_log">act_hi_tsk_log</a></li>
+<li><a href="#act_hi_varinst">act_hi_varinst</a></li>
+<li><a href="#act_id_bytearray">act_id_bytearray</a></li>
+<li><a href="#act_id_group">act_id_group</a></li>
+<li><a href="#act_id_info">act_id_info</a></li>
+<li><a href="#act_id_membership">act_id_membership</a></li>
+<li><a href="#act_id_priv">act_id_priv</a></li>
+<li><a href="#act_id_priv_mapping">act_id_priv_mapping</a></li>
+<li><a href="#act_id_property">act_id_property</a></li>
+<li><a href="#act_id_token">act_id_token</a></li>
+<li><a href="#act_id_user">act_id_user</a></li>
+<li><a href="#act_procdef_info">act_procdef_info</a></li>
+<li><a href="#act_re_deployment">act_re_deployment</a></li>
+<li><a href="#act_re_model">act_re_model</a></li>
+<li><a href="#act_re_procdef">act_re_procdef</a></li>
+<li><a href="#act_ru_actinst">act_ru_actinst</a></li>
+<li><a href="#act_ru_deadletter_job">act_ru_deadletter_job</a></li>
+<li><a href="#act_ru_entitylink">act_ru_entitylink</a></li>
+<li><a href="#act_ru_event_subscr">act_ru_event_subscr</a></li>
+<li><a href="#act_ru_execution">act_ru_execution</a></li>
+<li><a href="#act_ru_external_job">act_ru_external_job</a></li>
+<li><a href="#act_ru_history_job">act_ru_history_job</a></li>
+<li><a href="#act_ru_identitylink">act_ru_identitylink</a></li>
+<li><a href="#act_ru_job">act_ru_job</a></li>
+<li><a href="#act_ru_suspended_job">act_ru_suspended_job</a></li>
+<li><a href="#act_ru_task">act_ru_task</a></li>
+<li><a href="#act_ru_timer_job">act_ru_timer_job</a></li>
+<li><a href="#act_ru_variable">act_ru_variable</a></li>
+<li><a href="#api_definition">api_definition</a></li>
+<li><a href="#app_notification">app_notification</a></li>
+<li><a href="#crm_asesor">crm_asesor</a></li>
+<li><a href="#crm_campana">crm_campana</a></li>
+<li><a href="#crm_deuda_externa">crm_deuda_externa</a></li>
+<li><a href="#crm_lead">crm_lead</a></li>
+<li><a href="#crm_lead_interaction">crm_lead_interaction</a></li>
+<li><a href="#crm_lead_task">crm_lead_task</a></li>
+<li><a href="#crm_origen_lead">crm_origen_lead</a></li>
+<li><a href="#crm_perfil_financiero">crm_perfil_financiero</a></li>
+<li><a href="#crm_tarjeta_credito">crm_tarjeta_credito</a></li>
+<li><a href="#document_definition">document_definition</a></li>
+<li><a href="#dy_bpm_credito_detalle">dy_bpm_credito_detalle</a></li>
+<li><a href="#dy_solicitud_credito">dy_solicitud_credito</a></li>
+<li><a href="#dy_solicitud_credito_recomendada">dy_solicitud_credito_recomendada</a></li>
+<li><a href="#dynamic_column_definition">dynamic_column_definition</a></li>
+<li><a href="#external_process">external_process</a></li>
+<li><a href="#flw_channel_definition">flw_channel_definition</a></li>
+<li><a href="#flw_ev_databasechangelog">flw_ev_databasechangelog</a></li>
+<li><a href="#flw_ev_databasechangeloglock">flw_ev_databasechangeloglock</a></li>
+<li><a href="#flw_event_definition">flw_event_definition</a></li>
+<li><a href="#flw_event_deployment">flw_event_deployment</a></li>
+<li><a href="#flw_event_resource">flw_event_resource</a></li>
+<li><a href="#flw_ru_batch">flw_ru_batch</a></li>
+<li><a href="#flw_ru_batch_part">flw_ru_batch_part</a></li>
+<li><a href="#formula_definition">formula_definition</a></li>
+<li><a href="#formula_history">formula_history</a></li>
+<li><a href="#meta_api_connector">meta_api_connector</a></li>
+<li><a href="#meta_attribute">meta_attribute</a></li>
+<li><a href="#meta_entity">meta_entity</a></li>
+<li><a href="#parametric_column">parametric_column</a></li>
+<li><a href="#parametric_table">parametric_table</a></li>
+<li><a href="#pr_agencia">pr_agencia</a></li>
+<li><a href="#pr_cat_autorizadores">pr_cat_autorizadores</a></li>
+<li><a href="#pr_cat_descripcion_exepciones">pr_cat_descripcion_exepciones</a></li>
+<li><a href="#pr_cat_exepcion">pr_cat_exepcion</a></li>
+<li><a href="#pr_cat_tipo">pr_cat_tipo</a></li>
+<li><a href="#pr_ciudad">pr_ciudad</a></li>
+<li><a href="#pr_dia_pago">pr_dia_pago</a></li>
+<li><a href="#pr_entidad_financiera">pr_entidad_financiera</a></li>
+<li><a href="#pr_estado_civil">pr_estado_civil</a></li>
+<li><a href="#pr_estado_flujo">pr_estado_flujo</a></li>
+<li><a href="#pr_estado_solicitud">pr_estado_solicitud</a></li>
+<li><a href="#pr_flujo">pr_flujo</a></li>
+<li><a href="#pr_genero">pr_genero</a></li>
+<li><a href="#pr_indicadores_financieros">pr_indicadores_financieros</a></li>
+<li><a href="#pr_mes">pr_mes</a></li>
+<li><a href="#pr_nivel_estudio">pr_nivel_estudio</a></li>
+<li><a href="#pr_origen_lead">pr_origen_lead</a></li>
+<li><a href="#pr_p_tipo_identificacion">pr_p_tipo_identificacion</a></li>
+<li><a href="#pr_pais">pr_pais</a></li>
+<li><a href="#pr_paranmetros_generales">pr_paranmetros_generales</a></li>
+<li><a href="#pr_producto_credito">pr_producto_credito</a></li>
+<li><a href="#pr_provincia">pr_provincia</a></li>
+<li><a href="#pr_requisitos">pr_requisitos</a></li>
+<li><a href="#pr_tasa">pr_tasa</a></li>
+<li><a href="#pr_tipo_calculo">pr_tipo_calculo</a></li>
+<li><a href="#pr_tipo_credito">pr_tipo_credito</a></li>
+<li><a href="#pr_tipo_cuenta">pr_tipo_cuenta</a></li>
+<li><a href="#pr_tipo_deuda">pr_tipo_deuda</a></li>
+<li><a href="#pr_tipo_direccion">pr_tipo_direccion</a></li>
+<li><a href="#pr_tipo_documento">pr_tipo_documento</a></li>
+<li><a href="#pr_tipo_garantia">pr_tipo_garantia</a></li>
+<li><a href="#pr_tipo_interviniente">pr_tipo_interviniente</a></li>
+<li><a href="#pr_tipo_parentesco">pr_tipo_parentesco</a></li>
+<li><a href="#pr_tipo_referencia">pr_tipo_referencia</a></li>
+<li><a href="#pr_tipo_seguro">pr_tipo_seguro</a></li>
+<li><a href="#pr_tipo_telefono">pr_tipo_telefono</a></li>
+<li><a href="#pr_tipo_vivienda">pr_tipo_vivienda</a></li>
+<li><a href="#process_definition">process_definition</a></li>
+<li><a href="#rule_definition">rule_definition</a></li>
+<li><a href="#screen_definition">screen_definition</a></li>
+<li><a href="#sec_audit_log">sec_audit_log</a></li>
+<li><a href="#sec_menu">sec_menu</a></li>
+<li><a href="#sec_permission">sec_permission</a></li>
+<li><a href="#sec_role">sec_role</a></li>
+<li><a href="#sec_role_permission">sec_role_permission</a></li>
+<li><a href="#sec_user">sec_user</a></li>
+<li><a href="#sec_user_role">sec_user_role</a></li>
+<li><a href="#stored_document">stored_document</a></li>
+<li><a href="#trama_field">trama_field</a></li>
+</ul>
+<h2>Detalles de Tablas</h2>
+<h3>act_app_appdef</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>version_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_name_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_app_databasechangelog</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>author</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>filename</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>dateexecuted</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>orderexecuted</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>exectype</strong></td>
+<td>character varying</td>
+<td>10</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>md5sum</strong></td>
+<td>character varying</td>
+<td>35</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>comments</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tag</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>liquibase</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>contexts</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>labels</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id</strong></td>
+<td>character varying</td>
+<td>10</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_app_databasechangeloglock</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>locked</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lockgranted</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lockedby</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_app_deployment</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deploy_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_app_deployment_resource</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_bytes_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_casedef</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>version_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_name_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>has_graphical_notation_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>dgrm_resource_name_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>has_start_form_key_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_databasechangelog</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>author</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>filename</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>dateexecuted</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>orderexecuted</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>exectype</strong></td>
+<td>character varying</td>
+<td>10</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>md5sum</strong></td>
+<td>character varying</td>
+<td>35</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>comments</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tag</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>liquibase</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>contexts</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>labels</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id</strong></td>
+<td>character varying</td>
+<td>10</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_databasechangeloglock</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>locked</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lockgranted</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lockedby</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_deployment</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deploy_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_deployment_resource</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_bytes_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>generated_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_hi_case_inst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>business_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>state_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>end_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>callback_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>callback_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_reactivation_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_reactivation_user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>business_status_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_hi_mil_inst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>time_stamp_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>case_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_hi_plan_item_inst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>state_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>case_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>stage_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_stage_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>item_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>item_definition_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_available_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_enabled_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_disabled_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_started_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_suspended_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>completed_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>occurred_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>terminated_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exit_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ended_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_updated_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>entry_criterion_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exit_criterion_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>show_in_overview_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>extra_value_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>derived_case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_unavailable_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_ru_case_inst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>business_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>state_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>callback_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>callback_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_completeable_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_reactivation_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_reactivation_user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>business_status_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_ru_mil_inst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>time_stamp_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>case_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_ru_plan_item_inst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>case_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>stage_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_stage_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>state_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>item_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>item_definition_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_completeable_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_count_enabled_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>var_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sentry_part_inst_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_available_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_enabled_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_disabled_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_started_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_suspended_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>completed_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>occurred_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>terminated_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exit_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ended_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>entry_criterion_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exit_criterion_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>extra_value_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>derived_case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_unavailable_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_cmmn_ru_sentry_part_inst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>case_def_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>case_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>plan_item_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>on_part_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>if_part_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>time_stamp_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_dmn_databasechangelog</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>author</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>filename</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>dateexecuted</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>orderexecuted</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>exectype</strong></td>
+<td>character varying</td>
+<td>10</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>md5sum</strong></td>
+<td>character varying</td>
+<td>35</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>comments</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tag</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>liquibase</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>contexts</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>labels</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id</strong></td>
+<td>character varying</td>
+<td>10</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_dmn_databasechangeloglock</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>locked</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lockgranted</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lockedby</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_dmn_decision</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>version_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>decision_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_dmn_deployment</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deploy_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_dmn_deployment_resource</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_bytes_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_dmn_hi_decision_execution</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>decision_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>end_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>instance_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>activity_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>failed_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_json_</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_evt_log</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>log_nr_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>time_stamp_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>data_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_processed_</strong></td>
+<td>smallint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ge_bytearray</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>bytes_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>generated_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ge_property</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>value_</strong></td>
+<td>character varying</td>
+<td>300</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_actinst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>act_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>call_proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>act_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>act_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>assignee_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>end_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>transaction_order_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duration_</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>delete_reason_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_attachment</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>url_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>content_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_comment</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>action_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>message_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>full_msg_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_detail</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>act_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>var_type_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>bytearray_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>double_</strong></td>
+<td>double precision</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>long_</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>text_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>text2_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_entitylink</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>link_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ref_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ref_scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ref_scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>root_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>root_scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>hierarchy_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_identitylink</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>group_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_procinst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>business_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>start_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>end_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duration_</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_act_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>end_act_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>super_process_instance_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>delete_reason_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>callback_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>callback_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>propagated_stage_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>business_status_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_taskinst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_def_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>propagated_stage_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>state_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>assignee_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>in_progress_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>in_progress_started_by_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>claim_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>claimed_by_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>suspended_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>suspended_by_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>end_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>completed_by_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duration_</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>delete_reason_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>priority_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>in_progress_due_date_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>due_date_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>form_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_updated_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_tsk_log</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>time_stamp_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>data_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_hi_varinst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>var_type_</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>bytearray_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>double_</strong></td>
+<td>double precision</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>long_</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>text_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>text2_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>meta_info_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_updated_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_bytearray</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>bytes_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_group</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_info</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>value_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>password_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_membership</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>group_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_priv</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_priv_mapping</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>priv_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>group_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_property</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>value_</strong></td>
+<td>character varying</td>
+<td>300</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_token</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>token_value_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>token_date_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ip_address_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>user_agent_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>token_data_</strong></td>
+<td>character varying</td>
+<td>2000</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_id_user</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>first_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>display_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>email_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pwd_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>picture_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_procdef_info</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>info_json_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_re_deployment</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deploy_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>derived_from_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>derived_from_root_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>engine_version_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_re_model</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>last_update_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>version_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>meta_info_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>editor_source_value_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>editor_source_extra_value_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_re_procdef</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>version_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_name_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>dgrm_resource_name_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>has_start_form_key_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>has_graphical_notation_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>suspension_state_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>derived_from_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>derived_from_root_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>derived_version_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>engine_version_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_actinst</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>act_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>call_proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>act_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>act_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>assignee_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>end_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duration_</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>transaction_order_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>delete_reason_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_deadletter_job</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>exclusive_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_instance_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>correlation_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_stack_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_msg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duedate_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>repeat_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_cfg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>custom_values_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_entitylink</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>link_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ref_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ref_scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ref_scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>root_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>root_scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>hierarchy_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_event_subscr</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>event_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>event_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>activity_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>configuration_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_execution</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>business_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>super_exec_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>root_proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>act_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_active_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_concurrent_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_scope_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_event_scope_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_mi_root_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>suspension_state_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cached_ent_state_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_act_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>start_user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_count_enabled_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>evt_subscr_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>job_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>timer_job_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>susp_job_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deadletter_job_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>external_worker_job_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>var_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>id_link_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>callback_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>callback_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>propagated_stage_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>business_status_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_external_job</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lock_exp_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exclusive_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_instance_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>correlation_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>retries_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_stack_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_msg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duedate_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>repeat_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_cfg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>custom_values_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_history_job</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_exp_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>retries_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_stack_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_msg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_cfg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>custom_values_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>adv_handler_cfg_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_identitylink</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>group_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>user_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_job</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lock_exp_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exclusive_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_instance_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>correlation_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>retries_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_stack_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_msg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duedate_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>repeat_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_cfg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>custom_values_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_suspended_job</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>exclusive_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_instance_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>correlation_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>retries_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_stack_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_msg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duedate_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>repeat_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_cfg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>custom_values_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_task</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>propagated_stage_inst_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>state_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_def_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>assignee_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>delegation_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>priority_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>in_progress_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>in_progress_started_by_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>claim_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>claimed_by_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>suspended_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>suspended_by_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>in_progress_due_date_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>due_date_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>suspension_state_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>form_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_count_enabled_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>var_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>id_link_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_task_count_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_timer_job</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lock_exp_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lock_owner_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exclusive_</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_instance_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>element_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_definition_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>correlation_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>retries_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_stack_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exception_msg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>duedate_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>repeat_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>handler_cfg_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>custom_values_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>act_ru_variable</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>execution_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_inst_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>bytearray_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>double_</strong></td>
+<td>double precision</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>long_</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>text_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>text2_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>meta_info_</strong></td>
+<td>character varying</td>
+<td>4000</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>api_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>body_template</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>headers_json</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>method</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>response_mapping</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>url</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>app_notification</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_read</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>message</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>target_user</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>title</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_asesor</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>activo</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>email</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombre_completo</strong></td>
+<td>character varying</td>
+<td>150</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>telefono</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_campana</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo_campana</strong></td>
+<td>character varying</td>
+<td>50</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>conversiones</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>estado</strong></td>
+<td>character varying</td>
+<td>50</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>fecha_fin</strong></td>
+<td>date</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>fecha_inicio</strong></td>
+<td>date</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>leads_generados</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombre</strong></td>
+<td>character varying</td>
+<td>150</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>presupuesto_asignado</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>presupuesto_ejecutado</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>responsable</strong></td>
+<td>character varying</td>
+<td>150</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>roi</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tasa_apertura</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ultima_actualizacion</strong></td>
+<td>date</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_deuda_externa</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>entidad</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>producto</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>saldo</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>perfil_financiero_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_lead</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>email</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>empresa</strong></td>
+<td>character varying</td>
+<td>150</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>estado</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>identificacion</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>monto_estimado</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombres_completos</strong></td>
+<td>character varying</td>
+<td>150</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>telefono</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>updated_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>asesor_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>origen_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>campana_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>referencia</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_lead_interaction</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>fecha</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resumen</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tipo</strong></td>
+<td>character varying</td>
+<td>50</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lead_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_lead_task</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>completada</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>external_calendar_event_id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>fecha_vencimiento</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lead_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_origen_lead</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>activo</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombre</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_perfil_financiero</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>cuota_estimada_mensual</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ingresos_mensuales</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor_maximo_endeudamiento</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor_maximo_prestamo</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lead_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>crm_tarjeta_credito</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>cupo_total</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>entidad</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>saldo_actual</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>perfil_financiero_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>document_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_template</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_key</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>required</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>template_content</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>template_path</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>export_format</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>mapping_json</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>dy_bpm_credito_detalle</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>process_instance_id</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>plazo</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>total</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>capital</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>interes</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>seguro</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>saldo</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>dy_solicitud_credito</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>process_instance_id</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>gestor_documental</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>posibilidad_de_adjuntar_respaldos_hasta_12_mb</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>campos</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>notificaciones</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pesetaa_informacin_del_cliente</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>informacin_general</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>fecha_caso</strong></td>
+<td>character varying</td>
+<td>50</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nmero_de_caso</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ciudad</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>estado_de_caso</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>usuario_creador</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>agencia_de_usuario</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombre_del_asesor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>fecha_solicitud</strong></td>
+<td>character varying</td>
+<td>50</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reproceso_tcs</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reproceso_anlisis</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tipo_de_identificacin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>identificacin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombres_completos</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>apellidos_completos</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>monto_solicitado</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>plazo_meses</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cuota</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>score_cliente</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>condiciones_aceptadas</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>requisitos_validados</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>decision_analista</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>plazo_solicitado</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>crdito_vipvis</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cuota_entrada</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor_gastos_legales_asesor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>avalo_comercial</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>operacin_gaf</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>civil_migrante</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>avalo_comercial_informe</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>zona</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>consideraciones</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>seccin_informacin_general</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resultado_simulacin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>din_crdito</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>aprobado_din</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cin_crdito</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>aprobado_cin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>recomendado_por_gerencia</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombre_cargo_de_recomendacin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>detalle_de_la_descripcin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>autorizado_por</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>exepcin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcin_exepcin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>extracto_de_poltica</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>botn</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>observaciones</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>al_salir</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>observaciones_asesor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tipo_de_actividad</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>linea_supervisin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>respuesta</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>observaciones_regularizar_documentacin_uac_asesor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cliente_acepta_condiciones</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cerrar_caso</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>recalificacin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tasa_inters</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>plazo_mximo_meses</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>plazo_solicitado_meses</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tipo_clculo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cuota_bgr</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>continuar_solicitud_crdito</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ingresos</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ingreso_bruto</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>otros_ingresos</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>arriendodeudor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>otrosdeudor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>negociocnyuge</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>arriendocnyuge</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>total_otros_ingresos</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pesetaa_carta_instrucciones_operativas</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tiene_garanta_constituida</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nmero_expediente</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>beneficiario</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cdularuc</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nip</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sitcrdito_personasin_proceso</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>aprobar</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cuando_viene_de_digitacin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>_entrada</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ingresos_mensuales</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>producto_multidestino</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proceso</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>observaciones_digitacin_tcs</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>motivo_de_devolucin_crdito_personas</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cuando_viene_de_analisis_de_crdito</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>monto_mximo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>plazo_mnimo_meses</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cobertura</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cuota_m_tc</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>total_deuda</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>mes</strong></td>
+<td>date</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>codeudor_cnyuge_codeudor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>negociodeudor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>otroscnyuge</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>otroscodeudorcnyuge_codeudor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>requiere_anexo_independiente</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>instrucciones_multidestino</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>banco_de_destino</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>actividad</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>referencia</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reproceso</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>autorizador</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>motivos_de_negacin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>simulacin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>total_ingreso_familiar</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deudor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>negociocodeudorcnyuge_codeudor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>forma_de_pago</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tiempo_promedio</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pesetaa_inicio</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>monto_mnimo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cuota_m_crdito</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cnyuge</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>arriendocodeudorcnyuge_codeudor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>no_cuenta_destino</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>inicio_atencin</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>detalle_de_la_exepcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>observacion_analisis_credito</strong></td>
+<td>character varying</td>
+<td>1000</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>monto_aprobado</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>dy_solicitud_credito_recomendada</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>process_instance_id</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cliente_id</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>monto_solicitado</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>plazo_meses</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tasa_interes</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>cuota_estimada</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ingresos_totales</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>gastos_totales</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>score_buro</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>datos_garantias</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>datos_referencias</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resolucion_comite</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>observaciones_generales</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>oficial_credito</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>agencia_origen</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>estado_aprobacion</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>dynamic_column_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>column_type</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>key_name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>label_name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>variable_name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>is_visible</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>external_process</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>code</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_type</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>reference_type</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>system_name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>trama_types</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>flw_channel_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>version_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>implementation_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>flw_ev_databasechangelog</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>author</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>filename</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>dateexecuted</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>orderexecuted</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>exectype</strong></td>
+<td>character varying</td>
+<td>10</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>md5sum</strong></td>
+<td>character varying</td>
+<td>35</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>comments</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tag</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>liquibase</strong></td>
+<td>character varying</td>
+<td>20</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>contexts</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>labels</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id</strong></td>
+<td>character varying</td>
+<td>10</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>flw_ev_databasechangeloglock</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>locked</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>lockgranted</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>lockedby</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>flw_event_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>version_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>flw_event_deployment</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deploy_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>flw_event_resource</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>resource_bytes_</strong></td>
+<td>bytea</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>flw_ru_batch</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>search_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>search_key2_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>complete_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>status_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>batch_doc_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>flw_ru_batch_part</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>rev_</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>batch_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>scope_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sub_scope_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>scope_type_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>search_key_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>search_key2_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>create_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>complete_time_</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>status_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>result_doc_id_</strong></td>
+<td>character varying</td>
+<td>64</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tenant_id_</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>formula_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>author</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>canvas_json</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>expression</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>updated_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>version</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>formula_history</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>archived_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>author</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>canvas_json</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>expression</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>version</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>formula_definition_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>meta_api_connector</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>body_template</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>headers</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>method</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>url</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>meta_attribute</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parametric_table_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>required</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>entity_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>field_size</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>meta_entity</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>parametric_column</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>is_primary_key</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>table_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>primary_key</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>referenced_table_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>referenced_table_label</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>parametric_table</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_agencia</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ciudad</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_cat_autorizadores</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_cat_descripcion_exepciones</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_cat_exepcion</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_cat_tipo</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_ciudad</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>provincia_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_dia_pago</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_entidad_financiera</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>ent_fin_estado</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_estado_civil</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>est_civil_estado</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_estado_flujo</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>est_flu_estado</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_estado_solicitud</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_flujo</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_genero</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_indicadores_financieros</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>indicador</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor_minimo</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor_maximo</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_mes</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_nivel_estudio</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>niv_est_estado</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_origen_lead</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>activo</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombre</strong></td>
+<td>character varying</td>
+<td>100</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_p_tipo_identificacion</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_pais</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_paranmetros_generales</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>flujo</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>valor</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_producto_credito</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pro_cre_tasa</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pro_cre_plazo_minimo</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pro_cre_plazo_maximo</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pro_cre_monto_minimo</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pro_cre_monto_maximo</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pro_cre_cin</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pro_cre_din</strong></td>
+<td>numeric</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pro_cre_tipo_credito</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_provincia</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>pais_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_requisitos</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>requisito</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tipo_requisito</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>tipo_credito</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tasa</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_calculo</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_credito</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_cuenta</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_deuda</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_direccion</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_documento</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>id_tipo_credito</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_garantia</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_interviniente</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_parentesco</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_referencia</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_seguro</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_telefono</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>pr_tipo_vivienda</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>codigo</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>descripcion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>process_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>bpmn_xml</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>category</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>last_updated</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>meta_entity_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>proc_def_id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>version</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>rule_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>category</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>deployment_id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>dmn_xml</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>key</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>last_updated</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>meta_entity_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>version</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>screen_definition</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>is_default</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>layout_json</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_key</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>task_key</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>sec_audit_log</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>accion</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>detalles</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>direccion_ip</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>estado</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>fecha_hora</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>id_entidad</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>nombre_entidad</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>usuario</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>sec_menu</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>active</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>icon</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>permission_code</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>route</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>sort_order</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>title</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>sec_permission</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>code</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>sec_role</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>sec_role_permission</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>role_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>permission_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>sec_user</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>active</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>certificate_issuer</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>certificate_serial_number</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>full_name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>password</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>username</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>agencia</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>sec_user_role</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>user_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>role_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+</table>
+<p>---</p>
+<h3>stored_document</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>content_type</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>definition_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>file_name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>is_signed</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>process_instance_id</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>signature_hash</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>signed_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>signed_by</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>storage_path</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>uploaded_at</strong></td>
+<td>timestamp without time zone</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>uploaded_by</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+<h3>trama_field</h3>
+<table>
+<tr>
+<th>Columna</th>
+<th>Tipo de Dato</th>
+<th>Longitud Máx.</th>
+<th>Permite Nulo</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>default_assignment</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>default_value</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>encode_special_chars</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>include_cdata</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>max_occurrence_action</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>max_occurrence_number</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>min_occurrence_action</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>min_occurrence_number</strong></td>
+<td>integer</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>omit_if_null</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>parent_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>process_id</strong></td>
+<td>bigint</td>
+<td>-</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>select_query</strong></td>
+<td>text</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>trama_type</strong></td>
+<td>character varying</td>
+<td>255</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>transform_base64</strong></td>
+<td>boolean</td>
+<td>-</td>
+<td>YES</td>
+</tr>
+</table>
+<p>---</p>
+</body></html>
