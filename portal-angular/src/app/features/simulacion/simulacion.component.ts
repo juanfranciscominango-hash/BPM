@@ -659,12 +659,18 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         const cinValue = ingresosNetos > 0 ? ((res.cuotaMensual || 0) / ingresosNetos) * 100 : 0;
         const dinValue = ingresosNetos > 0 ? ((ingresosNetos - gastosMensuales - (res.cuotaMensual || 0)) / ingresosNetos) * 100 : 0;
 
-        // Obtener parámetros de validación
+        // Obtener parámetros de validación del producto de crédito seleccionado o fallback de la paramétrica general
+        const prodCinMax = this.selectedProducto ? Number(this.selectedProducto.pro_cre_cin) : null;
+        const prodDinMin = this.selectedProducto ? Number(this.selectedProducto.pro_cre_din) : null;
+
         const cinParams = this.indicadoresFinancieros.find(i => i.indicador === 'CIN') || { valor_minimo: 0, valor_maximo: 45 };
         const dinParams = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
 
-        const cinValido = cinValue >= cinParams.valor_minimo && cinValue <= cinParams.valor_maximo;
-        const dinValido = dinValue >= dinParams.valor_minimo && dinValue <= dinParams.valor_maximo;
+        const limitCinMax = prodCinMax !== null && !isNaN(prodCinMax) ? prodCinMax : cinParams.valor_maximo;
+        const limitDinMin = prodDinMin !== null && !isNaN(prodDinMin) ? prodDinMin : dinParams.valor_minimo;
+
+        const cinValido = cinValue <= limitCinMax;
+        const dinValido = dinValue >= limitDinMin;
 
         const cuotaValidar = res.cuotaMensual || 0;
         const ahorroNeto = ingresosNetos - gastosMensuales;
@@ -720,10 +726,17 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
         const cinValueFallback = ingresosNetos > 0 ? (fallbackCuota / ingresosNetos) * 100 : 0;
         const dinValueFallback = ingresosNetos > 0 ? ((ingresosNetos - gastosMensuales - fallbackCuota) / ingresosNetos) * 100 : 0;
 
+        const prodCinMaxFB = this.selectedProducto ? Number(this.selectedProducto.pro_cre_cin) : null;
+        const prodDinMinFB = this.selectedProducto ? Number(this.selectedProducto.pro_cre_din) : null;
+
         const cinParamsFB = this.indicadoresFinancieros.find(i => i.indicador === 'CIN') || { valor_minimo: 0, valor_maximo: 45 };
         const dinParamsFB = this.indicadoresFinancieros.find(i => i.indicador === 'DIN') || { valor_minimo: 44, valor_maximo: 100 };
-        const cinValidoFB = cinValueFallback >= cinParamsFB.valor_minimo && cinValueFallback <= cinParamsFB.valor_maximo;
-        const dinValidoFB = dinValueFallback >= dinParamsFB.valor_minimo && dinValueFallback <= dinParamsFB.valor_maximo;
+
+        const limitCinMaxFB = prodCinMaxFB !== null && !isNaN(prodCinMaxFB) ? prodCinMaxFB : cinParamsFB.valor_maximo;
+        const limitDinMinFB = prodDinMinFB !== null && !isNaN(prodDinMinFB) ? prodDinMinFB : dinParamsFB.valor_minimo;
+
+        const cinValidoFB = cinValueFallback <= limitCinMaxFB;
+        const dinValidoFB = dinValueFallback >= limitDinMinFB;
 
         const ahorroNetoFB = ingresosNetos - gastosMensuales;
 

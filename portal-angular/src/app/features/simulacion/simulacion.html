@@ -499,12 +499,12 @@
                             <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.dti <= 45 ? 'text-success' : 'text-danger'">
                                 <i class="bi me-2" [ngClass]="resultadosCalculados.dti <= 45 ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> DTI &le; 45% (Real: {{ resultadosCalculados.dti | number:'1.1-1' }}%)
                             </li>
-                            <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.cinValido ? 'text-success' : 'text-danger'">
-                                <i class="bi me-2" [ngClass]="resultadosCalculados.cinValido ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> CIN dentro del rango permitido ({{ resultadosCalculados.cinValido ? 'Sí' : 'No' }})
-                            </li>
-                            <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.dinValido ? 'text-success' : 'text-danger'">
-                                <i class="bi me-2" [ngClass]="resultadosCalculados.dinValido ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> DIN dentro del rango permitido ({{ resultadosCalculados.dinValido ? 'Sí' : 'No' }})
-                            </li>
+                             <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.cinValido ? 'text-success' : 'text-danger'">
+                                 <i class="bi me-2" [ngClass]="resultadosCalculados.cinValido ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> CIN (Real: {{ resultadosCalculados.cin | number:'1.2-2' }}% / Max Producto: {{ selectedProducto?.pro_cre_cin | number:'1.2-2' }}%)
+                             </li>
+                             <li class="mb-2 d-flex align-items-center" [ngClass]="resultadosCalculados.dinValido ? 'text-success' : 'text-danger'">
+                                 <i class="bi me-2" [ngClass]="resultadosCalculados.dinValido ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> DIN (Real: {{ resultadosCalculados.din | number:'1.2-2' }}% / Min Producto: {{ selectedProducto?.pro_cre_din | number:'1.2-2' }}%)
+                             </li>
                               <li class="mb-2 d-flex align-items-center" [ngClass]="simulacionForm.get('monto')?.valid ? 'text-success' : 'text-danger'">
                                   <i class="bi me-2" [ngClass]="simulacionForm.get('monto')?.valid ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i> Monto dentro del rango del producto
                               </li>
