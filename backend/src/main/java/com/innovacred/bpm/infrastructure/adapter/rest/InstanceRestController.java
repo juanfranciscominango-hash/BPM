@@ -36,6 +36,17 @@ public class InstanceRestController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{instanceId}")
+    public InstanceResponse getInstance(@PathVariable String instanceId) {
+        HistoricProcessInstance instance = historyService.createHistoricProcessInstanceQuery()
+                .processInstanceId(instanceId)
+                .singleResult();
+        if (instance != null) {
+            return mapToResponse(instance);
+        }
+        throw new RuntimeException("Proceso no encontrado");
+    }
+
     @GetMapping("/{instanceId}/active-activities")
     public List<String> getActiveActivities(@PathVariable String instanceId) {
         return runtimeService.getActiveActivityIds(instanceId);

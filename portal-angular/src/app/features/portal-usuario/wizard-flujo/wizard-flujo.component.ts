@@ -10,6 +10,7 @@ import { TaskService, UserTask } from '../../../core/services/task.service';
 import { ProcessService } from '../../../core/services/process.service';
 import { ScreenService } from '../../../core/services/screen.service';
 import { DocumentService } from '../../../core/services/document.service';
+import { InstanceService } from '../../../core/services/instance.service';
 import { SimulacionComponent } from '../../simulacion/simulacion.component';
 import { AnalisisCreditoComponent } from '../../analisis-credito/analisis-credito.component';
 import { FormulasUtil } from '../../../core/utils/formulas.util';
@@ -34,6 +35,7 @@ export class WizardFlujoComponent implements OnInit {
   private taskService = inject(TaskService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private instanceService = inject(InstanceService);
 
   currentTask: UserTask | null = null;
   taskId: string | null = null;
@@ -210,6 +212,18 @@ export class WizardFlujoComponent implements OnInit {
       const task = tasks.find(t => t.id === id);
       if (task) {
         this.currentTask = task;
+        
+        // Fetch process instance details to get startUserId
+        if (task.processInstanceId) {
+          this.instanceService.getInstance(task.processInstanceId).subscribe({
+            next: (instance: any) => {
+              if (this.currentTask) {
+                (this.currentTask as any).startUserId = instance.startUserId;
+              }
+            },
+            error: (err) => console.error('Error fetching instance details:', err)
+          });
+        }
         
         this.taskService.getTaskVariables(task.id).subscribe({
           next: (vars: any) => {

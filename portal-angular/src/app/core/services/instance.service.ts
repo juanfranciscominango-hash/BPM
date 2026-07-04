@@ -30,4 +30,8 @@ export class InstanceService {
   getActiveActivities(instanceId: string): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/${instanceId}/active-activities`);
   }
+
+  getInstance(instanceId: string): Observable<ProcessInstance> {
+    return this.http.get<ProcessInstance>(`${this.apiUrl}/${instanceId}`);
+  }
 }
