@@ -101,8 +101,16 @@ public class ProcessService {
         // Inject authenticated user as creator and advisor
         try {
             org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            String username = null;
             if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-                String username = auth.getName();
+                username = auth.getName();
+            } else if (variables != null && variables.containsKey("usuarioCreacion")) {
+                username = String.valueOf(variables.get("usuarioCreacion"));
+            } else if (variables != null && variables.containsKey("initiator")) {
+                username = String.valueOf(variables.get("initiator"));
+            }
+            
+            if (username != null && !username.trim().isEmpty() && !"anonymousUser".equalsIgnoreCase(username)) {
                 variables.put("usuarioCreacion", username);
                 variables.put("asesorAsignado", username);
                 variables.put("asesor", username);

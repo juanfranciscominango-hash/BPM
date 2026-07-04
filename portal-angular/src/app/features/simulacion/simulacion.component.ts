@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 import { ApiManagerService } from '../../core/services/api-manager.service';
 import { ProcessService } from '../../core/services/process.service';
 import { TaskService } from '../../core/services/task.service';
-
+import { AuthService } from '../../core/services/auth.service';
 import { ParametricService } from '../../core/services/parametric.service';
 import { FormulasUtil } from '../../core/utils/formulas.util';
 import { debounceTime } from 'rxjs/operators';
@@ -57,6 +57,7 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
   private taskService = inject(TaskService);
   private parametricService = inject(ParametricService);
   private ngZone = inject(NgZone);
+  private authService = inject(AuthService);
 
   buscandoCliente = false;
 
@@ -783,8 +784,15 @@ export class SimulacionComponent implements OnInit, AfterViewInit {
     const productoSeleccionado = this.productosCredito.find(p => p.codigo == formData.producto || p.id == formData.producto);
     const productoId = productoSeleccionado ? productoSeleccionado.id : formData.producto;
 
+    const currentUserObj = this.authService.getCurrentUser();
+    const currentUsername = currentUserObj ? currentUserObj.username : 'sistema';
+
     const processVariables = {
       ...restFormData,
+      usuarioCreacion: currentUsername,
+      asesorAsignado: currentUsername,
+      asesor: currentUsername,
+      initiator: currentUsername,
       ingresos_array: ingresos,
       deudas_array: deudas,
 

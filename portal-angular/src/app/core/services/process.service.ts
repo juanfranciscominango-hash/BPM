@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 export interface ProcessDefinition {
   id?: number;
@@ -43,6 +44,7 @@ export interface TrackingItem {
 })
 export class ProcessService {
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
   private apiUrl = '/api/v1/processes';
 
   getProcesses(): Observable<ProcessDefinition[]> {
@@ -70,7 +72,16 @@ export class ProcessService {
   }
 
   startInstance(key: string, variables: any = {}): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${key}/start`, variables);
+    const user = this.authService.getCurrentUser();
+    const username = user ? user.username : 'sistema';
+    const enrichedVariables = {
+      usuarioCreacion: username,
+      asesorAsignado: username,
+      asesor: username,
+      initiator: username,
+      ...variables
+    };
+    return this.http.post<void>(`${this.apiUrl}/${key}/start`, enrichedVariables);
   }
 
   deleteInstance(instanceId: string, reason: string = 'Cancelled by user'): Observable<void> {
