@@ -511,14 +511,14 @@ export class BandejaTareasComponent implements OnInit {
   gridForm: FormGroup | null = null;
   gridFormAttributes: MetaAttribute[] = [];
 
-  columns = [
-    { key: 'task', label: 'Tarea', visible: true },
-    { key: 'caseNumber', label: 'Número Caso', visible: true },
-    { key: 'client', label: 'Cliente / ID', visible: true },
-    { key: 'creditDetails', label: 'Detalles Crédito', visible: true },
-    { key: 'assignee', label: 'Asignado a', visible: true },
-    { key: 'advisor', label: 'Asesor', visible: true },
-    { key: 'createTime', label: 'Fecha Creación', visible: true }
+  columns: any[] = [
+    { key: 'task', label: 'Tarea', visible: true, type: 'text' },
+    { key: 'caseNumber', label: 'Número Caso', visible: true, type: 'text' },
+    { key: 'client', label: 'Cliente / ID', visible: true, type: 'text' },
+    { key: 'creditDetails', label: 'Detalles Crédito', visible: true, type: 'currency' },
+    { key: 'assignee', label: 'Asignado a', visible: true, type: 'text' },
+    { key: 'advisor', label: 'Asesor', visible: true, type: 'text' },
+    { key: 'createTime', label: 'Fecha Creación', visible: true, type: 'date' }
   ];
 
   guardarPreferenciasColumnas() {
