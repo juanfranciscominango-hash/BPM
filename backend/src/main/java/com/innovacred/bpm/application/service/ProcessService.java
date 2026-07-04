@@ -98,6 +98,21 @@ public class ProcessService {
             variables = new java.util.HashMap<>();
         }
         
+        // Inject authenticated user as creator and advisor
+        try {
+            org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+                String username = auth.getName();
+                variables.put("usuarioCreacion", username);
+                variables.put("asesorAsignado", username);
+                variables.put("asesor", username);
+                variables.put("initiator", username);
+                org.flowable.engine.impl.identity.Authentication.setAuthenticatedUserId(username);
+            }
+        } catch (Exception e) {
+            log.warn("No se pudo establecer el usuario autenticado para la instancia: {}", e.getMessage());
+        }
+        
         // 1. Obtener la definición de proceso personalizada
         var procDefOpt = processDefinitionRepository.findByKey(processKey);
         

@@ -20,15 +20,77 @@ public class TaskRestController {
     private final RepositoryService repositoryService;
     private final RuntimeService runtimeService;
     private final com.innovacred.bpm.application.service.BpmTaskService bpmTaskService;
+    private final com.innovacred.bpm.infrastructure.adapter.persistence.UserAccountRepository userRepository;
 
     @GetMapping
     public List<TaskResponse> listTasks(@RequestParam(required = false) String assignee) {
+        System.out.println("DEBUG: listTasks called with assignee = " + assignee);
         var query = taskService.createTaskQuery().includeProcessVariables();
+        
+        boolean isAsesorOnly = false;
+        if (assignee != null && !assignee.isEmpty()) {
+            var userOpt = userRepository.findByUsername(assignee);
+            if (userOpt.isPresent()) {
+                var roles = userOpt.get().getRoles().stream()
+                        .map(com.innovacred.bpm.domain.entity.Role::getName)
+                        .collect(Collectors.toList());
+                boolean isAdmin = roles.contains("ADMINISTRADOR");
+                boolean isAsesor = roles.contains("ASESOR_CREDITO");
+                if (isAsesor && !isAdmin) {
+                    isAsesorOnly = true;
+                }
+            }
+        }
+
         if (assignee != null && !assignee.isEmpty()) {
             query.taskCandidateOrAssigned(assignee);
         }
         
-        return query.list().stream()
+        List<Task> list = query.list();
+        System.out.println("DEBUG: Flowable query returned " + list.size() + " tasks. Filter as advisor only: " + isAsesorOnly);
+        
+        if (isAsesorOnly && assignee != null) {
+            final String finalAssignee = assignee;
+            list = list.stream().filter(t -> {
+                // If it is explicitly assigned to this user, show it
+                if (finalAssignee.equalsIgnoreCase(t.getAssignee())) {
+                    return true;
+                }
+                
+                // Check if any creator variable matches
+                Map<String, Object> vars = t.getProcessVariables();
+                String creator = null;
+                if (vars.containsKey("usuarioCreacion")) {
+                    creator = String.valueOf(vars.get("usuarioCreacion"));
+                } else if (vars.containsKey("asesor")) {
+                    creator = String.valueOf(vars.get("asesor"));
+                } else if (vars.containsKey("asesorAsignado")) {
+                    creator = String.valueOf(vars.get("asesorAsignado"));
+                }
+                
+                if (creator != null && !creator.trim().isEmpty()) {
+                    return creator.equalsIgnoreCase(finalAssignee);
+                }
+                
+                // Fallback: check Flowable process start user ID
+                try {
+                    org.flowable.engine.runtime.ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+                        .processInstanceId(t.getProcessInstanceId())
+                        .singleResult();
+                    if (pi != null && pi.getStartUserId() != null) {
+                        return pi.getStartUserId().equalsIgnoreCase(finalAssignee);
+                    }
+                } catch (Exception e) {}
+                
+                return false;
+            }).collect(Collectors.toList());
+        }
+
+        for (Task t : list) {
+            System.out.println("  -> Task ID: " + t.getId() + " | Name: " + t.getName() + " | Assignee: " + t.getAssignee());
+        }
+        
+        return list.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
