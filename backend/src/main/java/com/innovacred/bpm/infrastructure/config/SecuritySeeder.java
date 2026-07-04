@@ -89,6 +89,7 @@ public class SecuritySeeder implements CommandLineRunner {
         createPerm("ACCESO_PLANTILLAS", "Gestión de Plantillas Documentales");
         createPerm("ACCESO_SEGURIDAD", "Administración de Usuarios y Roles");
         createPerm("ACCESO_MONITOREO", "Monitoreo de Instancias y Auditoría");
+        createPerm("ACCESO_CRM", "Gestión del módulo CRM de prospectos y leads");
     }
 
     private void initializeSecurity() {
@@ -99,9 +100,10 @@ public class SecuritySeeder implements CommandLineRunner {
         Permission pDoc = permissionRepository.findByCode("ACCESO_PLANTILLAS").get();
         Permission pSeg = permissionRepository.findByCode("ACCESO_SEGURIDAD").get();
         Permission pMon = permissionRepository.findByCode("ACCESO_MONITOREO").get();
+        Permission pCrm = permissionRepository.findByCode("ACCESO_CRM").get();
 
-        Role adminRole = ensureRole("ADMINISTRADOR", new HashSet<>(List.of(pReglas, pParam, pApis, pPant, pDoc, pSeg, pMon)));
-        ensureRole("ASESOR_CREDITO", new HashSet<>()); // Solo acceso básico a bandejas
+        Role adminRole = ensureRole("ADMINISTRADOR", new HashSet<>(List.of(pReglas, pParam, pApis, pPant, pDoc, pSeg, pMon, pCrm)));
+        ensureRole("ASESOR_CREDITO", new HashSet<>(List.of(pCrm))); // Permitir acceso al CRM
         ensureRole("ANALISTA_RIESGO", new HashSet<>(List.of(pReglas, pParam)));
         ensureRole("COMITE_CREDITO", new HashSet<>(List.of(pMon)));
         ensureRole("OPERACIONES", new HashSet<>(List.of(pDoc)));
@@ -120,10 +122,16 @@ public class SecuritySeeder implements CommandLineRunner {
     }
 
     private Role ensureRole(String name, Set<Permission> perms) {
-        return roleRepository.findAll().stream()
+        Role role = roleRepository.findAll().stream()
                 .filter(r -> name.equals(r.getName()))
                 .findFirst()
-                .orElseGet(() -> roleRepository.save(Role.builder().name(name).permissions(perms).build()));
+                .orElse(null);
+        if (role == null) {
+            return roleRepository.save(Role.builder().name(name).permissions(perms).build());
+        } else {
+            role.setPermissions(perms);
+            return roleRepository.save(role);
+        }
     }
 
     private void initializeMenu() {
