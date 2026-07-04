@@ -26,6 +26,8 @@
     height: 100vh;
     z-index: 1000;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     &.sidebar-collapsed {
       width: 70px;
