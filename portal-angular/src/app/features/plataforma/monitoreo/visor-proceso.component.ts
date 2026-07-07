@@ -55,16 +55,16 @@ export class VisorProcesoComponent implements OnInit, OnDestroy {
   }
 
   private cargarDiagrama() {
-    // Extraer el ID interno de nuestra BD desde el processDefinitionId de Flowable
-    // El ID de Flowable suele ser "key:version:id"
-    // Pero nosotros necesitamos el ID de nuestra tabla ProcessDefinition para obtener el XML
-    // Vamos a buscar por KEY
-    const key = this.processDefinitionId.split(':')[0];
-    
-    this.processService.getProcesses().subscribe(processes => {
-      const process = processes.find(p => p.key === key);
-      if (process && process.bpmnXml) {
-        this.render(process.bpmnXml);
+    this.processService.getProcessByProcDefId(this.processDefinitionId).subscribe({
+      next: (process) => {
+        if (process && process.bpmnXml) {
+          this.render(process.bpmnXml);
+        } else {
+          console.warn('Process definition or BPMN XML not found for:', this.processDefinitionId);
+        }
+      },
+      error: (err) => {
+        console.error('Error loading process definition by procDefId:', err);
       }
     });
   }

@@ -179,8 +179,8 @@ $theme-toggle-dark-hover-text: $dark-innova-blue;
   --bg-surface: #{$innova-surface};
   
   /* Textura */
-  --text-primary: #{$innova-on-surface};
-  --text-secondary: #{$innova-on-surface-variant};
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
   --text-muted: #{$text-muted};
   
   /* Bordes */
