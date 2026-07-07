@@ -19,6 +19,7 @@ public class FormulaDefinition {
     private String description;
     private int version;
     private String author;
+    private String category;
     
     @Column(columnDefinition = "TEXT")
     private String expression;

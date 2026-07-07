@@ -9,6 +9,8 @@ import org.springframework.context.expression.MapAccessor;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.context.expression.BeanFactoryResolver;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class FormulaService {
 
     private final FormulaDefinitionRepository formulaRepository;
     private final FormulaHistoryRepository historyRepository;
+    private final BeanFactory beanFactory;
     
     private final ExpressionParser parser = new SpelExpressionParser();
 
@@ -72,6 +75,7 @@ public class FormulaService {
         try {
             StandardEvaluationContext context = new StandardEvaluationContext(variables);
             context.addPropertyAccessor(new MapAccessor());
+            context.setBeanResolver(new BeanFactoryResolver(beanFactory));
             return parser.parseExpression(expression).getValue(context);
         } catch (Exception e) {
             throw new RuntimeException("Error evaluando la fórmula: " + e.getMessage(), e);
