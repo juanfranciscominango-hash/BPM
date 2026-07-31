@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,10 +11,14 @@ import { ProcessService } from '../../../core/services/process.service';
 import { ScreenService } from '../../../core/services/screen.service';
 import { DocumentService } from '../../../core/services/document.service';
 import { InstanceService } from '../../../core/services/instance.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { TaskActionService } from '../../../core/services/task-action.service';
 import { SimulacionComponent } from '../../simulacion/simulacion.component';
 import { AnalisisCreditoComponent } from '../../analisis-credito/analisis-credito.component';
 import { FormulasUtil } from '../../../core/utils/formulas.util';
 import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.directive';
+import { CanComponentDeactivate } from '../../../core/guards/pending-changes.guard';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-wizard-flujo',
@@ -22,7 +26,7 @@ import { TwoDecimalsDirective } from '../../../shared/directives/two-decimals.di
   imports: [CommonModule, FormsModule, SimulacionComponent, AnalisisCreditoComponent, TwoDecimalsDirective],
   templateUrl: './wizard-flujo.component.html'
 })
-export class WizardFlujoComponent implements OnInit {
+export class WizardFlujoComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   private readonly _emptyArray: any[] = [];
   private http = inject(HttpClient);
   private apiManagerService = inject(ApiManagerService);
@@ -33,13 +37,21 @@ export class WizardFlujoComponent implements OnInit {
   private documentService = inject(DocumentService);
   private cdr = inject(ChangeDetectorRef);
   private taskService = inject(TaskService);
+  private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private instanceService = inject(InstanceService);
+  private taskActionService = inject(TaskActionService);
 
   currentTask: UserTask | null = null;
   taskId: string | null = null;
   isSubmitting = false;
+
+  /** Concurrencia: indica si esta sesión tomó el claim de la tarea */
+  taskClaimed = false;
+  /** Concurrencia: si la tarea ya está reclamada por otro usuario */
+  claimedByOther = false;
+  claimedByUser = '';
 
   procesos: any[] = [];
   selectedProcessKey: string = '';
@@ -159,6 +171,26 @@ export class WizardFlujoComponent implements OnInit {
 
   minReferenciasConfig: { [key: string]: number } = {};
 
+  canDeactivate(): boolean {
+    if (this.isSubmitting) {
+      return true;
+    }
+    if (this.currentTask) {
+      return confirm('¿Estás seguro de que deseas salir del trámite? Los cambios no guardados se perderán.');
+    }
+    return true;
+  }
+
+  ngOnDestroy() {
+    // Liberar el claim de la tarea al salir del componente
+    if (this.taskId && this.taskClaimed) {
+      this.http.post(
+        `${environment.back_url}/api/v1/processes/tasks/${this.taskId}/unclaim`,
+        {}, { responseType: 'json' }
+      ).subscribe({ error: (e) => console.warn('No se pudo liberar el claim:', e) });
+    }
+  }
+
   ngOnInit() {
     // Cargar parámetros generales para la regla de negocio de referencias
     this.parametricService.getTables().subscribe((tables: any[]) => {
@@ -208,6 +240,24 @@ export class WizardFlujoComponent implements OnInit {
   }
 
   cargarTarea(id: string) {
+    // Intentar reclamar la tarea al abrirla (bloqueo optimista)
+    const currentUsername = this.authService.getCurrentUser()?.username || '';
+    if (currentUsername) {
+      this.http.post(`${environment.back_url}/api/v1/processes/tasks/${id}/claim`,
+        { username: currentUsername }, { responseType: 'json' }
+      ).subscribe({
+        next: () => { this.taskClaimed = true; this.claimedByOther = false; },
+        error: (err) => {
+          // Si ya está reclamada por otro, mostramos aviso
+          const msg: string = err?.error?.error || '';
+          if (msg.toLowerCase().includes('already') || err.status === 400) {
+            this.claimedByOther = true;
+            this.claimedByUser = err?.error?.assignee || 'otro usuario';
+          }
+        }
+      });
+    }
+
     this.taskService.getTasks().subscribe((tasks: UserTask[]) => {
       const task = tasks.find(t => t.id === id);
       if (task) {
@@ -425,7 +475,7 @@ export class WizardFlujoComponent implements OnInit {
             }
 
             // Lógica para Requisitos Parametrizados
-            if (this.currentTask && (this.currentTask.taskDefinitionKey === 'Task_2' || this.currentTask.name.includes('Validar Requisitos'))) {
+            if (this.currentTask && (this.currentTask?.taskDefinitionKey === 'Task_2' || this.currentTask.name.includes('Validar Requisitos'))) {
               if (!this.gridRowsMap['requisitos_array'] || this.gridRowsMap['requisitos_array'].length === 0) {
                 this.parametricService.getTables().subscribe(tables => {
                   const reqTable = tables.find(t => t.name === 'requisitos');
@@ -606,22 +656,21 @@ export class WizardFlujoComponent implements OnInit {
          if (this.simOptions[key] && this.simOptions[key].length > 0) {
             const opt = this.simOptions[key].find((o: any) => String(o.codigo || o.id || o.code) === String(evalModel[key]));
             if (opt) {
-               evalModel[key] = String(opt.descripcion || opt.nombre || opt.label || opt.valor || evalModel[key]);
+               evalModel[key] = String(opt.codigo || opt.id || opt.code || opt.descripcion || opt.nombre || opt.label || evalModel[key]);
             }
          }
       }
 
-      const keysToEnsure = ['estado_civil', 'separacion_bienes', 'requiere_codeudor', 'tiene_conyuge'];
-      for (const k of keysToEnsure) {
-         if (!(k in evalModel)) evalModel[k] = '';
-      }
+      const safeContext = new Proxy(evalModel, {
+        get: (target: any, prop: string | symbol) => {
+          if (typeof prop === 'symbol') return undefined;
+          return prop in target ? target[prop] : '';
+        }
+      });
 
-      const keys = Object.keys(evalModel);
-      const values = Object.values(evalModel);
-      const fn = new Function(...keys, `return ${rule};`);
-      return !!fn(...values);
+      const fn = new Function('ctx', `with(ctx) { return (${rule}); }`);
+      return !!fn(safeContext);
     } catch (e) {
-      console.error('Visibility rule error', e, rule);
       return true;
     }
   }
@@ -921,6 +970,19 @@ export class WizardFlujoComponent implements OnInit {
   debugProcsKeys: string = '';
   debugError: string = '';
   debugVarsLoaded: string = '';
+
+  onFileSelected(event: any, fieldName: string) {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      this.uploadedMockFiles[fieldName] = file.name;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewModel[fieldName] = e.target?.result || file.name;
+        this.cdr.detectChanges();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
   uploadMock(fieldName: string) {
     this.uploadedMockFiles[fieldName] = 'archivo_prueba.pdf';
@@ -1339,7 +1401,8 @@ export class WizardFlujoComponent implements OnInit {
     if (valErrors.length > 0) {
       this.simNotificationType = 'warning';
       this.simNotification = 'Errores: ' + valErrors.join(', ');
-      setTimeout(() => this.simNotification = '', 8000);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => this.simNotification = '', 10000);
       return;
     }
     
@@ -1371,24 +1434,29 @@ export class WizardFlujoComponent implements OnInit {
           finalVars['solicitud_credito_monto_aprobado'] = Number(finalVars['solicitud_credito_monto_aprobado']);
       }
       
+      this.isSubmitting = true;
       this.taskService.completeTask(this.taskId, finalVars).subscribe({
         next: () => {
           this.simSubmitted = true;
           this.simNotificationType = 'success';
-          this.simNotification = 'Tarea completada exitosamente.';
+          this.simNotification = 'Tarea completada exitosamente. Redireccionando a Bandeja...';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
           setTimeout(() => {
             this.router.navigate(['/portal/bandeja']);
-          }, 2000);
+          }, 800);
         },
-        error: (err) => {
+        error: (err: any) => {
+          this.isSubmitting = false;
           this.simNotificationType = 'error';
-          this.simNotification = 'Error al completar tarea: ' + err.message;
-          setTimeout(() => this.simNotification = '', 4000);
+          this.simNotification = 'Error al completar tarea: ' + (err.error?.message || err.message || 'Error de servidor');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(() => this.simNotification = '', 6000);
         }
       });
     } else {
       this.simNotificationType = 'warning';
       this.simNotification = 'No hay una tarea activa para completar.';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => this.simNotification = '', 3000);
     }
   }
@@ -1403,24 +1471,40 @@ export class WizardFlujoComponent implements OnInit {
             finalVars[key] = "[]";
          }
       });
-      this.taskService.saveTaskVariables(this.taskId, finalVars).subscribe({
-        next: () => {
-          this.simNotificationType = 'success';
-          this.simNotification = 'Datos guardados';
-          this.cdr.detectChanges();
-          setTimeout(() => {
-            this.simNotification = '';
-            this.cdr.detectChanges();
-          }, 3000);
+      const procKey = this.selectedProcessKey || 'Desconocido';
+      const taskDefKey = this.currentTask?.taskDefinitionKey || 'Desconocido';
+      
+      this.taskActionService.evaluateEvent('ON_SAVE', procKey, taskDefKey, this.taskId, finalVars).subscribe({
+        next: (evalRes) => {
+          this.taskService.saveTaskVariables(this.taskId!, finalVars).subscribe({
+            next: () => {
+              this.simNotificationType = 'success';
+              this.simNotification = 'Datos guardados';
+              this.cdr.detectChanges();
+              setTimeout(() => {
+                this.simNotification = '';
+                this.cdr.detectChanges();
+              }, 3000);
+            },
+            error: (err) => {
+              this.simNotificationType = 'error';
+              this.simNotification = 'Error al guardar avance: ' + err.message;
+              this.cdr.detectChanges();
+              setTimeout(() => {
+                this.simNotification = '';
+                this.cdr.detectChanges();
+              }, 4000);
+            }
+          });
         },
         error: (err) => {
           this.simNotificationType = 'error';
-          this.simNotification = 'Error al guardar avance: ' + err.message;
+          this.simNotification = 'Error de validación (ON_SAVE): ' + (err.error?.error || err.message);
           this.cdr.detectChanges();
           setTimeout(() => {
             this.simNotification = '';
             this.cdr.detectChanges();
-          }, 4000);
+          }, 8000);
         }
       });
     } else {
@@ -1601,6 +1685,35 @@ export class WizardFlujoComponent implements OnInit {
       }
       return this._cachedPropietarioOpts;
     }
+    if (fieldName === 'tipoBoton' || fieldName === 'tipo_boton') {
+      if (this.simOptions[fieldName] && this.simOptions[fieldName].length > 0) return this.simOptions[fieldName];
+      return [
+        { id: 'URL', codigo: 'URL', descripcion: 'Enlace Web (URL)' },
+        { id: 'PHONE', codigo: 'PHONE', descripcion: 'Llamada Telefónica Directa' },
+        { id: 'QUICK_REPLY', codigo: 'QUICK_REPLY', descripcion: 'Respuesta Rápida / Acción' }
+      ];
+    }
+    if (fieldName === 'campoAtributo' || fieldName === 'campo_atributo') {
+      if (this.simOptions[fieldName] && this.simOptions[fieldName].length > 0) return this.simOptions[fieldName];
+      return [
+        { id: 'edad', codigo: 'edad', descripcion: 'Edad del Cliente' },
+        { id: 'calificacion', codigo: 'calificacion', descripcion: 'Calificación Crediticia / Riesgo' },
+        { id: 'morosidad', codigo: 'morosidad', descripcion: 'Estado de Pagos / Días Atraso' },
+        { id: 'agencia', codigo: 'agencia', descripcion: 'Agencia / Sucursal' },
+        { id: 'saldo_promedio', codigo: 'saldo_promedio', descripcion: 'Saldo Promedio en Cuenta' },
+        { id: 'tipo_cliente', codigo: 'tipo_cliente', descripcion: 'Tipo de Cliente (Persona/Empresa)' }
+      ];
+    }
+    if (fieldName === 'operadorLogico' || fieldName === 'operador_logico') {
+      if (this.simOptions[fieldName] && this.simOptions[fieldName].length > 0) return this.simOptions[fieldName];
+      return [
+        { id: 'EQ', codigo: 'EQ', descripcion: 'Es Igual a (=)' },
+        { id: 'GTE', codigo: 'GTE', descripcion: 'Mayor o Igual a (>=)' },
+        { id: 'LTE', codigo: 'LTE', descripcion: 'Menor o Igual a (<=)' },
+        { id: 'IN', codigo: 'IN', descripcion: 'En Lista (Contenido en)' },
+        { id: 'CONTAINS', codigo: 'CONTAINS', descripcion: 'Contiene Texto' }
+      ];
+    }
     if (fieldName === 'periodo') {
       return this._cachedPeriodoOpts;
     }
@@ -1659,3 +1772,4 @@ export class WizardFlujoComponent implements OnInit {
     }
   }
 }
+

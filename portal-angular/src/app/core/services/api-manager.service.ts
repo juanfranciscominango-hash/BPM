@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface ApiDefinition {
   id?: number;
@@ -46,7 +47,7 @@ export interface TramaField {
 })
 export class ApiManagerService {
   private http = inject(HttpClient);
-  private apiUrl = '/api/v1/api-manager';
+  private apiUrl = `${environment.back_url}/api/v1/api-manager`;
 
   getDefinitions(): Observable<ApiDefinition[]> {
     return this.http.get<ApiDefinition[]>(`${this.apiUrl}/definitions`);

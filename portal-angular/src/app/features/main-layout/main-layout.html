@@ -3,8 +3,9 @@
   <aside class="sidebar" [class.sidebar-collapsed]="sidebarCollapsed" [class.sidebar-open]="sidebarOpen">
     <div class="sidebar-header">
       <div class="sidebar-brand">
-        <div class="avatar bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-weight: bold;">B</div>
-        <span class="brand-text" *ngIf="!sidebarCollapsed">Plataforma BMP</span>
+        <div class="avatar bg-white text-primary rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 32px; height: 32px; font-weight: bold;">B</div>
+        <span class="brand-text" *ngIf="!sidebarCollapsed">Plataforma BPM</span>
       </div>
       <button class="sidebar-toggle" (click)="toggleSidebar()">
         <i class="bi" [class.bi-list]="sidebarCollapsed" [class.bi-chevron-left]="!sidebarCollapsed"></i>
@@ -24,7 +25,8 @@
               </a>
               <ul class="submenu" *ngIf="!sidebarCollapsed && submenuOpen[item.title]">
                 <li *ngFor="let child of item.children">
-                  <a [routerLink]="child.route" class="submenu-link" routerLinkActive="active" (click)="closeSidebar()" *ngIf="!child.permissionCode || hasPermission(child.permissionCode)">
+                  <a [routerLink]="child.route" class="submenu-link" routerLinkActive="active" (click)="closeSidebar()"
+                    *ngIf="!child.permissionCode || hasPermission(child.permissionCode)">
                     {{ child.title }}
                   </a>
                 </li>
@@ -34,9 +36,9 @@
 
           <!-- Item Simple -->
           <ng-template #singleItem>
-            <a *ngIf="!item.permissionCode || hasPermission(item.permissionCode)"
-               [routerLink]="item.route" class="nav-link" routerLinkActive="active"
-               [title]="sidebarCollapsed ? item.title : ''" (click)="closeSidebar()">
+            <a *ngIf="!item.permissionCode || hasPermission(item.permissionCode)" [routerLink]="item.route"
+              class="nav-link" routerLinkActive="active" [title]="sidebarCollapsed ? item.title : ''"
+              (click)="closeSidebar()">
               <i [class]="item.icon"></i>
               <span class="nav-text" *ngIf="!sidebarCollapsed">{{ item.title }}</span>
             </a>
@@ -74,17 +76,21 @@
           <div class="header-notifications dropdown">
             <button class="btn btn-link p-0 text-white position-relative" id="notifDropdown" data-bs-toggle="dropdown">
               <i class="bi bi-bell fs-5"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="notifications.length > 0">
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                *ngIf="notifications.length > 0">
                 {{ notifications.length }}
               </span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-0">
-              <li><h6 class="dropdown-header">Notificaciones</h6></li>
+              <li>
+                <h6 class="dropdown-header">Notificaciones</h6>
+              </li>
               <li *ngIf="notifications.length === 0" class="p-4 text-center text-muted small">
                 No tienes notificaciones pendientes
               </li>
               <li *ngFor="let n of notifications">
-                <a class="dropdown-item d-flex align-items-start gap-3" href="javascript:void(0)" (click)="leerNotificacion(n)">
+                <a class="dropdown-item d-flex align-items-start gap-3" href="javascript:void(0)"
+                  (click)="leerNotificacion(n)">
                   <div class="notification-icon" [ngClass]="'bg-' + (n.type || 'info')">
                     <i class="bi bi-info-circle" *ngIf="n.type === 'info'"></i>
                     <i class="bi bi-exclamation-triangle" *ngIf="n.type === 'warning'"></i>
@@ -100,20 +106,25 @@
           </div>
 
           <innova-theme-toggle></innova-theme-toggle>
-          
+
           <div class="header-user dropdown">
-            <button class="btn btn-link p-0 text-white text-decoration-none d-flex align-items-center" id="userDropdown" data-bs-toggle="dropdown">
-              <img [src]="'https://ui-avatars.com/api/?name=' + userInfo.name + '&background=0D6EFD&color=fff'" 
-                   class="rounded-circle border me-2" style="width: 32px; height: 32px;">
+            <button class="btn btn-link p-0 text-white text-decoration-none d-flex align-items-center" id="userDropdown"
+              data-bs-toggle="dropdown">
+              <img [src]="'https://ui-avatars.com/api/?name=' + userInfo.name + '&background=0D6EFD&color=fff'"
+                class="rounded-circle border me-2" style="width: 32px; height: 32px;">
               <i class="bi bi-chevron-down small text-white-50"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-              <li><h6 class="dropdown-header">{{ userInfo.email }}</h6></li>
-              <li><hr class="dropdown-divider"></li>
+              <li>
+                <h6 class="dropdown-header">{{ userInfo.email }}</h6>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
               <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Mi Perfil</a></li>
               <li><a class="dropdown-item text-danger" href="javascript:void(0)" (click)="logout($event)">
-                <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
-              </a></li>
+                  <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                </a></li>
             </ul>
           </div>
         </div>

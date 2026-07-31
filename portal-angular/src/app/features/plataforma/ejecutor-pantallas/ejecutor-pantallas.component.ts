@@ -319,10 +319,27 @@ export class EjecutorPantallasComponent implements OnInit, DoCheck {
   evaluateVisibilityRule(rule: string): boolean {
     if (!rule || !rule.trim()) return true;
     try {
-      const keys = Object.keys(this.previewModel);
-      const values = Object.values(this.previewModel);
-      const fn = new Function(...keys, `return ${rule};`);
-      return !!fn(...values);
+      const evalModel = { ...this.previewModel };
+
+      // Convert combo IDs back to labels for rule evaluation
+      for (let key in evalModel) {
+         if (this.simOptions[key] && this.simOptions[key].length > 0) {
+            const opt = this.simOptions[key].find((o: any) => String(o.codigo || o.id || o.code) === String(evalModel[key]));
+            if (opt) {
+               evalModel[key] = String(opt.codigo || opt.id || opt.code || opt.descripcion || opt.nombre || opt.label || evalModel[key]);
+            }
+         }
+      }
+
+      const safeContext = new Proxy(evalModel, {
+        get: (target: any, prop: string | symbol) => {
+          if (typeof prop === 'symbol') return undefined;
+          return prop in target ? target[prop] : '';
+        }
+      });
+
+      const fn = new Function('ctx', `with(ctx) { return (${rule}); }`);
+      return !!fn(safeContext);
     } catch (e) {
       return true;
     }
@@ -458,6 +475,19 @@ export class EjecutorPantallasComponent implements OnInit, DoCheck {
     }
   }
 
+
+  onFileSelected(event: any, fieldName: string) {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      this.uploadedMockFiles[fieldName] = file.name;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewModel[fieldName] = e.target?.result || file.name;
+        this.cdr.detectChanges();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
   uploadMock(fieldName: string) {
     this.uploadedMockFiles[fieldName] = 'archivo_prueba.pdf';
@@ -705,6 +735,35 @@ export class EjecutorPantallasComponent implements OnInit, DoCheck {
   }
 
   getSimOptions(fieldName: string): any[] {
+    if (fieldName === 'tipoBoton' || fieldName === 'tipo_boton') {
+      if (this.simOptions[fieldName] && this.simOptions[fieldName].length > 0) return this.simOptions[fieldName];
+      return [
+        { id: 'URL', codigo: 'URL', descripcion: 'Enlace Web (URL)' },
+        { id: 'PHONE', codigo: 'PHONE', descripcion: 'Llamada Telefónica Directa' },
+        { id: 'QUICK_REPLY', codigo: 'QUICK_REPLY', descripcion: 'Respuesta Rápida / Acción' }
+      ];
+    }
+    if (fieldName === 'campoAtributo' || fieldName === 'campo_atributo') {
+      if (this.simOptions[fieldName] && this.simOptions[fieldName].length > 0) return this.simOptions[fieldName];
+      return [
+        { id: 'edad', codigo: 'edad', descripcion: 'Edad del Cliente' },
+        { id: 'calificacion', codigo: 'calificacion', descripcion: 'Calificación Crediticia / Riesgo' },
+        { id: 'morosidad', codigo: 'morosidad', descripcion: 'Estado de Pagos / Días Atraso' },
+        { id: 'agencia', codigo: 'agencia', descripcion: 'Agencia / Sucursal' },
+        { id: 'saldo_promedio', codigo: 'saldo_promedio', descripcion: 'Saldo Promedio en Cuenta' },
+        { id: 'tipo_cliente', codigo: 'tipo_cliente', descripcion: 'Tipo de Cliente (Persona/Empresa)' }
+      ];
+    }
+    if (fieldName === 'operadorLogico' || fieldName === 'operador_logico') {
+      if (this.simOptions[fieldName] && this.simOptions[fieldName].length > 0) return this.simOptions[fieldName];
+      return [
+        { id: 'EQ', codigo: 'EQ', descripcion: 'Es Igual a (=)' },
+        { id: 'GTE', codigo: 'GTE', descripcion: 'Mayor o Igual a (>=)' },
+        { id: 'LTE', codigo: 'LTE', descripcion: 'Menor o Igual a (<=)' },
+        { id: 'IN', codigo: 'IN', descripcion: 'En Lista (Contenido en)' },
+        { id: 'CONTAINS', codigo: 'CONTAINS', descripcion: 'Contiene Texto' }
+      ];
+    }
     if (!this.simOptions[fieldName]) {
       this.simOptions[fieldName] = [];
     }

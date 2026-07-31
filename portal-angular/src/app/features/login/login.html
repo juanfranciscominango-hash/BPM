@@ -11,19 +11,13 @@
     <div class="branding-section">
       <div class="branding-content">
         <div class="icon-group mb-4">
-          <img src="assets/images/logo-chibuleo.png" onerror="this.style.display='none';" alt="Cooperativa Chibuleo" style="max-width: 300px; height: auto;" />
+          <img [src]="logoPath" onerror="this.style.display='none';" alt="Logo" style="max-width: 300px; height: auto; border: none; background: transparent; box-shadow: none;" />
         </div>
         
-        <h1 class="logo-text">Chibuleo</h1>
-        <p class="logo-subtitle">COOPERATIVA DE AHORRO Y CRÉDITO</p>
+        <h1 class="logo-text">{{ brandName }}</h1>
+        <p class="logo-subtitle">{{ slogan }}</p>
       </div>
       
-      <!-- Badge de Entorno opcional -->
-      <div class="environment-info">
-        <span class="badge" [ngClass]="environmentClass">
-          {{ currentEnvironment }}
-        </span>
-      </div>
     </div>
 
     <!-- Columna Derecha: Formulario de Ingreso -->
@@ -31,12 +25,12 @@
       <div class="login-form-wrapper">
         <div class="form-header text-end mb-5">
            <div class="small-logo-group d-flex flex-column align-items-end">
-            <img src="assets/images/logo-chibuleo.png" onerror="this.style.display='none';" alt="Chibuleo" style="max-height: 40px; margin-bottom: 5px;" />
-            <div class="small-logo-subtitle">COOPERATIVA DE AHORRO Y CRÉDITO</div>
+            <img [src]="logoPath" onerror="this.style.display='none';" alt="Logo" style="max-height: 40px; margin-bottom: 5px;" />
+            <div class="small-logo-subtitle">{{ slogan }}</div>
            </div>
         </div>
 
-        <form (ngSubmit)="onLogin(loginForm)" #loginForm="ngForm">
+        <form (ngSubmit)="onLogin(loginForm)" #loginForm="ngForm" autocomplete="off">
           <div class="form-group mb-4">
             <label for="username" class="form-label">USUARIO</label>
             <input 
@@ -48,6 +42,7 @@
               name="username"
               #userName="ngModel"
               placeholder="Usuario"
+              autocomplete="off"
               required>
             <div *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="invalid-feedback">
               El usuario es requerido.
@@ -79,28 +74,7 @@
             </div>
           </div>
 
-          <div class="form-group mb-4">
-            <label for="dominio" class="form-label">DOMINIO</label>
-            <input 
-              type="text" 
-              class="form-control" 
-              id="dominio" 
-              [(ngModel)]="dominio"
-              name="dominio"
-              placeholder="Dominio">
-          </div>
 
-          <div class="form-check mb-4">
-            <input 
-              type="checkbox" 
-              class="form-check-input" 
-              id="authDomain" 
-              [(ngModel)]="autenticarContraDominio"
-              name="authDomain">
-            <label class="form-check-label" for="authDomain">
-              Autenticar contra dominio
-            </label>
-          </div>
 
           <button type="submit" class="btn btn-primary-login w-100" [disabled]="isLoading">
             <span *ngIf="!isLoading">Ingresar</span>

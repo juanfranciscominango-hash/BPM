@@ -1,0 +1,41 @@
+.consola-container {
+  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.avatar-icon {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-call-next {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+
+  &:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(79, 70, 229, 0.6);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.turno-code-huge {
+  font-size: 5rem;
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.extra-small {
+  font-size: 0.75rem;
+}
+
+.tracking-wider {
+  letter-spacing: 1.5px;
+}

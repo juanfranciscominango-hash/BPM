@@ -2,6 +2,8 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, catchError, of } from 'rxjs';
 import { CONSTANTES } from '../../constantes';
+import { environment } from '../../../environments/environment';
+import { ThemeService } from './theme.service';
 
 export interface User {
   id: number;
@@ -9,6 +11,7 @@ export interface User {
   fullName: string;
   roles: string[];
   permissions: string[];
+  sessionId?: string;
 }
 
 export interface LoginCredentials {
@@ -21,8 +24,8 @@ export interface LoginCredentials {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = '/api/v1/auth';
-  
+  private apiUrl = `${environment.back_url}/api/v1/auth`;
+
   private currentUserSignal = signal<User | null>(null);
   private loadingSignal = signal<boolean>(false);
   private errorSignal = signal<string | null>(null);
@@ -48,6 +51,8 @@ export class AuthService {
     }
   }
 
+  private themeService = inject(ThemeService);
+
   login(credentials: LoginCredentials): Observable<User | null> {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -58,6 +63,8 @@ export class AuthService {
           this.currentUserSignal.set(user);
           localStorage.setItem(CONSTANTES.STORAGE.USER, JSON.stringify(user));
           this.errorSignal.set(null);
+          // Cargar colores y logotipo desde la base de datos tras loguearse
+          this.themeService.loadColorsFromDatabase();
         }
         this.loadingSignal.set(false);
         return user;

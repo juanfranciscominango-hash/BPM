@@ -33,12 +33,13 @@
               <th>Detalles Crédito</th>
               <th>Asesor</th>
               <th class="text-start">Actividad</th>
+              <th class="text-center">SLA</th>
               <th>Fecha Creación</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="loading">
-              <td colspan="7" class="text-center py-5">
+              <td colspan="8" class="text-center py-5">
                 <div class="spinner-border text-primary" role="status">
                   <span class="visually-hidden">Cargando...</span>
                 </div>
@@ -46,7 +47,7 @@
               </td>
             </tr>
             <tr *ngIf="!loading && filteredTasks.length === 0">
-              <td colspan="7" class="text-center py-5 text-muted">
+              <td colspan="8" class="text-center py-5 text-muted">
                 <i class="bi bi-inbox fs-2"></i>
                 <div class="mt-2">No hay tareas pendientes en tu bandeja.</div>
               </td>
@@ -64,6 +65,8 @@
                     <li><a class="dropdown-item py-2 cursor-pointer" (click)="abrirConsultaGrafica(task, $event); activeDropdownTaskId = null;"><i class="bi bi-zoom-in me-2 text-muted"></i> Consulta Gráfica</a></li>
                     <li><a class="dropdown-item py-2 cursor-pointer" (click)="abrirLineaDeTiempo(task, $event); activeDropdownTaskId = null;"><i class="bi bi-diagram-3 me-2 text-muted"></i> Línea de tiempo</a></li>
                     <li><a class="dropdown-item py-2 cursor-pointer" (click)="abrirTracking(task, $event); activeDropdownTaskId = null;"><i class="bi bi-signpost-split me-2 text-muted"></i> Tracking</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item py-2 cursor-pointer" (click)="abrirReasignacion(task, $event); activeDropdownTaskId = null;"><i class="bi bi-person-lines-fill me-2 text-info"></i> Reasignar Tarea</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item py-2 text-danger cursor-pointer" (click)="cancelarProceso(task, $event); activeDropdownTaskId = null;"><i class="bi bi-x-circle me-2"></i> Cancelar Caso</a></li>
                   </ul>
@@ -93,6 +96,26 @@
                   <span class="d-inline-block rounded-circle bg-danger me-2" style="width: 8px; height: 8px;"></span>
                   {{ task.name }}
                 </span>
+              </td>
+              <!-- SLA Semaphore -->
+              <td class="text-center">
+                <ng-container *ngIf="task.slaInfo?.hasSla; else noSla">
+                  <!-- EXPIRED -->
+                  <span *ngIf="task.slaInfo?.slaStatus === 'EXPIRED'" class="badge rounded-pill px-3 py-2" style="background-color: rgba(220, 53, 69, 0.12); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.25);">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i>Vencido
+                  </span>
+                  <!-- WARNING -->
+                  <span *ngIf="task.slaInfo?.slaStatus === 'WARNING'" class="badge rounded-pill px-3 py-2" style="background-color: rgba(255, 193, 7, 0.15); color: #b8860b; border: 1px solid rgba(255, 193, 7, 0.3);">
+                    <i class="bi bi-clock-history me-1"></i>{{ formatTimeRemaining(task.slaInfo?.timeRemainingMs) }}
+                  </span>
+                  <!-- OK -->
+                  <span *ngIf="task.slaInfo?.slaStatus === 'OK'" class="badge rounded-pill px-3 py-2" style="background-color: rgba(25, 135, 84, 0.1); color: #198754; border: 1px solid rgba(25, 135, 84, 0.2);">
+                    <i class="bi bi-check-circle me-1"></i>{{ formatTimeRemaining(task.slaInfo?.timeRemainingMs) }}
+                  </span>
+                </ng-container>
+                <ng-template #noSla>
+                  <span class="text-muted small">—</span>
+                </ng-template>
               </td>
               <td class="text-muted small">{{ task.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
             </tr>

@@ -1,0 +1,87 @@
+.display-tv-container {
+  min-height: 100vh;
+  background: #090d16;
+  color: #ffffff;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.display-header {
+  background: #0f172a;
+  border-bottom: 3px solid #1e293b;
+}
+
+.tv-logo {
+  max-height: 60px;
+}
+
+.brand-title {
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+}
+
+.clock-time {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-family: monospace;
+  color: #38ef7d;
+}
+
+.clock-date {
+  font-size: 1rem;
+  text-transform: capitalize;
+}
+
+.main-call-card {
+  background: linear-gradient(145deg, #1e1b4b 0%, #0f172a 100%);
+  border-radius: 2rem !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.3s ease;
+}
+
+.new-call-flash {
+  animation: pulseGlow 1s infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+    border-color: #f59e0b !important;
+  }
+  100% {
+    box-shadow: 0 0 70px rgba(245, 158, 11, 0.9);
+    border-color: #fbbf24 !important;
+  }
+}
+
+.turno-display-code {
+  font-size: 7.5rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
+}
+
+.ventanilla-display-box {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+
+  .ventanilla-number {
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+}
+
+.side-card {
+  background: #1e293b;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+  .table-dark {
+    --bs-table-bg: transparent;
+  }
+}

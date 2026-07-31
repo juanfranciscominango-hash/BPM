@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface DocumentDefinition {
   id?: number;
@@ -29,7 +30,7 @@ export interface StoredDocument {
 })
 export class DocumentService {
   private http = inject(HttpClient);
-  private apiUrl = '/api/v1/documents';
+  private apiUrl = `${environment.back_url}/api/v1/documents`;
 
   getDefinitions(processKey: string): Observable<DocumentDefinition[]> {
     return this.http.get<DocumentDefinition[]>(`${this.apiUrl}/definitions/${processKey}`);

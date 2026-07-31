@@ -20,6 +20,7 @@ public class TaskRestController {
     private final RepositoryService repositoryService;
     private final RuntimeService runtimeService;
     private final com.innovacred.bpm.application.service.BpmTaskService bpmTaskService;
+    private final com.innovacred.bpm.application.service.TaskSlaService taskSlaService;
     private final com.innovacred.bpm.infrastructure.adapter.persistence.UserAccountRepository userRepository;
     private final com.innovacred.bpm.infrastructure.adapter.persistence.DynamicColumnDefinitionRepository dynamicColumnRepository;
 
@@ -248,6 +249,9 @@ public class TaskRestController {
             }
         } catch (Exception e) {}
 
+        // Calcular SLA en tiempo real
+        Map<String, Object> slaInfo = taskSlaService.calculateSlaStatus(task);
+
         return new TaskResponse(
                 task.getId(),
                 task.getName(),
@@ -264,7 +268,8 @@ public class TaskRestController {
                 plazo,
                 producto,
                 resolveFullName(creator),
-                additionalVars
+                additionalVars,
+                slaInfo
         );
     }
 
@@ -284,6 +289,7 @@ public class TaskRestController {
             Integer plazo,
             String producto,
             String asesor,
-            java.util.Map<String, Object> additionalVariables
+            java.util.Map<String, Object> additionalVariables,
+            java.util.Map<String, Object> slaInfo
     ) {}
 }

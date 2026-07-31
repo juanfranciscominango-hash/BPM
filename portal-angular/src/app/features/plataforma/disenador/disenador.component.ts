@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 // @ts-ignore
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 
@@ -41,6 +42,17 @@ import { FormsModule } from '@angular/forms';
             </div>
           </div>
           <div class="actions text-nowrap d-flex align-items-center ms-4">
+              <div class="btn-group me-3 shadow-sm">
+                <button class="btn btn-outline-secondary btn-sm" (click)="zoomIn()" title="Acercar">
+                  <i class="bi bi-zoom-in"></i>
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" (click)="zoomOut()" title="Alejar">
+                  <i class="bi bi-zoom-out"></i>
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" (click)="zoomReset()" title="Restablecer">
+                  <i class="bi bi-aspect-ratio"></i>
+                </button>
+              </div>
               <input type="file" #fileInput style="display: none;" accept=".bpmn,.xml" (change)="importFile($event)">
               <button class="btn btn-outline-secondary btn-sm me-2" (click)="fileInput.click()">
                 <i class="bi bi-upload me-1"></i>Importar
@@ -60,21 +72,46 @@ import { FormsModule } from '@angular/forms';
       <div class="designer-main">
         <div #canvas class="canvas-container"></div>
         
-        <!-- Panel de Asignación de Roles (Estilo Bizagi) -->
-        <div class="role-assignment-panel shadow" *ngIf="selectedUserTask" [style.left.px]="panelLeft" [style.top.px]="panelTop">
+        <!-- Panel de Asignación de Roles y Balanceo (Estilo Bizagi) -->
+        <div class="role-assignment-panel shadow" *ngIf="selectedUserTask" [style.left.px]="panelLeft" [style.top.px]="panelTop" style="width: 380px;">
           <div class="card border-0">
             <div class="card-header bg-primary text-white py-2 d-flex justify-content-between align-items-center" style="cursor: move; user-select: none;" (mousedown)="onDragStart($event)">
               <h6 class="mb-0 fw-bold"><i class="bi bi-person-fill-gear me-2"></i>Asignar Participante</h6>
               <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="selectedUserTask = null" style="font-size: 0.8rem; cursor: pointer;"></button>
             </div>
             <div class="card-body p-3">
-              <label class="form-label small fw-bold text-muted">Asignar Rol a la Tarea:</label>
-              <select class="form-select" [(ngModel)]="selectedRole" (change)="updateTaskRole()">
-                <option value="">-- Sin Rol (Cualquiera) --</option>
-                <option *ngFor="let r of systemRoles" [value]="r.name">{{ r.name }}</option>
-              </select>
-              <div class="form-text small mt-2">
-                Los usuarios con este rol podrán ver y ejecutar esta tarea en su bandeja.
+              <!-- Método de Asignación / Reparto -->
+              <div class="mb-2">
+                <label class="form-label small fw-bold text-muted mb-1">Método de Asignación (Regla):</label>
+                <select class="form-select form-select-sm" [(ngModel)]="selectedMethod" (change)="onAllocationMethodChange()">
+                  <option value="EVERYONE">Todos (Cola Grupal)</option>
+                  <option value="LEAST_LOADED">Por Carga (Balanceo)</option>
+                  <option value="ROUND_ROBIN">Por Rotación (Secuencial)</option>
+                  <option value="SPECIFIC">Destinatario Específico</option>
+                </select>
+              </div>
+
+              <!-- Rol Destinatario (Solo si no es SPECIFIC) -->
+              <div class="mb-2" *ngIf="selectedMethod !== 'SPECIFIC'">
+                <label class="form-label small fw-bold text-muted mb-1">Asignar Rol a la Tarea:</label>
+                <select class="form-select form-select-sm" [(ngModel)]="selectedRole" (change)="updateTaskRole()">
+                  <option value="">-- Sin Rol (Cualquiera) --</option>
+                  <option *ngFor="let r of systemRoles" [value]="r.name">{{ r.name }}</option>
+                </select>
+              </div>
+
+              <!-- Variable / Expresión de Asignación (Solo si es SPECIFIC) -->
+              <div class="mb-2" *ngIf="selectedMethod === 'SPECIFIC'">
+                <label class="form-label small fw-bold text-muted mb-1">Variable de Asignación:</label>
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="selectedExpression" (input)="updateAllocationRuleMap()" placeholder="Ej: creador_caso, asesor_designado">
+              </div>
+
+              <div class="alert alert-info py-2 px-3 mb-0 small mt-2" style="font-size: 0.75rem;">
+                <i class="bi bi-info-circle-fill me-1"></i>
+                <span *ngIf="selectedMethod === 'EVERYONE'">La tarea será visible para todos los usuarios del rol.</span>
+                <span *ngIf="selectedMethod === 'LEAST_LOADED'">Se asignará al usuario activo del rol con menos tareas asignadas.</span>
+                <span *ngIf="selectedMethod === 'ROUND_ROBIN'">Se distribuirá secuencialmente en forma circular entre analistas del rol.</span>
+                <span *ngIf="selectedMethod === 'SPECIFIC'">Se asignará al usuario cuyo nombre coincida con la variable especificada.</span>
               </div>
             </div>
           </div>
@@ -196,12 +233,34 @@ export class DisenadorComponent implements OnInit, OnDestroy {
     return name.replace(/\s*\(?Bizagi\)?/gi, '');
   }
 
+  zoomIn() {
+    if (this.bpmnModeler) {
+      this.bpmnModeler.get('zoomScroll').stepZoom(1);
+    }
+  }
+
+  zoomOut() {
+    if (this.bpmnModeler) {
+      this.bpmnModeler.get('zoomScroll').stepZoom(-1);
+    }
+  }
+
+  zoomReset() {
+    if (this.bpmnModeler) {
+      this.bpmnModeler.get('canvas').zoom('fit-viewport');
+    }
+  }
+
   metaEntities: MetaEntity[] = [];
   selectedMetaEntityId: number | null = null;
 
   systemRoles: Role[] = [];
   selectedUserTask: any = null;
   selectedRole: string = '';
+  selectedMethod: string = 'EVERYONE';
+  selectedExpression: string = '';
+  allocationRulesMap: { [taskDefKey: string]: { id?: number, method: string, expression?: string, candidateGroup?: string, active: boolean } } = {};
+  private http = inject(HttpClient);
 
   // Propiedades para arrastrar (Drag & Drop)
   isDragging = false;
@@ -269,11 +328,17 @@ export class DisenadorComponent implements OnInit, OnDestroy {
       if (selection && selection.length === 1 && selection[0].type === 'bpmn:UserTask') {
         this.selectedUserTask = selection[0];
         const bo = this.selectedUserTask.businessObject;
-        // Check for either camunda:candidateGroups or flowable:candidateGroups
         this.selectedRole = bo.get('camunda:candidateGroups') || bo.get('flowable:candidateGroups') || '';
+        
+        const taskKey = bo.id;
+        const rule = this.allocationRulesMap[taskKey] || { method: 'EVERYONE', expression: '', active: true };
+        this.selectedMethod = rule.method;
+        this.selectedExpression = rule.expression || '';
       } else {
         this.selectedUserTask = null;
         this.selectedRole = '';
+        this.selectedMethod = 'EVERYONE';
+        this.selectedExpression = '';
       }
     });
 
@@ -301,12 +366,55 @@ export class DisenadorComponent implements OnInit, OnDestroy {
         this.currentProcessName = process.name;
         this.selectedMetaEntityId = process.metaEntityId || null;
         this.importDiagram(process.bpmnXml);
+        if (process.key) {
+          this.cargarReglasDeAsignacion(process.key);
+        }
       },
       error: (err) => {
         alert('Error al cargar el proceso para editar.');
         this.importDiagram(this.initialXml);
       }
     });
+  }
+
+  cargarReglasDeAsignacion(processKey: string) {
+    this.allocationRulesMap = {};
+    this.http.get<any[]>('/api/v1/task-allocation/rules').subscribe({
+      next: (rules) => {
+        rules.forEach(rule => {
+          if (rule.processDefinitionKey === processKey) {
+            this.allocationRulesMap[rule.taskDefinitionKey] = {
+              id: rule.id,
+              method: rule.allocationMethod,
+              expression: rule.specificExpression,
+              candidateGroup: rule.candidateGroup,
+              active: rule.active
+            };
+          }
+        });
+      }
+    });
+  }
+
+  onAllocationMethodChange() {
+    if (this.selectedMethod === 'SPECIFIC') {
+      this.selectedRole = '';
+      this.updateTaskRole();
+    }
+    this.updateAllocationRuleMap();
+  }
+
+  updateAllocationRuleMap() {
+    if (this.selectedUserTask) {
+      const taskKey = this.selectedUserTask.businessObject.id;
+      this.allocationRulesMap[taskKey] = {
+        id: this.allocationRulesMap[taskKey]?.id,
+        method: this.selectedMethod,
+        expression: this.selectedExpression,
+        candidateGroup: this.selectedMethod !== 'SPECIFIC' ? this.selectedRole : undefined,
+        active: true
+      };
+    }
   }
 
   ngOnDestroy() {
@@ -320,16 +428,15 @@ export class DisenadorComponent implements OnInit, OnDestroy {
       const modeling = this.bpmnModeler.get('modeling');
       
       if (!this.selectedRole) {
-        // If empty, remove the properties
         modeling.updateProperties(this.selectedUserTask, {
           'camunda:candidateGroups': undefined
         });
       } else {
-        // Update with camunda prefix only, to match the existing diagram schema
         modeling.updateProperties(this.selectedUserTask, {
           'camunda:candidateGroups': this.selectedRole
         });
       }
+      this.updateAllocationRuleMap();
     }
   }
 
@@ -396,13 +503,36 @@ export class DisenadorComponent implements OnInit, OnDestroy {
           this.currentProcessId = savedProcess.id || null;
           this.currentProcessName = savedProcess.name;
           
-          if (deploy && savedProcess.id) {
-            this.processService.deployProcess(savedProcess.id).subscribe({
-              next: () => alert('¡Proceso guardado y desplegado en Flowable con éxito!'),
-              error: (err) => alert('Error al desplegar en Flowable: ' + (err.error?.message || 'Error desconocido'))
+          // Guardar todas las reglas de asignación configuradas en el mapa
+          const saveRequests = Object.keys(this.allocationRulesMap).map(taskKey => {
+            const rule = this.allocationRulesMap[taskKey];
+            return this.http.post('/api/v1/task-allocation/rules', {
+              id: rule.id,
+              processDefinitionKey: processKey,
+              taskDefinitionKey: taskKey,
+              allocationMethod: rule.method,
+              candidateGroup: rule.method !== 'SPECIFIC' ? rule.candidateGroup : undefined,
+              specificExpression: rule.method === 'SPECIFIC' ? rule.expression : undefined,
+              active: rule.active
+            });
+          });
+
+          // Ejecutar peticiones secuencialmente/paralelamente
+          if (saveRequests.length > 0) {
+            import('rxjs').then(rxjs => {
+              rxjs.forkJoin(saveRequests).subscribe({
+                next: () => {
+                  this.cargarReglasDeAsignacion(processKey);
+                  this.deployAndNotify(savedProcess, deploy);
+                },
+                error: () => {
+                  alert('Error al guardar algunas reglas de asignación.');
+                  this.deployAndNotify(savedProcess, deploy);
+                }
+              });
             });
           } else {
-            alert('¡Proceso guardado correctamente!');
+            this.deployAndNotify(savedProcess, deploy);
           }
         },
         error: (err) => {
@@ -416,6 +546,17 @@ export class DisenadorComponent implements OnInit, OnDestroy {
       
     } catch (err) {
       console.error('Error al guardar proceso:', err);
+    }
+  }
+
+  private deployAndNotify(savedProcess: any, deploy: boolean) {
+    if (deploy && savedProcess.id) {
+      this.processService.deployProcess(savedProcess.id).subscribe({
+        next: () => alert('¡Proceso y reglas de asignación guardados y desplegados con éxito!'),
+        error: (err) => alert('Error al desplegar en Flowable: ' + (err.error?.message || 'Error desconocido'))
+      });
+    } else {
+      alert('¡Proceso y reglas de asignación guardados correctamente!');
     }
   }
 }

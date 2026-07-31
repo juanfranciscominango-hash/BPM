@@ -95,6 +95,7 @@ public class ParametricService {
         return jdbcTemplate.queryForList("SELECT * FROM " + tableName + " ORDER BY id ASC");
     }
 
+    @Transactional
     public void insertData(Long tableId, Map<String, Object> data) {
         ParametricTable table = tableRepository.findById(tableId).orElseThrow();
         String tableName = "PR_" + table.getName().toUpperCase();
@@ -103,7 +104,8 @@ public class ParametricService {
         StringJoiner values = new StringJoiner(", ");
         
         for (ParametricColumn col : table.getColumns()) {
-            if (data.containsKey(col.getName())) {
+            String matchedKey = findKeyCaseInsensitive(data, col.getName());
+            if (matchedKey != null) {
                 columns.add(col.getName().toLowerCase());
                 values.add("?");
             }
@@ -111,11 +113,24 @@ public class ParametricService {
         
         String sql = String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, columns.toString(), values.toString());
         Object[] args = table.getColumns().stream()
-                .filter(c -> data.containsKey(c.getName()))
-                .map(c -> parseValue(c, data.get(c.getName())))
+                .filter(c -> findKeyCaseInsensitive(data, c.getName()) != null)
+                .map(c -> {
+                    String key = findKeyCaseInsensitive(data, c.getName());
+                    return parseValue(c, data.get(key));
+                })
                 .toArray();
 
         jdbcTemplate.update(sql, args);
+    }
+
+    private String findKeyCaseInsensitive(Map<String, Object> map, String targetKey) {
+        if (map == null || targetKey == null) return null;
+        for (String key : map.keySet()) {
+            if (key.equalsIgnoreCase(targetKey)) {
+                return key;
+            }
+        }
+        return null;
     }
 
     public List<ParametricTable> listAll() {
@@ -286,10 +301,11 @@ public class ParametricService {
         java.util.List<Object> argsList = new java.util.ArrayList<>();
         
         for (ParametricColumn col : table.getColumns()) {
-            if (data.containsKey(col.getName())) {
+            String matchedKey = findKeyCaseInsensitive(data, col.getName());
+            if (matchedKey != null) {
                 sets.add(col.getName().toLowerCase() + " = ?");
                 
-                Object val = data.get(col.getName());
+                Object val = data.get(matchedKey);
                 argsList.add(parseValue(col, val));
             }
         }

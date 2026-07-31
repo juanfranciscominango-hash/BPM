@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface MetaEntity {
   id?: number;
@@ -25,7 +26,7 @@ export interface MetaAttribute {
 })
 export class MetaService {
   private http = inject(HttpClient);
-  private apiUrl = '/api/v1/meta';
+  private apiUrl = `${environment.back_url}/api/v1/meta`;
 
   // Entidades
   listarEntidades(): Observable<MetaEntity[]> {
@@ -50,8 +51,8 @@ export class MetaService {
   }
 
   // Columnas físicas reales desde information_schema (incluye tablas sin MetaAttributes)
-  getPhysicalTableColumns(entityId: number): Observable<{name: string; type: string}[]> {
-    return this.http.get<{name: string; type: string}[]>(`${this.apiUrl}/entities/${entityId}/table-columns`);
+  getPhysicalTableColumns(entityId: number): Observable<{ name: string; type: string }[]> {
+    return this.http.get<{ name: string; type: string }[]>(`${this.apiUrl}/entities/${entityId}/table-columns`);
   }
 
   guardarAtributo(attribute: MetaAttribute): Observable<MetaAttribute> {

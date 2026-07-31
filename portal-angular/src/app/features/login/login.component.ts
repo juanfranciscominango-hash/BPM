@@ -1,12 +1,13 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { MsalService } from '../../core/services/msal.service';
 import { ConfigService } from '../../core/services/config.service';
 import { AuthService, User } from '../../core/services/auth.service';
+import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'innova-login',
@@ -15,9 +16,23 @@ import { AuthService, User } from '../../core/services/auth.service';
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private configService = inject(ConfigService);
   private authService = inject(AuthService);
+  private themeService = inject(ThemeService);
+  private route = inject(ActivatedRoute);
+
+  get logoPath(): string {
+    return this.themeService.logoPath();
+  }
+
+  get brandName(): string {
+    return this.themeService.brandName();
+  }
+
+  get slogan(): string {
+    return this.themeService.slogan();
+  }
 
   username = '';
   dominio = 'chibuleo.com';
@@ -33,6 +48,16 @@ export class LoginComponent {
     private router: Router,
     private msalService: MsalService
   ) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['reason'] === 'session_expired') {
+        this.errorMessage = 'Tu sesión ha sido cerrada porque has iniciado sesión en otro navegador o dispositivo.';
+      } else if (params['reason'] === 'inactivity') {
+        this.errorMessage = 'Tu sesión ha sido cerrada por inactividad para proteger tus datos.';
+      }
+    });
+  }
 
   // Feature flags
   get showEntraIdButton(): boolean {

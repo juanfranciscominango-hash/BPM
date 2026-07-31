@@ -1,0 +1,136 @@
+<div class="display-tv-container">
+  <!-- Header TV -->
+  <header class="display-header d-flex justify-content-between align-items-center px-5 py-3">
+    <div class="d-flex align-items-center gap-3">
+      <img [src]="logoPath" onerror="this.style.display='none';" alt="Logo" class="tv-logo" />
+      <div>
+        <h1 class="m-0 fw-bold brand-title">{{ brandName }}</h1>
+        <span class="text-warning fs-5 fw-bold">SISTEMA DE TURNOS - PANTALLA DE SALA</span>
+      </div>
+    </div>
+
+    <div class="text-end">
+      <div class="clock-time">{{ currentTime | date:'hh:mm:ss a' }}</div>
+      <div class="clock-date text-white-50">{{ currentTime | date:'fullDate' }}</div>
+    </div>
+  </header>
+
+  <!-- Body Content: Split Screen -->
+  <div class="container-fluid px-5 py-4 flex-grow-1">
+    <div class="row g-4 h-100">
+      
+      <!-- Column Left: Big Call Panel -->
+      <div class="col-12 col-lg-7">
+        <div class="card main-call-card h-100 border-0 p-4 text-center d-flex flex-column justify-content-between"
+             [class.new-call-flash]="isNewCall">
+          
+          <div class="card-header bg-transparent border-0 pt-3">
+            <span class="badge bg-warning text-dark fs-4 px-4 py-2 rounded-pill fw-bold text-uppercase tracking-wider">
+              <i class="bi bi-megaphone-fill me-2"></i> TURNO LLAMADO ACTUALMENTE
+            </span>
+          </div>
+
+          <div class="card-body d-flex flex-column align-items-center justify-content-center my-3" *ngIf="llamadoActual">
+            <div class="turno-display-code my-2 text-warning">
+              {{ llamadoActual.codigoTurno }}
+            </div>
+
+            <div class="ventanilla-display-box my-3 px-5 py-3 rounded-4">
+              <div class="text-white-50 fs-4 text-uppercase">PASE A LA VENTANILLA</div>
+              <div class="ventanilla-number text-white fw-bold">
+                N° {{ llamadoActual.ventanilla?.numero || 1 }}
+              </div>
+              <div class="text-info fs-5 mt-1" *ngIf="llamadoActual.ventanilla?.nombre">
+                ({{ llamadoActual.ventanilla?.nombre }})
+              </div>
+            </div>
+
+            <div class="servicio-tag text-white-50 fs-4 mt-2">
+              <i class="bi bi-tag-fill text-warning me-2"></i> {{ llamadoActual.servicio?.nombre }}
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div class="card-body d-flex flex-column align-items-center justify-content-center my-5" *ngIf="!llamadoActual">
+            <i class="bi bi-hourglass-split display-1 text-white-50 mb-3"></i>
+            <h2 class="text-white-50">Esperando nuevo turno...</h2>
+          </div>
+
+          <div class="card-footer bg-transparent border-0 text-white-50 fs-5 pb-3">
+            <i class="bi bi-info-circle me-2"></i> Manténgase atento al llamado en pantalla y por el sistema de altavoces.
+          </div>
+        </div>
+      </div>
+
+      <!-- Column Right: Tables (History & Queue) -->
+      <div class="col-12 col-lg-5 d-flex flex-column gap-4">
+        
+        <!-- Table: Últimos Llamados -->
+        <div class="card side-card border-0 p-3 flex-fill">
+          <div class="card-header bg-transparent border-0 d-flex align-items-center justify-content-between">
+            <h4 class="m-0 text-white fw-bold">
+              <i class="bi bi-history text-info me-2"></i> ÚLTIMOS LLAMADOS
+            </h4>
+            <span class="badge bg-info text-dark">{{ ultimosLlamados.length }}</span>
+          </div>
+          <div class="card-body p-0 table-responsive mt-2">
+            <table class="table table-dark table-hover align-middle m-0 fs-5">
+              <thead>
+                <tr class="text-muted border-secondary">
+                  <th>TURNO</th>
+                  <th class="text-center">VENTANILLA</th>
+                  <th class="text-end">HORA</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let t of ultimosLlamados.slice(0, 5)" class="border-secondary">
+                  <td class="fw-bold text-warning fs-4">{{ t.codigoTurno }}</td>
+                  <td class="text-center fw-bold text-info">Ventanilla {{ t.ventanilla?.numero || 1 }}</td>
+                  <td class="text-end text-white-50 fs-6">{{ t.fechaLlamado | date:'hh:mm a' }}</td>
+                </tr>
+                <tr *ngIf="ultimosLlamados.length === 0">
+                  <td colspan="3" class="text-center text-muted py-3">No hay historial de llamados recíentes</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Table: Próximos en Cola -->
+        <div class="card side-card border-0 p-3 flex-fill">
+          <div class="card-header bg-transparent border-0 d-flex align-items-center justify-content-between">
+            <h4 class="m-0 text-white fw-bold">
+              <i class="bi bi-people-fill text-success me-2"></i> PRÓXIMOS EN COLA
+            </h4>
+            <span class="badge bg-success">{{ colaPendiente.length }} en espera</span>
+          </div>
+          <div class="card-body p-0 table-responsive mt-2">
+            <table class="table table-dark table-hover align-middle m-0 fs-5">
+              <thead>
+                <tr class="text-muted border-secondary">
+                  <th>TURNO</th>
+                  <th>SERVICIO</th>
+                  <th class="text-end">ESTADO</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let t of colaPendiente.slice(0, 5)" class="border-secondary">
+                  <td class="fw-bold text-white fs-4">{{ t.codigoTurno }}</td>
+                  <td class="text-white-50 fs-6">{{ t.servicio?.nombre }}</td>
+                  <td class="text-end">
+                    <span class="badge bg-secondary rounded-pill px-3 py-1">En Espera</span>
+                  </td>
+                </tr>
+                <tr *ngIf="colaPendiente.length === 0">
+                  <td colspan="3" class="text-center text-muted py-3">No hay turnos pendientes en cola</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

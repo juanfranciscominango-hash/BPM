@@ -180,4 +180,43 @@ export class PortalBandejaComponent implements OnInit {
       }
     }, 100);
   }
+
+  // ────── SLA Helpers ──────
+
+  formatTimeRemaining(ms?: number): string {
+    if (!ms || ms <= 0) return 'Vencido';
+    const totalMinutes = Math.floor(ms / 60000);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    const days = Math.floor(hours / 24);
+    const remainingHours = hours % 24;
+
+    if (days > 0) return `${days}d ${remainingHours}h`;
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
+  }
+
+  abrirReasignacion(task: UserTask, event: Event) {
+    event.stopPropagation();
+    const nuevoUsuario = prompt(`Reasignar tarea "${task.name}"\n\nIngrese el username del nuevo responsable:`);
+    if (!nuevoUsuario || nuevoUsuario.trim() === '') return;
+
+    const motivo = prompt('Motivo de la reasignación (opcional):') || 'Sin motivo especificado';
+
+    this.taskService.reassignTask(
+      task.id,
+      nuevoUsuario.trim(),
+      this.currentUser?.username || 'admin',
+      motivo
+    ).subscribe({
+      next: () => {
+        alert(`Tarea reasignada correctamente a ${nuevoUsuario.trim()}`);
+        this.cargarTareas();
+      },
+      error: (err) => {
+        console.error('Error al reasignar', err);
+        alert('Error al reasignar la tarea. Verifique que el usuario existe.');
+      }
+    });
+  }
 }

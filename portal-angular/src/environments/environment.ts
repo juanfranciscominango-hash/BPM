@@ -1,5 +1,6 @@
 export const environment = {
   apiUrl: '/api/v1',
+  back_url: '',
   production: false,
   envName: 'development',    
   msalConfig: {
@@ -41,33 +42,5 @@ export const environment = {
     loginRequest: {
       scopes: ['User.Read', 'openid', 'profile', 'email']
     }
-  }, 
-  CentralizadaMs: {
-    ApiUrl: 'https://172.20.41.169:8043/InnovaConsultingAccesoServiciosApi/',
-    ApiKeySistema: '/7WzL6aE2Nbmhqjys6ults5XbFdX8AvEH0+2fXREiz0ixvN/kT5KJ90irXuY6qexMEbrpI7DeFgCvDshA2uXKfHnrIPZTJblGB0qdmwNEL3LUE/Ff/d1d1puMPjjH71zRBa4jSfv+QHrl4dz2DoR5w==',
-    NameAplication: 'WzJMS3viVuEYDTHB9NqGT7uAdrqzIsdc37hvxljCrkRPSEhHY5Mbj52hOZvU3Fbf',
-    ApiUrlDCA: 'https://172.20.41.169:8043/InnovaConsultingAccesoServiciosApi/',
-    SolicitarAutorizacion: 'api/Autenticacion/SolicitarAutorizacion',
-    ObtenerConfiguracionesAplicacion: 'api/Configuraciones/ObtenerConfiguracionesAplicacion'
-  },
-  ConsumoApiGenerarToken: {
-    ApiUrl: 'https://ECBRDSW12.InnovaConsulting.COM:8043/InnovaConsultingAccesoServiciosApi/',
-    metodo: 'api/Autenticacion/SolicitarAutorizacion',
-    ApiKeySistema: '/7WzL6aE2Nbmhqjys6ults5XbFdX8AvEH0+2fXREiz0ixvN/kT5KJ90irXuY6qexMEbrpI7DeFgCvDshA2uXKfHnrIPZTJblGB0qdmwNEL3LUE/Ff/d1d1puMPjjH71zRBa4jSfv+QHrl4dz2DoR5w==',
-    NameAplication: 'WzJMS3viVuEYDTHB9NqGT7uAdrqzIsdc37hvxljCrkRPSEhHY5Mbj52hOZvU3Fbf'
-  },
-  ConsumoApiGenerarTokenAPIM: {
-    ApiUrl: 'https://apis-test.bgr.com.ec/',
-    metodo: 'api/acceso/servicios/solicitar',
-    ApiKeySistema: 'ROjDOu3Bx2jz3B2Z1YrotCC09ncsxmFM7EkWxuKStVDMsKKhYU5nKpwkwXwNo733yhvm1e8gkXRY2qZ80+KgxXe14l67E243LCnOnZko6cZZwXiqnn0im05M4LjS1SyBNkwhEYtDUXu0kDPJa2PbYg==',
-    NameAplication: '8srvf1vW0q8B1zOBbUqfgM9I83pMowyRf6UKqCUIGyzh/WkPcMtdf4BWprBZcZgV'
-  },
-  ConsumoApiCatalogosGenerales: {
-    ApiUrl: 'https://ECBRDSW12.InnovaConsulting.COM:8043/MSApiCatalogosGenerales/',
-    metodo: 'api/CatalogosGenerales/Consultar'
-  },
-  ConsumoApiCatalogosGeneralesAPIM: {
-    ApiUrl: 'https://apis-test.bgr.com.ec/',
-    metodo: 'api/instituciones/catalogo/v1/consultar'
   }
 };

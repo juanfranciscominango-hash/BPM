@@ -1,0 +1,96 @@
+1. La Base de Datos (PostgreSQL)
+El servidor de test debe tener instalado PostgreSQL y contener la estructura y datos de configuración actuales.
+
+Qué subir: El archivo 
+backup_inc_bpm.sql
+ que acabamos de generar.
+Cómo restaurarlo en el servidor de test:
+Crea una base de datos vacía (ej. INC_BPM_PLATFORM).
+Ejecuta el comando para restaurar el volcado:
+bash
+
+
+psql -U postgres -d INC_BPM_PLATFORM -f backup_inc_bpm.sql
+2. El Backend (Servicio API - Spring Boot)
+El backend procesa la lógica, las reglas de negocio y conecta con Flowable.
+
+Cómo compilarlo: Dentro de la carpeta backend/, ejecuta el comando:
+bash
+
+
+mvn clean package -DskipTests
+Qué subir: El archivo .jar generado en la ruta: 📂 backend/target/bpm-platform-0.0.1-SNAPSHOT.jar
+Cómo ejecutarlo en el servidor de test:
+bash
+
+
+java -jar bpm-platform-0.0.1-SNAPSHOT.jar
+(Asegúrate de que las variables de entorno de base de datos en el servidor apunten a la IP correcta del PostgreSQL de test).
+3. El Frontend (Portal de Usuario - Angular)
+El frontend proporciona la interfaz gráfica web para los usuarios y asesores.
+
+Cómo compilarlo: Dentro de la carpeta portal-angular/, ejecuta el comando:
+bash
+
+
+npm run build
+Qué subir: La carpeta de distribución estática que se genera en: 📂 portal-angular/dist/portal-angular/browser/ (o ruta similar dentro de dist/).
+Cómo servirlo en el servidor de test: Sube los archivos de esa carpeta dist a un servidor web de archivos estáticos 
+como Nginx o Apache HTTP Server, configurado para redirigir todas las peticiones al index.html 
+(comportamiento estándar de aplicaciones SPA) y hacer proxy de las peticiones /api/* hacia el puerto del backend (puerto 9091).
+
+-------
+(Ruta física completa en tu disco: C:\ProyectosJava\BMP\backend\src\main\resources\application.yml)
+
+El bloque de configuración se encuentra en la parte superior:
+
+yaml
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/INC_BPM_PLATFORM
+    username: postgres
+    password: Desarrollo
+    driver-class-name: org.postgresql.Driver
+	-------------------
+	
+	// contenerizar a la bd
+	Sí, por supuesto. Contenerizar la base de datos es una excelente práctica para asegurar que el entorno de pruebas sea idéntico al de desarrollo y producción.
+
+De hecho, en la raíz del proyecto ya cuentas con el archivo 
+docker-compose.yml
+, el cual tiene configurado el servicio de la base de datos (bmp-db), el backend (bmp-backend) y el frontend (bmp-frontend) para levantarse juntos con Docker.
+
+He realizado una mejora importante en este archivo: añadí persistencia de datos. Sin esto, si destruías el contenedor de Docker, toda la información de la base de datos se borraba.
+
+Configuración del servicio de base de datos en Docker:
+yaml
+
+
+  bmp-db:
+    image: postgres:15
+    container_name: bmp-db
+    environment:
+      POSTGRES_DB: INC_BPM_PLATFORM
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Desarrollo
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # <--- Persistencia agregada
+Instrucciones para desplegarla con Docker:
+Iniciar los contenedores: En la raíz del proyecto, ejecuta el comando para compilar y levantar todo en segundo plano:
+bash
+
+
+docker-compose up -d --build
+Restaurar tus datos (solo la primera vez): Dado que el contenedor de la base de datos iniciará vacío, debes restaurar el respaldo backup_inc_bpm.sql que generamos ejecutando:
+bash
+
+
+docker exec -i bmp-db psql -U postgres -d INC_BPM_PLATFORM < backup_inc_bpm.sql
+Con esto, la base de datos correrá dentro de un contenedor seguro en el puerto 5433 de tu máquina host, y la información persistirá en el volumen de Docker pgdata aunque detengas o borres los contenedores.
+
+
+	

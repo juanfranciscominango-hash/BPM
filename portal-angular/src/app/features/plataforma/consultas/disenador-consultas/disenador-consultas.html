@@ -1,0 +1,76 @@
+<div class="container-fluid py-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0"><i class="bi bi-tools me-2"></i> Diseñador de Formas de Consulta</h5>
+      <button class="btn btn-success btn-sm" (click)="guardarDiseno()" [disabled]="loading">
+        <i class="bi bi-save me-1"></i> {{ loading ? 'Guardando...' : 'Guardar Diseño' }}
+      </button>
+    </div>
+    
+    <div class="card-body bg-light">
+      <div class="alert alert-success" *ngIf="message">
+        <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
+      </div>
+
+      <div class="row mb-3 g-2 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label fw-bold">ID del Campo (Variable)</label>
+          <input type="text" class="form-control" [(ngModel)]="newFieldId" placeholder="Ej: numeroCredito">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Etiqueta Visible</label>
+          <input type="text" class="form-control" [(ngModel)]="newFieldLabel" placeholder="Ej: Número de Crédito">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Tipo</label>
+          <select class="form-select" [(ngModel)]="newFieldType">
+            <option value="TEXT">Texto</option>
+            <option value="NUMBER">Número</option>
+            <option value="DATE">Fecha</option>
+            <option value="SELECT">Lista (Select)</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" (click)="agregarCampo()">
+            <i class="bi bi-plus-lg"></i> Agregar Campo
+          </button>
+        </div>
+      </div>
+
+      <div class="table-responsive bg-white border rounded">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID Campo (Variable)</th>
+              <th>Etiqueta Visible</th>
+              <th>Tipo de Control</th>
+              <th>Habilitado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let field of availableFields; let i = index">
+              <td><code>{{ field.id }}</code></td>
+              <td class="fw-bold">{{ field.label }}</td>
+              <td><span class="badge bg-secondary">{{ field.type }}</span></td>
+              <td>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" [(ngModel)]="field.default">
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-outline-danger" (click)="eliminarCampo(i)" title="Eliminar">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="availableFields.length === 0">
+              <td colspan="5" class="text-center text-muted">No hay campos configurados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

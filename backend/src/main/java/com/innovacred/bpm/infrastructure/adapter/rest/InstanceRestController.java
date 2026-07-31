@@ -7,6 +7,11 @@ import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -128,6 +133,36 @@ public class InstanceRestController {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{instanceId}/export-tracking")
+    public ResponseEntity<Resource> exportTracking(@PathVariable String instanceId) {
+        List<TrackingItemResponse> tracking = getTracking(instanceId);
+        
+        StringBuilder csv = new StringBuilder();
+        csv.append("ID,Tarea,Asignado,Inicio,Fin,Reclamo,Estado,Respuesta,Observaciones,Situacion\n");
+        
+        for (TrackingItemResponse item : tracking) {
+            csv.append(String.format("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
+                    item.id() != null ? item.id().replace("\"", "\"\"") : "",
+                    item.name() != null ? item.name().replace("\"", "\"\"") : "",
+                    item.assignee() != null ? item.assignee().replace("\"", "\"\"") : "",
+                    item.startTime() != null ? item.startTime() : "",
+                    item.endTime() != null ? item.endTime() : "",
+                    item.claimTime() != null ? item.claimTime() : "",
+                    item.state() != null ? item.state() : "",
+                    item.respuesta() != null ? item.respuesta().replace("\"", "\"\"") : "",
+                    item.observaciones() != null ? item.observaciones().replace("\"", "\"\"") : "",
+                    item.situacion() != null ? item.situacion() : ""
+            ));
+        }
+
+        ByteArrayResource resource = new ByteArrayResource(csv.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"tracking_" + instanceId + ".csv\"")
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(resource);
     }
 
     @DeleteMapping("/{instanceId}")

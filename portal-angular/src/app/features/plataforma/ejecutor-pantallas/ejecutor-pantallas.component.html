@@ -185,11 +185,16 @@
                                 </div>
                                 
                                 <!-- FILEUPLOAD -->
-                                <div *ngIf="field.controlType === 'FILEUPLOAD'"
-                                     class="border rounded-2 p-2 text-center bg-light">
-                                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="uploadMock(field.name)">Subir Archivo</button>
-                                  <div *ngIf="uploadedMockFiles[field.name]" class="mt-1 text-success small">{{ uploadedMockFiles[field.name] }}</div>
-                                </div>
+                                 <div *ngIf="field.controlType === 'FILEUPLOAD'"
+                                      class="border rounded-2 p-3 text-center bg-light">
+                                   <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event, field.name)">
+                                   <button type="button" class="btn btn-sm btn-outline-primary shadow-xs" (click)="fileInput.click()">
+                                     <i class="bi bi-upload me-1"></i> Seleccionar Archivo
+                                   </button>
+                                   <div *ngIf="uploadedMockFiles[field.name]" class="mt-2 text-success small fw-semibold">
+                                     <i class="bi bi-file-earmark-check me-1"></i>{{ uploadedMockFiles[field.name] }}
+                                   </div>
+                                 </div>
                                 
                                 <!-- IMAGE -->
                                 <div *ngIf="field.controlType === 'IMAGE'" class="border p-2 bg-light text-center small text-muted">

@@ -42,28 +42,28 @@ import { ParametricService, ParametricTable } from '../../../core/services/param
                   <td class="ps-4"><span class="text-muted">{{ row.id }}</span></td>
                   <td *ngFor="let col of table.columns" class="notranslate" translate="no">
                     <!-- Si es booleano, mostrar Sí o No -->
-                    <span *ngIf="col.type === 'boolean'" class="badge" [ngClass]="row[col.name.toLowerCase()] ? 'bg-success' : 'bg-danger'">
-                      {{ row[col.name.toLowerCase()] ? 'ACTIVO' : 'INACTIVO' }}
+                    <span *ngIf="col.type === 'boolean'" class="badge" [ngClass]="row[col.name.toLowerCase()] || row[col.name] ? 'bg-success' : 'bg-danger'">
+                      {{ (row[col.name.toLowerCase()] || row[col.name]) ? 'ACTIVO' : 'INACTIVO' }}
                     </span>
                     <!-- Si es una referencia a otra paramétrica -->
                     <span *ngIf="col.type === 'reference'">
                       <span class="badge bg-light text-dark border">
-                        {{ obtenerTextoReferencia(col.name, row[col.name.toLowerCase()]) }}
+                        {{ obtenerTextoReferencia(col.name, row[col.name.toLowerCase()] !== undefined ? row[col.name.toLowerCase()] : row[col.name]) }}
                       </span>
                     </span>
                     <!-- Si es referencia múltiple -->
                     <span *ngIf="col.type === 'reference_multiple'" class="d-flex flex-wrap gap-1">
-                      <span *ngFor="let texto of obtenerTextosReferenciaMultiple(col.name, row[col.name.toLowerCase()])" class="badge bg-info text-dark border border-info-subtle shadow-xs">
+                      <span *ngFor="let texto of obtenerTextosReferenciaMultiple(col.name, row[col.name.toLowerCase()] !== undefined ? row[col.name.toLowerCase()] : row[col.name])" class="badge bg-info text-dark border border-info-subtle shadow-xs">
                         {{ texto }}
                       </span>
                     </span>
                     <!-- Si es número o entero -->
                     <span *ngIf="col.type === 'number' || col.type === 'integer'">
-                      {{ formatearNumero(row[col.name.toLowerCase()], col.type) }}
+                      {{ formatearNumero(row[col.name.toLowerCase()] !== undefined ? row[col.name.toLowerCase()] : row[col.name], col.type) }}
                     </span>
                     <!-- Si es otro tipo -->
                     <span *ngIf="col.type !== 'boolean' && col.type !== 'reference' && col.type !== 'reference_multiple' && col.type !== 'number' && col.type !== 'integer'">
-                      {{ row[col.name.toLowerCase()] }}
+                      {{ row[col.name.toLowerCase()] !== undefined ? row[col.name.toLowerCase()] : row[col.name] }}
                     </span>
                   </td>
                   <td class="text-center">
@@ -242,7 +242,10 @@ export class ParametricasDataComponent implements OnInit {
     
     // RellenarnewData mapeando campos (Postgres devuelve claves en minúscula)
     this.table?.columns.forEach(col => {
-      const val = row[col.name.toLowerCase()];
+      // Buscar el valor en la fila de forma insensible a mayúsculas
+      const matchedKey = Object.keys(row).find(k => k.toLowerCase() === col.name.toLowerCase());
+      const val = matchedKey ? row[matchedKey] : null;
+
       if (col.type === 'boolean') {
         // Asegurar que sea booleano
         this.newData[col.name] = (val === true || val === 'true' || val === 'verdadero' || val === 'ACTIVO');
@@ -287,13 +290,18 @@ export class ParametricasDataComponent implements OnInit {
 
   guardarRegistro() {
     this.limpiarNumerosAntesDeGuardar();
+    console.log('Enviando datos para guardar:', this.newData);
     if (this.modoEdicion && this.selectedRowId !== null) {
       this.parametricService.updateData(this.tableId, this.selectedRowId, this.newData).subscribe({
-        next: () => {
+        next: (res) => {
+          console.log('Respuesta de actualización exitosa:', res);
           this.mostrarModal = false;
           this.cargarDatos();
         },
-        error: () => alert('Error al actualizar registro')
+        error: (err) => {
+          console.error('Error al actualizar registro:', err);
+          alert('Error al actualizar registro');
+        }
       });
     } else {
       this.parametricService.insertData(this.tableId, this.newData).subscribe({

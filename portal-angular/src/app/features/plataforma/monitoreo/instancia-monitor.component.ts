@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild, inject } from '@an
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MonitoringService } from '../../../core/services/monitoring.service';
+import { environment } from '../../../../environments/environment';
 import BpmnViewer from 'bpmn-js/lib/NavigatedViewer';
 
 @Component({
@@ -16,9 +17,14 @@ import BpmnViewer from 'bpmn-js/lib/NavigatedViewer';
           <h2 class="h4 mb-0 fw-bold text-primary"><i class="bi bi-activity me-2"></i>Monitor de Instancia</h2>
           <small class="text-muted">ID: {{ instanceId }}</small>
         </div>
-        <button class="btn btn-outline-secondary btn-sm" (click)="cargarTodo()">
-          <i class="bi bi-arrow-clockwise me-1"></i>Refrescar
-        </button>
+        <div>
+          <button class="btn btn-outline-primary btn-sm me-2" (click)="exportTracking()">
+            <i class="bi bi-file-earmark-excel me-1"></i>Exportar Historial
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" (click)="cargarTodo()">
+            <i class="bi bi-arrow-clockwise me-1"></i>Refrescar
+          </button>
+        </div>
       </div>
 
       <div class="row g-0">
@@ -101,6 +107,13 @@ export class InstanciaMonitorComponent implements OnInit, OnDestroy {
     this.monitoringService.getAuditTrail(this.instanceId).subscribe(data => {
       this.auditTrail = data;
     });
+  }
+
+  exportTracking() {
+    // Generate endpoint URL and trigger download
+    const baseUrl = environment.back_url || '';
+    const url = `${baseUrl}/api/v1/instances/${this.instanceId}/export-tracking`;
+    window.open(url, '_blank');
   }
 
   private resaltarnNodosActivos() {

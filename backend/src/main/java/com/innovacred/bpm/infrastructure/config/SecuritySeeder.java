@@ -37,141 +37,72 @@ public class SecuritySeeder implements CommandLineRunner {
         // 2. Asegurar Roles y Usuario Admin
         initializeSecurity();
 
-        // 3. Crear Menú Dinámico (si no existe)
+        // 3. Crear Menú Dinámico Organizado por Afinidad
         initializeMenu();
         
-        // Asegurar que el nuevo ejecutor de pantallas exista (para actualizaciones)
-        ensureEjecutorPantallas();
-        ensureDisenadorMenu();
-        ensureAuditoria();
-        
         System.out.println("✅ Seguridad y Menú validados.");
-     }
- 
-     private void ensureAuditoria() {
-         boolean exists = menuRepository.findAll().stream().anyMatch(m -> "/plataforma/auditoria".equals(m.getRoute()));
-         if (!exists) {
-             Menu plataforma = menuRepository.findAll().stream().filter(m -> "Plataforma".equals(m.getTitle())).findFirst().orElse(null);
-             if (plataforma != null) {
-                 createMenuItem("Auditoría de Sistema", "bi bi-shield-check", "/plataforma/auditoria", "ACCESO_MONITOREO", 14, plataforma);
-                 System.out.println("✅ Menú Auditoría de Sistema insertado dinámicamente.");
-             }
-         }
-     }
- 
-     private void ensureDisenadorMenu() {
-        boolean exists = menuRepository.findAll().stream().anyMatch(m -> "/plataforma/disenador-menu".equals(m.getRoute()));
-        if (!exists) {
-            Menu plataforma = menuRepository.findAll().stream().filter(m -> "Plataforma".equals(m.getTitle())).findFirst().orElse(null);
-            if (plataforma != null) {
-                createMenuItem("Diseñador de Menú", "bi bi-list-nested", "/plataforma/disenador-menu", "ACCESO_SEGURIDAD", 13, plataforma);
-                System.out.println("✅ Menú Diseñador de Menú insertado dinámicamente.");
-            }
-        }
-    }
-
-    private void ensureEjecutorPantallas() {
-        boolean exists = menuRepository.findAll().stream().anyMatch(m -> "/plataforma/ejecutor-pantallas".equals(m.getRoute()));
-        if (!exists) {
-            Menu plataforma = menuRepository.findAll().stream().filter(m -> "Plataforma".equals(m.getTitle())).findFirst().orElse(null);
-            if (plataforma != null) {
-                createMenuItem("Ejecutor Pantallas", "bi bi-play-circle", "/plataforma/ejecutor-pantallas", "ACCESO_PANTALLAS", 10, plataforma);
-                System.out.println("✅ Menú Ejecutor Pantallas insertado dinámicamente.");
-            }
-        }
-    }
-
-    private void initializePermissions() {
-        createPerm("ACCESO_REGLAS", "Gestión de Reglas de Negocio (DMN)");
-        createPerm("ACCESO_PARAMETRICAS", "Mantenimiento de Tablas Paramétricas");
-        createPerm("ACCESO_APIS", "Configuración de Conectores de API");
-        createPerm("ACCESO_PANTALLAS", "Diseño de Pantallas Dinámicas");
-        createPerm("ACCESO_PLANTILLAS", "Gestión de Plantillas Documentales");
-        createPerm("ACCESO_SEGURIDAD", "Administración de Usuarios y Roles");
-        createPerm("ACCESO_MONITOREO", "Monitoreo de Instancias y Auditoría");
-        createPerm("ACCESO_CRM", "Gestión del módulo CRM de prospectos y leads");
-    }
-
-    private void initializeSecurity() {
-        Permission pReglas = permissionRepository.findByCode("ACCESO_REGLAS").get();
-        Permission pParam = permissionRepository.findByCode("ACCESO_PARAMETRICAS").get();
-        Permission pApis = permissionRepository.findByCode("ACCESO_APIS").get();
-        Permission pPant = permissionRepository.findByCode("ACCESO_PANTALLAS").get();
-        Permission pDoc = permissionRepository.findByCode("ACCESO_PLANTILLAS").get();
-        Permission pSeg = permissionRepository.findByCode("ACCESO_SEGURIDAD").get();
-        Permission pMon = permissionRepository.findByCode("ACCESO_MONITOREO").get();
-        Permission pCrm = permissionRepository.findByCode("ACCESO_CRM").get();
-
-        Role adminRole = ensureRole("ADMINISTRADOR", new HashSet<>(List.of(pReglas, pParam, pApis, pPant, pDoc, pSeg, pMon, pCrm)));
-        ensureRole("ASESOR_CREDITO", new HashSet<>(List.of(pCrm))); // Permitir acceso al CRM
-        ensureRole("ANALISTA_RIESGO", new HashSet<>(List.of(pReglas, pParam)));
-        ensureRole("COMITE_CREDITO", new HashSet<>(List.of(pMon)));
-        ensureRole("OPERACIONES", new HashSet<>(List.of(pDoc)));
-        ensureRole("GERENTE_SUCURSAL", new HashSet<>(List.of(pMon, pParam)));
-
-        if (!userRepository.findAll().stream().anyMatch(u -> "admin@chibuleo.com".equals(u.getUsername()))) {
-            UserAccount adminUser = UserAccount.builder()
-                    .username("admin@chibuleo.com")
-                    .password("admin123")
-                    .fullName("Administrador del Sistema")
-                    .active(true)
-                    .roles(new HashSet<>(List.of(adminRole)))
-                    .build();
-            securityService.saveUser(adminUser);
-        }
-    }
-
-    private Role ensureRole(String name, Set<Permission> perms) {
-        Role role = roleRepository.findAll().stream()
-                .filter(r -> name.equals(r.getName()))
-                .findFirst()
-                .orElse(null);
-        if (role == null) {
-            return roleRepository.save(Role.builder().name(name).permissions(perms).build());
-        } else {
-            role.setPermissions(perms);
-            return roleRepository.save(role);
-        }
     }
 
     private void initializeMenu() {
-        if (menuRepository.count() == 0) {
+        boolean hasOldPlataforma = menuRepository.findAll().stream()
+                .anyMatch(m -> "Plataforma".equalsIgnoreCase(m.getTitle()));
+
+        if (menuRepository.count() == 0 || hasOldPlataforma) {
+            if (hasOldPlataforma) {
+                menuRepository.deleteAll();
+            }
+
+            // 1. Accesos Directos
             createMenuItem("Dashboard", "bi bi-grid", "/dashboard", null, 0, null);
-            
-            Menu plataforma = createMenuItem("Plataforma", "bi bi-stack", null, null, 1, null);
-            createMenuItem("Entidades", "bi bi-database", "/plataforma/entidades", null, 0, plataforma);
-            createMenuItem("Gestión de Procesos", "bi bi-gear", "/plataforma/procesos", null, 1, plataforma);
-            createMenuItem("Bandeja de Tareas", "bi bi-inbox", "/plataforma/tareas", null, 2, plataforma);
-            createMenuItem("Monitoreo de Instancias", "bi bi-activity", "/plataforma/monitoreo", "ACCESO_MONITOREO", 3, plataforma);
-            createMenuItem("Explorador de Datos", "bi bi-search", "/plataforma/datos", null, 4, plataforma);
-            createMenuItem("Diseñador de Flujos", "bi bi-diagram-2", "/plataforma/disenador", null, 5, plataforma);
-            
-            // Módulos avanzados (con permisos)
-            createMenuItem("Gestión de Reglas", "bi bi-diagram-3", "/plataforma/reglas", "ACCESO_REGLAS", 6, plataforma);
-            createMenuItem("Tablas Paramétricas", "bi bi-table", "/plataforma/parametricas", "ACCESO_PARAMETRICAS", 7, plataforma);
-            createMenuItem("Conectores de API", "bi bi-plug", "/plataforma/api-manager", "ACCESO_APIS", 8, plataforma);
-            createMenuItem("Diseñador Pantallas", "bi bi-window", "/plataforma/disenador-pantallas", "ACCESO_PANTALLAS", 9, plataforma);
-            createMenuItem("Ejecutor Pantallas", "bi bi-play-circle", "/plataforma/ejecutor-pantallas", "ACCESO_PANTALLAS", 10, plataforma);
-            createMenuItem("Plantillas Documentos", "bi bi-file-earmark", "/plataforma/plantillas-documentos", "ACCESO_PLANTILLAS", 11, plataforma);
-            createMenuItem("Seguridad y Roles", "bi bi-shield-lock", "/plataforma/seguridad", "ACCESO_SEGURIDAD", 12, plataforma);
+            createMenuItem("Portal Asesor", "bi bi-person-workspace", "/portal/bandeja", null, 1, null);
+
+            // 2. Operación Diaria
+            Menu operacion = createMenuItem("Operación Diaria", "bi bi-kanban", null, null, 2, null);
+            createMenuItem("Bandeja de Tareas", "bi bi-inbox", "/plataforma/tareas", null, 1, operacion);
+            createMenuItem("Monitoreo de Instancias", "bi bi-activity", "/plataforma/monitoreo", "ACCESO_MONITOREO", 2, operacion);
+            createMenuItem("Explorador de Datos", "bi bi-search", "/plataforma/datos", null, 3, operacion);
+            createMenuItem("Configuración SLAs", "bi bi-clock-history", "/plataforma/sla-config", "ACCESO_MONITOREO", 4, operacion);
+
+            // 3. Diseño & Desarrollo
+            Menu diseno = createMenuItem("Diseño & Desarrollo", "bi bi-palette", null, null, 3, null);
+            createMenuItem("Diseñador de Flujos", "bi bi-diagram-2", "/plataforma/disenador", null, 1, diseno);
+            createMenuItem("Diseñador Pantallas", "bi bi-window", "/plataforma/disenador-pantallas", "ACCESO_PANTALLAS", 2, diseno);
+            createMenuItem("Ejecutor Pantallas", "bi bi-play-circle", "/plataforma/ejecutor-pantallas", "ACCESO_PANTALLAS", 3, diseno);
+            createMenuItem("Plantillas Documentos", "bi bi-file-earmark", "/plataforma/plantillas-documentos", "ACCESO_PLANTILLAS", 4, diseno);
+            createMenuItem("Diseñador de Menú", "bi bi-list-nested", "/plataforma/disenador-menu", "ACCESO_SEGURIDAD", 5, diseno);
+
+            // 4. Motor de Reglas & Lógica
+            Menu reglas = createMenuItem("Motor de Reglas & Lógica", "bi bi-diagram-3", null, null, 4, null);
+            createMenuItem("Gestión de Reglas", "bi bi-diagram-3", "/plataforma/reglas", "ACCESO_REGLAS", 1, reglas);
+            createMenuItem("Reglas de Tarea", "bi bi-code-square", "/plataforma/reglas-tarea", "ACCESO_REGLAS", 2, reglas);
+            createMenuItem("Módulo de Fórmulas", "bi bi-calculator", "/plataforma/formulas", "ACCESO_REGLAS", 3, reglas);
+            createMenuItem("Esquema de Variables", "bi bi-diagram-2", "/plataforma/variable-schema", "ACCESO_REGLAS", 4, reglas);
+            createMenuItem("Tablas Paramétricas", "bi bi-table", "/plataforma/parametricas", "ACCESO_PARAMETRICAS", 5, reglas);
+
+            // 5. Integración & Datos
+            Menu integracion = createMenuItem("Integración & Datos", "bi bi-cpu", null, null, 5, null);
+            createMenuItem("Conectores de API", "bi bi-plug", "/plataforma/api-manager", "ACCESO_APIS", 1, integracion);
+            createMenuItem("Config. Webhooks", "bi bi-diagram-3", "/plataforma/webhooks", "ACCESO_REGLAS", 2, integracion);
+            createMenuItem("Entidades", "bi bi-database", "/plataforma/entidades", null, 3, integracion);
+            createMenuItem("Conexión de Base de Datos", "bi bi-database-fill-gear", "/plataforma/conexion", "ACCESO_SEGURIDAD", 4, integracion);
+            createMenuItem("Configuración de Columnas", "bi bi-grid-3x3-gap", "/plataforma/columnas", null, 5, integracion);
+
+            // 6. Gestión de Turnos
+            Menu turnero = createMenuItem("Gestión de Turnos", "bi bi-ticket-detailed-fill", null, null, 6, null);
+            createMenuItem("Consola de Ventanilla", "bi bi-headset", "/turnero/atencion", null, 1, turnero);
+            createMenuItem("Kiosco Autoservicio", "bi bi-printer-fill", "/turnero/kiosco", null, 2, turnero);
+            createMenuItem("Display TV de Sala", "bi bi-tv-fill", "/turnero/display", null, 3, turnero);
+            createMenuItem("Asignación de Tareas", "bi bi-people-fill", "/plataforma/asignacion", "ACCESO_MONITOREO", 4, turnero);
+
+            // 7. Gobierno & Administración
+            Menu gobierno = createMenuItem("Gobierno & Administración", "bi bi-shield-check", null, null, 7, null);
+            createMenuItem("Gestión de Procesos", "bi bi-gear", "/plataforma/procesos", null, 1, gobierno);
+            createMenuItem("Seguridad y Roles", "bi bi-shield-lock", "/plataforma/seguridad", "ACCESO_SEGURIDAD", 2, gobierno);
+            createMenuItem("Auditoría de Sistema", "bi bi-shield-check", "/plataforma/auditoria", "ACCESO_MONITOREO", 3, gobierno);
+            createMenuItem("Errores de Proceso", "bi bi-bug", "/plataforma/errores-proceso", "ACCESO_MONITOREO", 4, gobierno);
+
+            System.out.println("✅ Menú principal reorganizado por afinidad exitosamente.");
         }
-
-        // Add dynamically if missing
-        menuRepository.findAll().stream()
-                .filter(m -> m.getParent() == null && "Plataforma".equalsIgnoreCase(m.getTitle()))
-                .findFirst().ifPresent(plataforma -> {
-                    boolean hasColumnas = menuRepository.findAll().stream()
-                            .anyMatch(m -> "/plataforma/columnas".equalsIgnoreCase(m.getRoute()));
-                    if (!hasColumnas) {
-                        createMenuItem("Configuración de Columnas", "bi bi-grid-3x3-gap", "/plataforma/columnas", null, 13, plataforma);
-                    }
-
-                    boolean hasConexion = menuRepository.findAll().stream()
-                            .anyMatch(m -> "/plataforma/conexion".equalsIgnoreCase(m.getRoute()));
-                    if (!hasConexion) {
-                        createMenuItem("Conexión de Base de Datos", "bi bi-database-fill-gear", "/plataforma/conexion", "ACCESO_SEGURIDAD", 14, plataforma);
-                    }
-                });
     }
 
     private Menu createMenuItem(String title, String icon, String route, String perm, int order, Menu parent) {

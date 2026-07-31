@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface MenuItem {
   id?: number;
@@ -19,7 +20,7 @@ export interface MenuItem {
 })
 export class MenuService {
   private http = inject(HttpClient);
-  private apiUrl = '/api/v1/menu';
+  private apiUrl = `${environment.back_url}/api/v1/menu`;
 
   getMenu(): Observable<MenuItem[]> {
     return this.http.get<MenuItem[]>(this.apiUrl);

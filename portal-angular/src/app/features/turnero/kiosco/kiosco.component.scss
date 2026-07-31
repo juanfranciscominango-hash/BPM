@@ -1,0 +1,101 @@
+.kiosco-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+  color: #fff;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  user-select: none;
+}
+
+.kiosco-header {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.kiosco-logo {
+  max-height: 55px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.brand-title {
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.clock-time {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: monospace;
+  color: #38ef7d;
+  text-shadow: 0 0 10px rgba(56, 239, 125, 0.4);
+}
+
+.clock-date {
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.service-card {
+  border-radius: 1.5rem !important;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.service-icon-box {
+  width: 90px;
+  height: 90px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: #ffffff;
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.touch-btn {
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.ticket-card {
+  background: #ffffff;
+  color: #1e293b;
+  border-top: 8px solid #4f46e5 !important;
+  animation: printSlide 0.5s ease-out forwards;
+}
+
+.ticket-code {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  line-height: 1;
+}
+
+.ticket-divider {
+  border-top: 2px dashed #cbd5e1;
+  margin: 1rem 0;
+}
+
+@keyframes printSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

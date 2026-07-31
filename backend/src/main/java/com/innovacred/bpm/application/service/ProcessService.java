@@ -141,7 +141,7 @@ public class ProcessService {
             try {
                 // Obtener descripción de la paramétrica Parametros generales
                 String sql = "SELECT p.descripcion FROM pr_paranmetros_generales p " +
-                             "JOIN pr_flujo f ON CAST(p.flujo AS INTEGER) = f.id " +
+                             "JOIN pr_flujo f ON f.id::text = ANY(string_to_array(p.flujo, ',')) " +
                              "WHERE LOWER(f.descripcion) = LOWER(?)";
                 List<String> descripciones = jdbcTemplate.queryForList(sql, String.class, procDef.getName());
                 

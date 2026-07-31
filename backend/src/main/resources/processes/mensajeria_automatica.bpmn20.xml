@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  id="Definitions_MensajeriaAutomatica"
+  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:collaboration id="Collab_MensajeriaAutomatica">
+    <bpmn:participant id="Participant_MA" name="MENSAJERÍA AUTOMÁTICA DE CAMPAÑAS" processRef="mensajeria_automatica"/>
+  </bpmn:collaboration>
+
+  <bpmn:process id="mensajeria_automatica" isExecutable="true" name="Mensajería Automática">
+
+    <!-- ======================== LANES ======================== -->
+    <bpmn:laneSet id="LaneSet_MA">
+
+      <bpmn:lane id="Lane_Responsable" name="RESPONSABLE DE NOTIFICACIONES">
+        <bpmn:flowNodeRef>StartEvent_MA</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_DisenarCampana</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ValidarPreview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GW_Confirmacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RevisarResultados</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Exitoso</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Cancelado</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <bpmn:lane id="Lane_Sistema" name="SISTEMA (AUTOMÁTICO)">
+        <bpmn:flowNodeRef>ST_ExtraerData</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ST_EjecutarEnvio</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Timer_Espera</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ST_RecopilarMetricas</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+    </bpmn:laneSet>
+
+    <!-- ======================== ELEMENTOS ======================== -->
+
+    <!-- START EVENT: El Responsable inicia la campaña manualmente -->
+    <bpmn:startEvent id="StartEvent_MA" name="Inicio">
+      <bpmn:outgoing>Flow_Start_T1</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- TAREA 1: Diseñar Notificación y Definir Filtros -->
+    <bpmn:userTask
+      id="Task_DisenarCampana"
+      name="1. Diseñar Notificación y Definir Filtros"
+      camunda:candidateGroups="RESPONSABLE_NOTIFICACIONES">
+      <bpmn:incoming>Flow_Start_T1</bpmn:incoming>
+      <bpmn:incoming>Flow_GW_Ajustar</bpmn:incoming>
+      <bpmn:outgoing>Flow_T1_ST1</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- SERVICE TASK: Extracción automática de data y métricas -->
+    <bpmn:serviceTask
+      id="ST_ExtraerData"
+      name="2. Extraer Data y Calcular Métricas"
+      camunda:delegateExpression="${extraerDataCampanaTask}">
+      <bpmn:incoming>Flow_T1_ST1</bpmn:incoming>
+      <bpmn:outgoing>Flow_ST1_T2</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- TAREA 2: El Responsable valida el preview y confirma -->
+    <bpmn:userTask
+      id="Task_ValidarPreview"
+      name="3. Validar Preview y Confirmar Envío"
+      camunda:candidateGroups="RESPONSABLE_NOTIFICACIONES">
+      <bpmn:incoming>Flow_ST1_T2</bpmn:incoming>
+      <bpmn:outgoing>Flow_T2_GW</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- GATEWAY EXCLUSIVO: Decisión del responsable -->
+    <bpmn:exclusiveGateway id="GW_Confirmacion" name="¿Confirma envío?">
+      <bpmn:incoming>Flow_T2_GW</bpmn:incoming>
+      <bpmn:outgoing>Flow_GW_Enviar</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GW_Ajustar</bpmn:outgoing>
+      <bpmn:outgoing>Flow_GW_Cancelar</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <!-- SERVICE TASK: Ejecutar el envío masivo -->
+    <bpmn:serviceTask
+      id="ST_EjecutarEnvio"
+      name="4. Ejecutar Envío Masivo (Correo · SMS · Portal)"
+      camunda:delegateExpression="${ejecutarEnvioMasivoTask}">
+      <bpmn:incoming>Flow_GW_Enviar</bpmn:incoming>
+      <bpmn:outgoing>Flow_ST2_Timer</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- INTERMEDIATE TIMER EVENT: Esperar 48 horas -->
+    <bpmn:intermediateCatchEvent id="Timer_Espera" name="Esperar 48 hrs">
+      <bpmn:incoming>Flow_ST2_Timer</bpmn:incoming>
+      <bpmn:outgoing>Flow_Timer_ST3</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerDef_48h">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT48H</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+
+    <!-- SERVICE TASK: Recopilar métricas de éxito -->
+    <bpmn:serviceTask
+      id="ST_RecopilarMetricas"
+      name="5. Recopilar Métricas de Éxito"
+      camunda:delegateExpression="${recopilarMetricasCampanaTask}">
+      <bpmn:incoming>Flow_Timer_ST3</bpmn:incoming>
+      <bpmn:outgoing>Flow_ST3_T3</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- TAREA 3: El Responsable revisa los resultados y cierra -->
+    <bpmn:userTask
+      id="Task_RevisarResultados"
+      name="6. Revisar Resultados y Cerrar Campaña"
+      camunda:candidateGroups="RESPONSABLE_NOTIFICACIONES">
+      <bpmn:incoming>Flow_ST3_T3</bpmn:incoming>
+      <bpmn:outgoing>Flow_T3_End</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- END EVENTS -->
+    <bpmn:endEvent id="End_Exitoso" name="Campaña Finalizada">
+      <bpmn:incoming>Flow_T3_End</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:endEvent id="End_Cancelado" name="Campaña Cancelada">
+      <bpmn:incoming>Flow_GW_Cancelar</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- ======================== FLUJOS DE SECUENCIA ======================== -->
+    <bpmn:sequenceFlow id="Flow_Start_T1"    sourceRef="StartEvent_MA"          targetRef="Task_DisenarCampana"/>
+    <bpmn:sequenceFlow id="Flow_T1_ST1"      sourceRef="Task_DisenarCampana"    targetRef="ST_ExtraerData"/>
+    <bpmn:sequenceFlow id="Flow_ST1_T2"      sourceRef="ST_ExtraerData"         targetRef="Task_ValidarPreview"/>
+    <bpmn:sequenceFlow id="Flow_T2_GW"       sourceRef="Task_ValidarPreview"    targetRef="GW_Confirmacion"/>
+
+    <bpmn:sequenceFlow id="Flow_GW_Enviar" name="Confirmar" sourceRef="GW_Confirmacion" targetRef="ST_EjecutarEnvio">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'ENVIAR'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_GW_Ajustar" name="Ajustar" sourceRef="GW_Confirmacion" targetRef="Task_DisenarCampana">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'AJUSTAR'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_GW_Cancelar" name="Cancelar" sourceRef="GW_Confirmacion" targetRef="End_Cancelado">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'CANCELAR'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <bpmn:sequenceFlow id="Flow_ST2_Timer"   sourceRef="ST_EjecutarEnvio"       targetRef="Timer_Espera"/>
+    <bpmn:sequenceFlow id="Flow_Timer_ST3"   sourceRef="Timer_Espera"            targetRef="ST_RecopilarMetricas"/>
+    <bpmn:sequenceFlow id="Flow_ST3_T3"      sourceRef="ST_RecopilarMetricas"   targetRef="Task_RevisarResultados"/>
+    <bpmn:sequenceFlow id="Flow_T3_End"      sourceRef="Task_RevisarResultados" targetRef="End_Exitoso"/>
+
+  </bpmn:process>
+
+  <!-- ======================== DIAGRAMA VISUAL (DI) ======================== -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_MA">
+    <bpmndi:BPMNPlane bpmnElement="Collab_MensajeriaAutomatica" id="BPMNPlane_MA">
+
+      <!-- Participante contenedor -->
+      <bpmndi:BPMNShape bpmnElement="Participant_MA" id="Participant_MA_di" isHorizontal="true">
+        <dc:Bounds height="500" width="1500" x="100" y="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Lane Responsable (superior) -->
+      <bpmndi:BPMNShape bpmnElement="Lane_Responsable" id="Lane_Responsable_di" isHorizontal="true">
+        <dc:Bounds height="280" width="1470" x="130" y="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Lane Sistema (inferior) -->
+      <bpmndi:BPMNShape bpmnElement="Lane_Sistema" id="Lane_Sistema_di" isHorizontal="true">
+        <dc:Bounds height="220" width="1470" x="130" y="360"/>
+      </bpmndi:BPMNShape>
+
+      <!-- StartEvent -->
+      <bpmndi:BPMNShape bpmnElement="StartEvent_MA" id="StartEvent_MA_di">
+        <dc:Bounds height="36" width="36" x="188" y="202"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="14" width="30" x="191" y="245"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- Task 1: Diseñar -->
+      <bpmndi:BPMNShape bpmnElement="Task_DisenarCampana" id="Task_DisenarCampana_di">
+        <dc:Bounds height="80" width="140" x="270" y="180"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Task 2: Validar Preview -->
+      <bpmndi:BPMNShape bpmnElement="Task_ValidarPreview" id="Task_ValidarPreview_di">
+        <dc:Bounds height="80" width="140" x="680" y="180"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Gateway Confirmación -->
+      <bpmndi:BPMNShape bpmnElement="GW_Confirmacion" id="GW_Confirmacion_di" isMarkerVisible="true">
+        <dc:Bounds height="50" width="50" x="875" y="195"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="27" width="80" x="860" y="152"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- Task 3: Revisar Resultados -->
+      <bpmndi:BPMNShape bpmnElement="Task_RevisarResultados" id="Task_RevisarResultados_di">
+        <dc:Bounds height="80" width="140" x="1200" y="180"/>
+      </bpmndi:BPMNShape>
+
+      <!-- End Exitoso -->
+      <bpmndi:BPMNShape bpmnElement="End_Exitoso" id="End_Exitoso_di">
+        <dc:Bounds height="36" width="36" x="1400" y="202"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="27" width="90" x="1373" y="245"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- End Cancelado (arriba del gateway) -->
+      <bpmndi:BPMNShape bpmnElement="End_Cancelado" id="End_Cancelado_di">
+        <dc:Bounds height="36" width="36" x="875" y="108"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="27" width="90" x="848" y="71"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- ST: Extraer Data -->
+      <bpmndi:BPMNShape bpmnElement="ST_ExtraerData" id="ST_ExtraerData_di">
+        <dc:Bounds height="80" width="140" x="460" y="400"/>
+      </bpmndi:BPMNShape>
+
+      <!-- ST: Ejecutar Envío -->
+      <bpmndi:BPMNShape bpmnElement="ST_EjecutarEnvio" id="ST_EjecutarEnvio_di">
+        <dc:Bounds height="80" width="140" x="950" y="400"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Timer Espera -->
+      <bpmndi:BPMNShape bpmnElement="Timer_Espera" id="Timer_Espera_di">
+        <dc:Bounds height="36" width="36" x="1140" y="422"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="27" width="70" x="1123" y="465"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- ST: Recopilar Métricas -->
+      <bpmndi:BPMNShape bpmnElement="ST_RecopilarMetricas" id="ST_RecopilarMetricas_di">
+        <dc:Bounds height="80" width="140" x="1210" y="400"/>
+      </bpmndi:BPMNShape>
+
+      <!-- ======================== EDGES ======================== -->
+
+      <bpmndi:BPMNEdge bpmnElement="Flow_Start_T1" id="Flow_Start_T1_di">
+        <di:waypoint x="224" y="220"/>
+        <di:waypoint x="270" y="220"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- T1 baja al lane sistema -->
+      <bpmndi:BPMNEdge bpmnElement="Flow_T1_ST1" id="Flow_T1_ST1_di">
+        <di:waypoint x="340" y="260"/>
+        <di:waypoint x="340" y="440"/>
+        <di:waypoint x="460" y="440"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- ST_ExtraerData sube al lane responsable -->
+      <bpmndi:BPMNEdge bpmnElement="Flow_ST1_T2" id="Flow_ST1_T2_di">
+        <di:waypoint x="600" y="440"/>
+        <di:waypoint x="750" y="440"/>
+        <di:waypoint x="750" y="260"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="Flow_T2_GW" id="Flow_T2_GW_di">
+        <di:waypoint x="820" y="220"/>
+        <di:waypoint x="875" y="220"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- GW → Enviar (baja al lane sistema) -->
+      <bpmndi:BPMNEdge bpmnElement="Flow_GW_Enviar" id="Flow_GW_Enviar_di">
+        <di:waypoint x="900" y="245"/>
+        <di:waypoint x="900" y="440"/>
+        <di:waypoint x="950" y="440"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="14" width="55" x="909" y="335"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+
+      <!-- GW → Ajustar (regresa a T1, loop) -->
+      <bpmndi:BPMNEdge bpmnElement="Flow_GW_Ajustar" id="Flow_GW_Ajustar_di">
+        <di:waypoint x="875" y="220"/>
+        <di:waypoint x="340" y="220"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="14" width="40" x="590" y="202"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+
+      <!-- GW → Cancelar (sube al end cancelado) -->
+      <bpmndi:BPMNEdge bpmnElement="Flow_GW_Cancelar" id="Flow_GW_Cancelar_di">
+        <di:waypoint x="900" y="195"/>
+        <di:waypoint x="900" y="144"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="14" width="45" x="909" y="168"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+
+      <!-- Envío → Timer -->
+      <bpmndi:BPMNEdge bpmnElement="Flow_ST2_Timer" id="Flow_ST2_Timer_di">
+        <di:waypoint x="1090" y="440"/>
+        <di:waypoint x="1140" y="440"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- Timer → Métricas -->
+      <bpmndi:BPMNEdge bpmnElement="Flow_Timer_ST3" id="Flow_Timer_ST3_di">
+        <di:waypoint x="1176" y="440"/>
+        <di:waypoint x="1210" y="440"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- Métricas sube al lane responsable -->
+      <bpmndi:BPMNEdge bpmnElement="Flow_ST3_T3" id="Flow_ST3_T3_di">
+        <di:waypoint x="1280" y="400"/>
+        <di:waypoint x="1280" y="260"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="Flow_T3_End" id="Flow_T3_End_di">
+        <di:waypoint x="1340" y="220"/>
+        <di:waypoint x="1400" y="220"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</bpmn:definitions>

@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   apiUrl: '/api/v1',
+  back_url: '',
   envName: 'production', 
   msalConfig: {
     auth:{
@@ -41,19 +42,5 @@ export const environment = {
     loginRequest: {
       scopes: ['User.Read', 'openid', 'profile', 'email']
     }
-  }, 
-  CentralizadaMs: {
-    ApiUrl: '',
-    ApiKeySistema: '',
-    NameAplication: '',
-    ApiUrlDCA: '',
-    SolicitarAutorizacion: 'api/Autenticacion/SolicitarAutorizacion',
-    ObtenerConfiguracionesAplicacion: 'api/Configuraciones/ObtenerConfiguracionesAplicacion'
-  },
-  ConsumoApiGenerarToken: {
-    ApiUrl: '',
-    metodo: '',
-    ApiKeySistema: '/7WzL6aE2Nbmhqjys6ults5XbFdX8AvEH0+2fXREiz0ixvN/kT5KJ90irXuY6qexMEbrpI7DeFgCvDshA2uXKfHnrIPZTJblGB0qdmwNEL3LUE/Ff/d1d1puMPjjH71zRBa4jSfv+QHrl4dz2DoR5w==',
-    NameAplication: 'WzJMS3viVuEYDTHB9NqGT7uAdrqzIsdc37hvxljCrkRPSEhHY5Mbj52hOZvU3Fbf'
   }
 };

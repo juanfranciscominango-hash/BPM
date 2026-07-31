@@ -25,8 +25,12 @@ public class AuthController {
         String password = credentials.get("password");
 
         return userRepository.findByUsername(username)
-                .filter(u -> u.getPassword().equals(password)) // Por ahora simple, luego BCrypt
+                .filter(u -> u.getPassword().equals(password))
                 .map(u -> {
+                    String sessionId = java.util.UUID.randomUUID().toString();
+                    u.setCurrentSessionId(sessionId);
+                    userRepository.save(u);
+
                     Set<String> permissions = u.getRoles().stream()
                             .flatMap(r -> r.getPermissions().stream())
                             .map(p -> p.getCode())
@@ -37,7 +41,8 @@ public class AuthController {
                             "username", u.getUsername(),
                             "fullName", u.getFullName(),
                             "roles", u.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()),
-                            "permissions", permissions
+                            "permissions", permissions,
+                            "sessionId", sessionId
                     ));
                 })
                 .orElse(ResponseEntity.status(401).build());

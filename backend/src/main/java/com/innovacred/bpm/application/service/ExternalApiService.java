@@ -106,9 +106,10 @@ public class ExternalApiService {
         if (template == null || variables == null) return template;
         String result = template;
         for (Map.Entry<String, Object> entry : variables.entrySet()) {
-            String placeholder = "\\$\\{" + entry.getKey() + "\\}";
+            String placeholder = "${" + entry.getKey() + "}";
             String value = entry.getValue() != null ? entry.getValue().toString() : "";
-            result = result.replaceAll(placeholder, value);
+            // Usar String.replace (literal) en lugar de replaceAll (regex) para evitar 'No group with name'
+            result = result.replace(placeholder, value);
         }
         return result;
     }

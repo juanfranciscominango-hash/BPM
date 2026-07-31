@@ -74,6 +74,68 @@ public class CrmSeeder implements CommandLineRunner {
             origenLeadRepository.saveAll(origenesBase);
             log.info("Se han insertado {} orígenes de lead por defecto.", origenesBase.size());
         }
+
+        // Migración para soportar flujo múltiple en "Parámetros generales"
+        try {
+            log.info("Ejecutando migración para convertir columna 'flujo' en referencia_multiple...");
+            // 1. Eliminar constrain FK antiguo si existe
+            jdbcTemplate.execute("ALTER TABLE PR_PARANMETROS_GENERALES DROP CONSTRAINT IF EXISTS fk_paranmetros_generales_flujo");
+            
+            // 2. Modificar el tipo de datos de la columna física
+            jdbcTemplate.execute("ALTER TABLE PR_PARANMETROS_GENERALES ALTER COLUMN flujo TYPE VARCHAR(255) USING flujo::varchar");
+            
+            // 3. Modificar metadatos en PARAMETRIC_COLUMN
+            jdbcTemplate.execute("UPDATE PARAMETRIC_COLUMN SET type = 'reference_multiple' " +
+                                 "WHERE name = 'flujo' " +
+                                 "AND table_id IN (SELECT id FROM PARAMETRIC_TABLE WHERE name IN ('PARANMETROS_GENERALES', 'PARAMETROS_GENERALES'))");
+            
+            log.info("Migración de 'flujo' a reference_multiple completada con éxito.");
+        } catch (Exception e) {
+            log.warn("Error o advertencia durante la migración de 'flujo': " + e.getMessage());
+        }
+
+        // Sembrado de colores corporativos por defecto en pr_paranmetros_generales
+        try {
+            Boolean tableExists = jdbcTemplate.queryForObject(
+                "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'pr_paranmetros_generales')",
+                Boolean.class
+            );
+            if (Boolean.TRUE.equals(tableExists)) {
+                log.info("Sembrando colores corporativos en pr_paranmetros_generales...");
+                
+                // Color Primario
+                Integer countPrimary = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM pr_paranmetros_generales WHERE LOWER(descripcion) = 'color_primario'",
+                    Integer.class
+                );
+                if (countPrimary == 0) {
+                    jdbcTemplate.execute("INSERT INTO pr_paranmetros_generales (descripcion, valor) VALUES ('color_primario', '#e30613')");
+                    log.info("Sembrado color_primario por defecto (#e30613).");
+                }
+                
+                // Color Secundario
+                Integer countSecondary = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM pr_paranmetros_generales WHERE LOWER(descripcion) = 'color_secundario'",
+                    Integer.class
+                );
+                if (countSecondary == 0) {
+                    jdbcTemplate.execute("INSERT INTO pr_paranmetros_generales (descripcion, valor) VALUES ('color_secundario', '#b30000')");
+                    log.info("Sembrado color_secundario por defecto (#b30000).");
+                }
+                
+                // Color Acento
+                Integer countAccent = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM pr_paranmetros_generales WHERE LOWER(descripcion) = 'color_acento'",
+                    Integer.class
+                );
+                if (countAccent == 0) {
+                    jdbcTemplate.execute("INSERT INTO pr_paranmetros_generales (descripcion, valor) VALUES ('color_acento', '#D4AF37')");
+                    log.info("Sembrado color_acento por defecto (#D4AF37).");
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Error al sembrar colores corporativos en pr_paranmetros_generales: " + e.getMessage());
+        }
     }
 
     private OrigenLead createOrigen(String nombre, String descripcion) {

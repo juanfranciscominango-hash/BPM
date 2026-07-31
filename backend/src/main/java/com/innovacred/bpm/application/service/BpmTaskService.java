@@ -1,6 +1,9 @@
 package com.innovacred.bpm.application.service;
 
 import com.innovacred.bpm.domain.entity.ProcessDefinition;
+import com.innovacred.bpm.application.service.ProcessVariableSchemaService;
+import com.innovacred.bpm.application.service.ProcessErrorService;
+import com.innovacred.bpm.application.service.TaskActionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.task.api.Task;
@@ -20,6 +23,9 @@ public class BpmTaskService {
     private final MetaService metaService;
     private final TableGeneratorService tableGeneratorService;
     private final RuleExecutionService ruleExecutionService;
+    private final ProcessVariableSchemaService variableSchemaService;
+    private final TaskActionService taskActionService;
+    private final ProcessErrorService errorService;
 
     @Transactional
     public void completeTask(String taskId, Map<String, Object> variables) {
@@ -31,9 +37,29 @@ public class BpmTaskService {
             throw new RuntimeException("Tarea no encontrada");
         }
 
-        // 2. Persistencia en tabla de negocio (si el proceso está vinculado a una meta-entidad)
+        // 2. Validar tipos de variables contra el esquema del proceso
         ProcessDefinition procDef = processService.getByProcDefId(task.getProcessDefinitionId());
-        
+        String processKey = "";
+        if (procDef != null && variables != null && !variables.isEmpty()) {
+            processKey = task.getProcessDefinitionId().contains(":")
+                    ? task.getProcessDefinitionId().split(":")[0]
+                    : task.getProcessDefinitionId();
+            variableSchemaService.validateCompleteVariables(processKey, variables);
+        }
+
+        try {
+            // 2.1 Ejecutar Reglas de Acción ON_EXIT
+            if (processKey.isEmpty() && procDef != null) {
+                processKey = task.getProcessDefinitionId().contains(":")
+                        ? task.getProcessDefinitionId().split(":")[0]
+                        : task.getProcessDefinitionId();
+            }
+            if (!processKey.isEmpty()) {
+                taskActionService.executeRulesForEvent(
+                        task.getProcessInstanceId(), processKey, task.getTaskDefinitionKey(), task.getId(), "ON_EXIT");
+            }
+
+        // 3. Persistencia en tabla de negocio (si el proceso está vinculado a una meta-entidad)
         if (procDef != null && procDef.getMetaEntityId() != null && variables != null && !variables.isEmpty()) {
             var entity = metaService.listarEntidades().stream()
                     .filter(e -> e.getId().equals(procDef.getMetaEntityId()))
@@ -46,8 +72,16 @@ public class BpmTaskService {
             }
         }
 
-        // 3. Completar en Flowable
+        // 4. Completar en Flowable
         taskService.complete(taskId, variables);
+        
+        } catch (TaskActionService.TaskActionValidationException ex) {
+            throw ex; // Permitir que la validación llegue al usuario sin loguear error de sistema
+        } catch (Exception ex) {
+            errorService.logError(task.getProcessInstanceId(), processKey, taskId, "SYSTEM", 
+                    "Error al completar la tarea " + task.getName() + ": " + ex.getMessage(), ex);
+            throw new RuntimeException("Ocurrió un error al procesar la tarea: " + ex.getMessage());
+        }
     }
 
     public Map<String, Object> evaluateRule(String taskId, String ruleKey) {

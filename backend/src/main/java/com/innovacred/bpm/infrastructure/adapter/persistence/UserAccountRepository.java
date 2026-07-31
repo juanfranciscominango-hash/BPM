@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
     Optional<UserAccount> findByUsername(String username);
 
+    List<UserAccount> findByActiveTrue();
+
     @Query("SELECT u FROM UserAccount u JOIN u.roles r WHERE r.name = :roleName AND u.active = true")
     List<UserAccount> findByRoleNameAndActiveTrue(@Param("roleName") String roleName);
 }

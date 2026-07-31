@@ -56,6 +56,10 @@ public class CliApiSeeder implements CommandLineRunner {
             tramaFieldRepository.save(TramaField.builder()
                 .processId(processId).tramaType("OUTPUT").name("DocumentNumber")
                 .parentId(rootOut.getId()).defaultAssignment("ASIGNAR SIEMPRE").build());
+
+            tramaFieldRepository.save(TramaField.builder()
+                .processId(processId).tramaType("OUTPUT").name("interviniente_int_identificacion")
+                .parentId(rootOut.getId()).defaultAssignment("ASIGNAR SIEMPRE").build());
                 
             tramaFieldRepository.save(TramaField.builder()
                 .processId(processId).tramaType("OUTPUT").name("correo")

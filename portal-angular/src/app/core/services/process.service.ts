@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 export interface ProcessDefinition {
   id?: number;
@@ -45,7 +46,7 @@ export interface TrackingItem {
 export class ProcessService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
-  private apiUrl = '/api/v1/processes';
+  private apiUrl = `${environment.back_url}/api/v1/processes`;
 
   getProcesses(): Observable<ProcessDefinition[]> {
     return this.http.get<ProcessDefinition[]>(this.apiUrl);

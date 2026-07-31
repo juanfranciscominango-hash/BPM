@@ -1,0 +1,113 @@
+<div class="container-fluid py-4">
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0"><i class="bi bi-search me-2"></i> Ejecutar Consulta Dinámica</h5>
+    </div>
+    <div class="card-body bg-light">
+      
+      <div *ngIf="formSchema.length === 0 && !error" class="text-center p-3">
+        <div class="spinner-border text-primary" role="status"></div>
+        <div class="mt-2 text-muted">Cargando formulario...</div>
+      </div>
+
+      <div class="alert alert-warning" *ngIf="error">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+      </div>
+
+      <div class="row g-3" *ngIf="formSchema.length > 0">
+        <!-- Generación Dinámica del Formulario -->
+        <ng-container *ngFor="let field of formSchema">
+          <div class="col-md-3">
+            <label class="form-label fw-bold">{{ field.label }}</label>
+            
+            <!-- Campos del Proceso (Propiedades fijas del Request) -->
+            <ng-container *ngIf="field.id === 'processDefinitionKey'">
+              <input type="text" class="form-control" [(ngModel)]="request.processDefinitionKey">
+            </ng-container>
+            
+            <ng-container *ngIf="field.id === 'status'">
+              <select class="form-select" [(ngModel)]="request.status">
+                <option value="">TODOS</option>
+                <option value="OPEN">ABIERTO</option>
+                <option value="CLOSED">CERRADO</option>
+              </select>
+            </ng-container>
+
+            <ng-container *ngIf="field.id === 'startedBy'">
+              <input type="text" class="form-control" [(ngModel)]="request.startedBy">
+            </ng-container>
+
+            <ng-container *ngIf="field.id === 'currentAssignee'">
+              <input type="text" class="form-control" [(ngModel)]="request.currentAssignee">
+            </ng-container>
+
+            <!-- Campos Dinámicos (Variables) -->
+            <ng-container *ngIf="field.id !== 'processDefinitionKey' && field.id !== 'status' && field.id !== 'startedBy' && field.id !== 'currentAssignee' && field.id !== 'variables'">
+              <ng-container *ngIf="request.variables">
+                <input *ngIf="field.type === 'TEXT'" type="text" class="form-control" [(ngModel)]="request.variables[field.id]">
+                <input *ngIf="field.type === 'NUMBER'" type="number" class="form-control" [(ngModel)]="request.variables[field.id]">
+                <input *ngIf="field.type === 'DATE'" type="date" class="form-control" [(ngModel)]="request.variables[field.id]">
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <!-- Botón Buscar -->
+        <div class="col-12 text-end mt-4">
+          <button class="btn btn-primary px-5 py-2" (click)="buscar()" [disabled]="loading || formSchema.length === 0">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i class="bi bi-search" *ngIf="!loading"></i> Buscar Resultados
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  <div class="card shadow-sm" *ngIf="results.length > 0">
+    <div class="card-header bg-white">
+      <h6 class="mb-0 text-success"><i class="bi bi-list-check me-2"></i> Resultados de la Búsqueda ({{ results.length }})</h6>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>ID Instancia</th>
+              <th>Proceso</th>
+              <th>Creador</th>
+              <th>Asignado Actual</th>
+              <th>Inicio</th>
+              <th>Fin</th>
+              <th>Variables Buscadas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let res of results">
+              <td><span class="badge bg-secondary">{{ res.processInstanceId }}</span></td>
+              <td>{{ res.processDefinitionName || res.processDefinitionKey }}</td>
+              <td>{{ res.startedBy }}</td>
+              <td>
+                <span class="badge bg-primary" *ngIf="res.currentAssignee">{{ res.currentAssignee }}</span>
+                <span class="text-muted small" *ngIf="!res.currentAssignee">N/A</span>
+              </td>
+              <td>{{ res.startTime | date:'short' }}</td>
+              <td>{{ res.endTime ? (res.endTime | date:'short') : 'En Proceso' }}</td>
+              <td>
+                <small>
+                  <div *ngFor="let key of getVariableKeys()">
+                     <span *ngIf="res.variables[key]" class="text-info">{{key}}:</span> {{ res.variables[key] }}
+                  </div>
+                </small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="alert alert-warning mt-4 shadow-sm" *ngIf="results.length === 0 && !loading && formSchema.length > 0">
+    <i class="bi bi-info-circle me-2"></i> Realice una búsqueda para visualizar resultados o cambie los filtros.
+  </div>
+</div>

@@ -31,4 +31,6 @@ public class UserAccount {
     // PKI Support
     private String certificateSerialNumber;
     private String certificateIssuer;
+
+    private String currentSessionId;
 }

@@ -6,22 +6,39 @@ import {
   HttpEvent
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { CONSTANTES } from '../../constantes';
 
 /**
- * Interceptor de autenticación que agrega el token JWT a todas las peticiones HTTP
- * El token se obtiene del localStorage/sessionStorage
+ * Interceptor de autenticación que agrega las cabeceras de sesión a todas las peticiones HTTP
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Obtener token del almacenamiento
-    const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+    // Obtener datos del usuario logueado
+    const storedUser = localStorage.getItem(CONSTANTES.STORAGE.USER);
+    let username = '';
+    let sessionId = '';
 
-    // Si existe token, agregar Authorization header
-    if (token) {
+    console.log('[AuthInterceptor] Stored user in localStorage:', storedUser);
+
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        username = user.username;
+        sessionId = user.sessionId;
+      } catch (e) {
+        console.error('[AuthInterceptor] Error parsing stored user:', e);
+      }
+    }
+
+    console.log('[AuthInterceptor] Sending headers - Username:', username, 'SessionId:', sessionId, 'for URL:', req.url);
+
+    // Agregar cabeceras si el usuario tiene sesión activa
+    if (username && sessionId) {
       req = req.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`,
+          'X-Username': username,
+          'X-Session-Id': sessionId,
           'X-Requested-With': 'XMLHttpRequest',
           'Content-Type': 'application/json'
         }

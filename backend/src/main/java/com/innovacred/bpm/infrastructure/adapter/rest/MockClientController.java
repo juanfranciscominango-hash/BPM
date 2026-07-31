@@ -71,12 +71,15 @@ public class MockClientController {
             Map<String, Object> payload = objectMapper.readValue(decryptedJson, new TypeReference<Map<String, Object>>() {});
             String docNumber = String.valueOf(payload.get("DocumentNumber"));
 
-            Map<String, Object> responseData = mockClients.getOrDefault(docNumber, new HashMap<>());
+            Map<String, Object> responseData = new HashMap<>(mockClients.getOrDefault(docNumber, new HashMap<>()));
             if (responseData.isEmpty()) {
                 log.warn("Cliente {} no encontrado en mocks, enviando genérico", docNumber);
                 responseData.put("DocumentNumber", docNumber);
+                responseData.put("interviniente_int_identificacion", docNumber);
                 responseData.put("interviniente_int_nombres_completos", "Cliente Desconocido " + docNumber);
                 responseData.put("mensaje", "Cliente no encontrado en mocks, datos genéricos devueltos");
+            } else {
+                responseData.putIfAbsent("interviniente_int_identificacion", responseData.getOrDefault("DocumentNumber", docNumber));
             }
 
             String responseJson = objectMapper.writeValueAsString(responseData);

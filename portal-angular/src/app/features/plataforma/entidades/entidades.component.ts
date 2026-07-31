@@ -96,7 +96,7 @@ import { MetaService, MetaEntity } from '../../../core/services/meta.service';
     <div *ngIf="showModal" class="modal-backdrop fade show"></div>
   `,
   styles: [`
-    .border-left-primary { border-left: .25rem solid #4e73df!important; }
+    .border-left-primary { border-left: .25rem solid var(--color-primary)!important; }
     .card { transition: all 0.2s; }
     .card:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
     .modal.show { background: rgba(0,0,0,0.5); }

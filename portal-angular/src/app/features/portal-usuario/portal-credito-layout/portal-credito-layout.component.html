@@ -1,7 +1,8 @@
 <div class="portal-wrapper">
   <!-- Sidebar -->
   <aside class="sidebar bg-white text-dark shadow-sm" [class.collapsed]="sidebarCollapsed">
-    <div class="sidebar-header d-flex align-items-center justify-content-between p-3 border-bottom border-light" style="background: var(--gradient-bgr);">
+    <div class="sidebar-header d-flex align-items-center justify-content-between p-3 border-bottom border-light"
+      style="background: var(--gradient-bgr);">
       <div class="logo-area d-flex align-items-center" *ngIf="!sidebarCollapsed">
         <i class="bi bi-cpu-fill fs-4 text-white me-2"></i>
         <span class="fs-5 fw-bold text-white">BPM Flow</span>
@@ -13,7 +14,8 @@
 
     <div class="user-info p-3 border-bottom border-light" *ngIf="!sidebarCollapsed">
       <div class="d-flex align-items-center">
-        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+          style="width: 40px; height: 40px;">
           <i class="bi bi-person-fill fs-5"></i>
         </div>
         <div>
@@ -27,15 +29,18 @@
       <!-- Opción de Iniciar: Solo visible para Cliente (simulado) -->
       <!-- Opción de Iniciar: Listado dinámico de procesos -->
       <li class="nav-item dropdown px-3 mb-2" *ngIf="processes.length > 0">
-        <button class="btn btn-primary w-100 text-start shadow-sm d-flex align-items-center dropdown-toggle" 
-                type="button" id="startProcessDropdown" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="!sidebarCollapsed">
+        <button class="btn btn-primary w-100 text-start shadow-sm d-flex align-items-center dropdown-toggle"
+          type="button" id="startProcessDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+          *ngIf="!sidebarCollapsed">
           <i class="bi bi-play-circle-fill me-2"></i> Iniciar Trámite
         </button>
-        <button class="btn btn-primary w-100 text-center shadow-sm dropdown-toggle" 
-                type="button" id="startProcessDropdownCollapsed" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="sidebarCollapsed" title="Iniciar Trámite">
+        <button class="btn btn-primary w-100 text-center shadow-sm dropdown-toggle" type="button"
+          id="startProcessDropdownCollapsed" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="sidebarCollapsed"
+          title="Iniciar Trámite">
           <i class="bi bi-play-circle-fill"></i>
         </button>
-        <ul class="dropdown-menu w-100 shadow border-0 mt-1" aria-labelledby="startProcessDropdown" style="max-height: 250px; overflow-y: auto;">
+        <ul class="dropdown-menu w-100 shadow border-0 mt-1" aria-labelledby="startProcessDropdown"
+          style="max-height: 250px; overflow-y: auto;">
           <li *ngFor="let proc of processes">
             <a class="dropdown-item py-2 small cursor-pointer" (click)="iniciarProcesoDirecto(proc.key)">
               <i class="bi bi-gear-wide-connected me-2 text-primary"></i> {{ proc.name }}
@@ -45,42 +50,48 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/bandeja" routerLinkActive="active">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2"
+          routerLink="/portal/bandeja" routerLinkActive="active">
           <i class="bi bi-inbox fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
           <span *ngIf="!sidebarCollapsed">Trámites Activos</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/crm" routerLinkActive="active">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/crm"
+          routerLinkActive="active">
           <i class="bi bi-person-lines-fill fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
           <span *ngIf="!sidebarCollapsed">Gestión CRM</span>
         </a>
       </li>
-      
+
       <li class="nav-item">
-        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/simulacion" routerLinkActive="active">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2"
+          routerLink="/portal/simulacion" routerLinkActive="active">
           <i class="bi bi-calculator fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
-          <span *ngIf="!sidebarCollapsed">Simulación / Utilidades</span>
+          <span *ngIf="!sidebarCollapsed">Simulación</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/historial" routerLinkActive="active">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2"
+          routerLink="/portal/historial" routerLinkActive="active">
           <i class="bi bi-clock-history fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
           <span *ngIf="!sidebarCollapsed">Historial de Casos</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/notificaciones" routerLinkActive="active">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2"
+          routerLink="/portal/notificaciones" routerLinkActive="active">
           <i class="bi bi-bell fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
           <span *ngIf="!sidebarCollapsed">Notificaciones <span class="badge bg-danger rounded-pill ms-2">2</span></span>
         </a>
       </li>
 
       <li class="nav-item mt-4">
-        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2" routerLink="/portal/ayuda" routerLinkActive="active">
+        <a class="nav-link custom-nav-link text-secondary d-flex align-items-center px-4 py-2"
+          routerLink="/portal/ayuda" routerLinkActive="active">
           <i class="bi bi-question-circle fs-5" [ngClass]="{'me-3': !sidebarCollapsed}"></i>
           <span *ngIf="!sidebarCollapsed">Ayuda / Soporte</span>
         </a>
@@ -88,7 +99,8 @@
     </ul>
 
     <div class="mt-auto p-3 border-top border-secondary text-center">
-      <a href="#" (click)="logout($event)" class="text-muted text-decoration-none d-flex align-items-center justify-content-center" title="Cerrar Sesión">
+      <a href="#" (click)="logout($event)"
+        class="text-muted text-decoration-none d-flex align-items-center justify-content-center" title="Cerrar Sesión">
         <i class="bi bi-box-arrow-right fs-5" [ngClass]="{'me-2': !sidebarCollapsed}"></i>
         <span *ngIf="!sidebarCollapsed">Cerrar sesión</span>
       </a>

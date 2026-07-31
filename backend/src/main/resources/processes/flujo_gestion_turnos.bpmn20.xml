@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             targetNamespace="http://www.innovacred.com/bpm/turnero">
+
+    <process id="flujo_gestion_turnos" name="Flujo de Gestión de Turnos Digital" isExecutable="true">
+
+        <!-- 1. Inicio -->
+        <startEvent id="startTurno" name="Emitir Turno Kiosco"/>
+
+        <sequenceFlow id="flow1" sourceRef="startTurno" targetRef="registarTurnoTask"/>
+
+        <!-- 2. Service Task: Registrar en Base de Datos -->
+        <serviceTask id="registarTurnoTask" name="Registrar Turno en Cola"
+                     flowable:delegateExpression="${registrarTurnoTaskDelegate}"/>
+
+        <sequenceFlow id="flow2" sourceRef="registarTurnoTask" targetRef="esperarLlamadoTask"/>
+
+        <!-- 3. User Task: Esperar Llamado de Ventanilla -->
+        <userTask id="esperarLlamadoTask" name="1. En Espera de Llamado en Sala"
+                  flowable:candidateGroups="ventanilla"/>
+
+        <sequenceFlow id="flow3" sourceRef="esperarLlamadoTask" targetRef="atenderClienteTask"/>
+
+        <!-- 4. User Task: Atender Cliente en Ventanilla -->
+        <userTask id="atenderClienteTask" name="2. Atender Cliente en Ventanilla"
+                  flowable:candidateGroups="ventanilla"/>
+
+        <sequenceFlow id="flow4" sourceRef="atenderClienteTask" targetRef="decisionGateway"/>
+
+        <!-- 5. Gateway de Decisión del Asesor (FINALIZAR, DERIVAR, AUSENTE) -->
+        <exclusiveGateway id="decisionGateway" name="¿Resultado de Atención?" default="flowFinalizar"/>
+
+        <!-- Caminito 1: Finalizar Atención -->
+        <sequenceFlow id="flowFinalizar" name="Finalizar" sourceRef="decisionGateway" targetRef="finalizarTurnoTask"/>
+
+        <!-- Caminito 2: Derivar a Otra Área -->
+        <sequenceFlow id="flowDerivar" name="Derivar Área" sourceRef="decisionGateway" targetRef="esperarLlamadoTask">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'DERIVAR'}]]></conditionExpression>
+        </sequenceFlow>
+
+        <!-- Caminito 3: Cliente Ausente -->
+        <sequenceFlow id="flowAusente" name="Cliente Ausente" sourceRef="decisionGateway" targetRef="endAusente">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'AUSENTE'}]]></conditionExpression>
+        </sequenceFlow>
+
+        <!-- 6. Service Task: Finalizar y Registrar Tiempos -->
+        <serviceTask id="finalizarTurnoTask" name="Finalizar Turno y Registrar Tiempos"
+                     flowable:delegateExpression="${finalizarTurnoTaskDelegate}"/>
+
+        <sequenceFlow id="flow5" sourceRef="finalizarTurnoTask" targetRef="endTurno"/>
+
+        <!-- 7. Fin Eventos -->
+        <endEvent id="endTurno" name="Turno Completado"/>
+        <endEvent id="endAusente" name="Turno Cancelado por Ausencia"/>
+
+    </process>
+
+    <bpmndi:BPMNDiagram id="BPMNDiagram_flujo_gestion_turnos">
+        <bpmndi:BPMNPlane id="BPMNPlane_flujo_gestion_turnos" bpmnElement="flujo_gestion_turnos">
+            
+            <!-- Shapes -->
+            <bpmndi:BPMNShape id="shape_startTurno" bpmnElement="startTurno">
+                <omgdc:Bounds x="180" y="160" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+
+            <bpmndi:BPMNShape id="shape_registarTurnoTask" bpmnElement="registarTurnoTask">
+                <omgdc:Bounds x="270" y="138" width="120" height="80"/>
+            </bpmndi:BPMNShape>
+
+            <bpmndi:BPMNShape id="shape_esperarLlamadoTask" bpmnElement="esperarLlamadoTask">
+                <omgdc:Bounds x="440" y="138" width="120" height="80"/>
+            </bpmndi:BPMNShape>
+
+            <bpmndi:BPMNShape id="shape_atenderClienteTask" bpmnElement="atenderClienteTask">
+                <omgdc:Bounds x="610" y="138" width="120" height="80"/>
+            </bpmndi:BPMNShape>
+
+            <bpmndi:BPMNShape id="shape_decisionGateway" bpmnElement="decisionGateway" isMarkerVisible="true">
+                <omgdc:Bounds x="780" y="153" width="50" height="50"/>
+            </bpmndi:BPMNShape>
+
+            <bpmndi:BPMNShape id="shape_finalizarTurnoTask" bpmnElement="finalizarTurnoTask">
+                <omgdc:Bounds x="880" y="138" width="120" height="80"/>
+            </bpmndi:BPMNShape>
+
+            <bpmndi:BPMNShape id="shape_endTurno" bpmnElement="endTurno">
+                <omgdc:Bounds x="1050" y="160" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+
+            <bpmndi:BPMNShape id="shape_endAusente" bpmnElement="endAusente">
+                <omgdc:Bounds x="880" y="280" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+
+            <!-- Edges -->
+            <bpmndi:BPMNEdge id="edge_flow1" bpmnElement="flow1">
+                <omgdi:waypoint x="216" y="178"/>
+                <omgdi:waypoint x="270" y="178"/>
+            </bpmndi:BPMNEdge>
+
+            <bpmndi:BPMNEdge id="edge_flow2" bpmnElement="flow2">
+                <omgdi:waypoint x="390" y="178"/>
+                <omgdi:waypoint x="440" y="178"/>
+            </bpmndi:BPMNEdge>
+
+            <bpmndi:BPMNEdge id="edge_flow3" bpmnElement="flow3">
+                <omgdi:waypoint x="560" y="178"/>
+                <omgdi:waypoint x="610" y="178"/>
+            </bpmndi:BPMNEdge>
+
+            <bpmndi:BPMNEdge id="edge_flow4" bpmnElement="flow4">
+                <omgdi:waypoint x="730" y="178"/>
+                <omgdi:waypoint x="780" y="178"/>
+            </bpmndi:BPMNEdge>
+
+            <bpmndi:BPMNEdge id="edge_flowFinalizar" bpmnElement="flowFinalizar">
+                <omgdi:waypoint x="830" y="178"/>
+                <omgdi:waypoint x="880" y="178"/>
+            </bpmndi:BPMNEdge>
+
+            <bpmndi:BPMNEdge id="edge_flowDerivar" bpmnElement="flowDerivar">
+                <omgdi:waypoint x="805" y="153"/>
+                <omgdi:waypoint x="805" y="80"/>
+                <omgdi:waypoint x="500" y="80"/>
+                <omgdi:waypoint x="500" y="138"/>
+            </bpmndi:BPMNEdge>
+
+            <bpmndi:BPMNEdge id="edge_flowAusente" bpmnElement="flowAusente">
+                <omgdi:waypoint x="805" y="203"/>
+                <omgdi:waypoint x="805" y="298"/>
+                <omgdi:waypoint x="880" y="298"/>
+            </bpmndi:BPMNEdge>
+
+            <bpmndi:BPMNEdge id="edge_flow5" bpmnElement="flow5">
+                <omgdi:waypoint x="1000" y="178"/>
+                <omgdi:waypoint x="1050" y="178"/>
+            </bpmndi:BPMNEdge>
+
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

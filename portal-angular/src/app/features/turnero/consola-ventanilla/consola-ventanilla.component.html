@@ -1,0 +1,226 @@
+<div class="consola-container p-4">
+  
+  <!-- Header Bar -->
+  <div class="card border-0 shadow-sm mb-4 rounded-4 bg-white">
+    <div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-3">
+      
+      <div class="d-flex align-items-center gap-3">
+        <div class="avatar-icon bg-primary text-white rounded-circle p-3">
+          <i class="bi bi-headset fs-3"></i>
+        </div>
+        <div>
+          <h4 class="fw-bold mb-0 text-dark">Consola de Atención al Cliente</h4>
+          <span class="text-muted small">Asesor: <strong>{{ usuarioAsesor }}</strong></span>
+        </div>
+      </div>
+
+      <!-- Selector de Ventanilla -->
+      <div class="d-flex align-items-center gap-3">
+        <label class="form-label mb-0 fw-bold text-secondary">Ventanilla de Trabajo:</label>
+        <select class="form-select form-select-lg fw-bold border-primary text-primary" style="min-width: 180px;" [(ngModel)]="selectedVentanillaNum">
+          <option *ngFor="let v of ventanillas" [value]="v.numero">
+            Ventanilla {{ v.numero }} ({{ v.nombre }})
+          </option>
+          <option [value]="1" *ngIf="ventanillas.length === 0">Ventanilla 1</option>
+          <option [value]="2" *ngIf="ventanillas.length === 0">Ventanilla 2</option>
+          <option [value]="3" *ngIf="ventanillas.length === 0">Ventanilla 3</option>
+        </select>
+
+        <span class="badge bg-success bg-gradient px-3 py-2 fs-6 rounded-pill">
+          <i class="bi bi-circle-fill me-1 small"></i> En Línea
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="row g-4">
+    
+    <!-- Column Left: Turno Actual & Controles de Atencion -->
+    <div class="col-12 col-lg-7">
+      
+      <!-- Option A: No Hay Turno Activo -> Botón Llamar Siguiente -->
+      <div class="card border-0 shadow-sm rounded-4 text-center p-5 bg-white h-100 d-flex flex-column align-items-center justify-content-center" *ngIf="!turnoActual">
+        <div class="empty-icon-box mb-3 text-primary bg-primary-subtle rounded-circle p-4">
+          <i class="bi bi-bell-fill display-2"></i>
+        </div>
+        
+        <h2 class="fw-bold text-dark mb-2">Sin Turno en Atención</h2>
+        <p class="text-muted fs-5 mb-4">Haga clic en el botón a continuación para llamar al próximo cliente en la cola.</p>
+
+        <button 
+          class="btn btn-primary btn-lg rounded-pill px-5 py-3 fs-4 fw-bold shadow-lg text-uppercase tracking-wider btn-call-next"
+          [disabled]="loading || colaPendiente.length === 0"
+          (click)="llamarSiguiente()">
+          <span *ngIf="!loading"><i class="bi bi-megaphone-fill me-2"></i> LLAMAR SIGUIENTE TURNO</span>
+          <span *ngIf="loading"><i class="bi bi-arrow-clockwise spin me-2"></i> Llamando...</span>
+        </button>
+
+        <span class="text-muted small mt-3" *ngIf="colaPendiente.length > 0">
+          Hay <strong>{{ colaPendiente.length }}</strong> personas esperando en sala.
+        </span>
+        <span class="text-danger small mt-3" *ngIf="colaPendiente.length === 0">
+          La cola de espera se encuentra actualmente vacía.
+        </span>
+      </div>
+
+      <!-- Option B: Turno Activo en Atención -->
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100" *ngIf="turnoActual">
+        <div class="card-header bg-transparent border-0 d-flex align-items-center justify-content-between p-0 pb-3">
+          <span class="badge bg-warning text-dark fs-6 px-3 py-2 rounded-pill fw-bold">
+            <i class="bi bi-circle-fill text-danger me-1 small"></i> TURNO EN ATENCIÓN
+          </span>
+          <span class="text-muted small">ID Proceso: {{ turnoActual.id }}</span>
+        </div>
+
+        <div class="card-body text-center p-4 bg-light rounded-4 my-2 border">
+          <span class="text-uppercase text-muted fw-bold tracking-wider fs-6">CÓDIGO DE TURNO</span>
+          <div class="turno-code-huge text-primary fw-extrabold my-1">
+            {{ turnoActual.codigoTurno }}
+          </div>
+
+          <div class="d-flex justify-content-center gap-3 my-2">
+            <span class="badge bg-primary fs-6 px-3 py-2">{{ turnoActual.servicio?.nombre }}</span>
+            <span class="badge bg-info text-dark fs-6 px-3 py-2">Ventanilla {{ selectedVentanillaNum }}</span>
+          </div>
+
+          <hr class="my-3" />
+
+          <div class="row text-start fs-6 text-dark">
+            <div class="col-6">
+              <strong>Cliente:</strong> {{ turnoActual.nombreCliente || 'No Registrado' }}
+            </div>
+            <div class="col-6">
+              <strong>Cédula:</strong> {{ turnoActual.identificacionCliente || 'N/A' }}
+            </div>
+            <div class="col-6 mt-2">
+              <strong>Hora Emisión:</strong> {{ turnoActual.fechaEmision | date:'hh:mm:ss a' }}
+            </div>
+            <div class="col-6 mt-2">
+              <strong>Estado Actual:</strong> <span class="badge bg-success">{{ turnoActual.estado }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Observaciones de Atención -->
+        <div class="my-3">
+          <label class="form-label fw-bold text-secondary">Observaciones / Notas de la Atención (Opcional):</label>
+          <textarea class="form-control" rows="2" [(ngModel)]="observaciones" placeholder="Ingrese comentarios finales sobre el trámite realizado..."></textarea>
+        </div>
+
+        <!-- Action Control Buttons -->
+        <div class="d-flex flex-wrap gap-2 justify-content-between mt-auto pt-3">
+          
+          <button class="btn btn-outline-warning fw-bold px-3" [disabled]="loading" (click)="rellamar()">
+            <i class="bi bi-volume-up-fill me-1"></i> Re-llamar
+          </button>
+
+          <button class="btn btn-outline-primary fw-bold px-3" *ngIf="turnoActual.estado === 'LLAMADO'" [disabled]="loading" (click)="iniciarAtencion()">
+            <i class="bi bi-play-fill me-1"></i> Iniciar Atención
+          </button>
+
+          <button class="btn btn-outline-secondary fw-bold px-3" [disabled]="loading" (click)="abrirDerivacion()">
+            <i class="bi bi-arrow-return-right me-1"></i> Derivar
+          </button>
+
+          <button class="btn btn-outline-danger fw-bold px-3" [disabled]="loading" (click)="marcarAusente()">
+            <i class="bi bi-person-x-fill me-1"></i> Ausente
+          </button>
+
+          <button class="btn btn-success fw-bold px-4 ms-auto text-uppercase" [disabled]="loading" (click)="finalizarAtencion()">
+            <i class="bi bi-check-circle-fill me-1"></i> Finalizar Atención
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Column Right: Turnos Atendidos & Cola de Espera -->
+    <div class="col-12 col-lg-5 d-flex flex-column gap-4">
+      
+      <!-- Stats Widget -->
+      <div class="row g-3">
+        <div class="col-6">
+          <div class="card border-0 shadow-sm rounded-4 p-3 bg-white text-center">
+            <span class="text-muted small fw-bold">ATENDIDOS HOY</span>
+            <div class="fs-2 fw-bold text-success my-1">{{ turnosAtendidosCount }}</div>
+            <span class="text-muted extra-small"><i class="bi bi-check2-all text-success"></i> En su jornada</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card border-0 shadow-sm rounded-4 p-3 bg-white text-center">
+            <span class="text-muted small fw-bold">EN COLA DE SALA</span>
+            <div class="fs-2 fw-bold text-primary my-1">{{ colaPendiente.length }}</div>
+            <span class="text-muted extra-small"><i class="bi bi-people me-1"></i> Esperando atención</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Cola Pendiente -->
+      <div class="card border-0 shadow-sm rounded-4 bg-white flex-fill p-3">
+        <div class="card-header bg-transparent border-0 d-flex align-items-center justify-content-between p-0 pb-2">
+          <h5 class="fw-bold m-0 text-dark"><i class="bi bi-list-task text-primary me-2"></i> Próximos Turnos en Cola</h5>
+          <button class="btn btn-sm btn-outline-primary rounded-circle" (click)="refreshCola()" title="Actualizar">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+        </div>
+
+        <div class="table-responsive mt-2">
+          <table class="table table-hover align-middle m-0 small">
+            <thead class="table-light">
+              <tr>
+                <th>TURNO</th>
+                <th>SERVICIO</th>
+                <th class="text-end">HORA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let t of colaPendiente">
+                <td class="fw-bold text-primary fs-6">{{ t.codigoTurno }}</td>
+                <td>{{ t.servicio?.nombre }}</td>
+                <td class="text-end text-muted">{{ t.fechaEmision | date:'hh:mm a' }}</td>
+              </tr>
+              <tr *ngIf="colaPendiente.length === 0">
+                <td colspan="3" class="text-center text-muted py-4">No hay turnos pendientes en cola</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal Derivar Turno -->
+  <div class="modal-backdrop fade show" *ngIf="showDerivarModal"></div>
+  <div class="modal fade show d-block" tabindex="-1" *ngIf="showDerivarModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg">
+        <div class="modal-header bg-secondary text-white rounded-top-4">
+          <h5 class="modal-title fw-bold"><i class="bi bi-arrow-return-right me-2"></i> Derivar Turno {{ turnoActual?.codigoTurno }}</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="showDerivarModal = false"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="text-muted">Seleccione el servicio o área a la cual desea derivar este turno:</p>
+          <select class="form-select form-select-lg" [(ngModel)]="nuevoCodigoServicio">
+            <option value="" disabled selected>-- Seleccionar Servicio --</option>
+            <option *ngFor="let s of servicios" [value]="s.codigo">
+              {{ s.nombre }} ({{ s.codigo }})
+            </option>
+          </select>
+        </div>
+        <div class="modal-footer bg-light rounded-bottom-4">
+          <button type="button" class="btn btn-outline-secondary" (click)="showDerivarModal = false">Cancelar</button>
+          <button type="button" class="btn btn-primary fw-bold px-4" [disabled]="!nuevoCodigoServicio || loading" (click)="confirmarDerivacion()">
+            Derivar Turno
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

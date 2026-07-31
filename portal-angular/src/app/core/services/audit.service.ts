@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface AuditLog {
   id: number;
@@ -19,7 +20,7 @@ export interface AuditLog {
 })
 export class AuditService {
   private http = inject(HttpClient);
-  private apiUrl = '/api/v1/audit';
+  private apiUrl = `${environment.back_url}/api/v1/audit`;
 
   getLogs(): Observable<AuditLog[]> {
     return this.http.get<AuditLog[]>(this.apiUrl);

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, Injector } from '@angular/core';
 import {
   HttpInterceptor,
   HttpRequest,
@@ -9,6 +9,7 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 /**
  * Interceptor de errores HTTP que captura y maneja errores de forma centralizada
@@ -19,6 +20,7 @@ import { Router } from '@angular/router';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   private router = inject(Router);
+  private injector = inject(Injector);
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
@@ -35,9 +37,21 @@ export class ErrorInterceptor implements HttpInterceptor {
 
           switch (error.status) {
             case 401:
-              console.warn('Token expirado. Redirigiendo a login...');
-              this.router.navigate(['/login']);
-              errorMessage = 'Sesión expirada. Por favor, inicia sesión.';
+              if (!req.url.includes('/auth/login') && !req.url.includes('/parametric/tables') && !req.url.includes('/public/brand')) {
+                console.warn('Sesión expirada o invalidada. Limpiando almacenamiento y redirigiendo...');
+                try {
+                  const authService = this.injector.get(AuthService);
+                  authService.logout();
+                } catch (e) {
+                  localStorage.removeItem('user_data');
+                }
+                this.router.navigate(['/login'], { queryParams: { reason: 'session_expired' } });
+                errorMessage = 'Tu sesión ha sido cerrada porque has iniciado sesión en otro dispositivo o navegador.';
+              } else if (req.url.includes('/auth/login')) {
+                errorMessage = 'Credenciales incorrectas. Por favor verifica tu correo y contraseña.';
+              } else {
+                errorMessage = 'No autorizado para este recurso parametric/public.';
+              }
               break;
             case 403:
               errorMessage = 'No tienes permisos para acceder a este recurso.';

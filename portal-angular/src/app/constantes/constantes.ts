@@ -148,7 +148,6 @@ export const CONSTANTES = {
     SETTINGS: '/settings',
     USERS: '/usuarios',
     CONFIG: '/configuracion',
-    DOCS: '/documentacion',
   },
 
   // ==========================================
